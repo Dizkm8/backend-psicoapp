@@ -18,7 +18,7 @@ namespace PsicoAppAPI.Models
         public string? FirstLastName { get; set; }
         public string? SecondLastName { get; set; }
         [Key]
-        public string? Rut { get; set; }
+        public string? RUT { get; set; }
         public string? Email { get; set; }
         public string? Gender { get; set; }
         public bool IsEnabled { get; set; }

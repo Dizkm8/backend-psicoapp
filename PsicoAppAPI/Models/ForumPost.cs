@@ -11,8 +11,8 @@ namespace PsicoAppAPI.Models
         public string? Tag { get; set; }
         public bool IsApproved { get; set; }
 
-        // public string UserId { get; set; }
-        // public string UserName { get; set; }
-        // public User User { get; set; } = null!;
+        public string UserId { get; set; }
+        public string UserName { get; set; }
+        public User User { get; set; } = null!;
     }
 }
