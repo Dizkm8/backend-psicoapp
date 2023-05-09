@@ -30,14 +30,14 @@ app.MapControllers();
 var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<PsicoAppContext>();
 var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-// try
-// {
-//     context.Database.Migrate(); 
-//     DbInitializer.Initialize(context);
-// }
-// catch (Exception ex)
-// {
-//     logger.LogError(ex, " A problem ocurred during migration ");
-// }
+try
+{
+    context.Database.Migrate(); 
+    Seed.SeedData(context).Wait();
+}
+catch (Exception ex)
+{
+    logger.LogError(ex, " A problem ocurred during seeding ");
+}
 
 app.Run();
