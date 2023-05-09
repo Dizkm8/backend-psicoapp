@@ -77,5 +77,3 @@ appsettings.Local.json
 *.vssscc
 PsicoAppAPI/Properties/launchSettings.json
 PsicoAppAPI/appsettings.json
-PsicoAppAPI/database.db-wal
-PsicoAppAPI/database.db-shm
