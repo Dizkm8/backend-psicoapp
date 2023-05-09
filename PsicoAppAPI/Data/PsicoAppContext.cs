@@ -7,7 +7,7 @@ namespace PsicoAppAPI.Data
     {
         public DbSet<User>? Users { get; set; }
         public DbSet<FeedPost>? FeedPosts { get; set; }
-        public DbSet<FeedPost>? Comment { get; set; }
+        // public DbSet<FeedPost>? Comment { get; set; }
 
         public PsicoAppContext(DbContextOptions options) : base(options)
         {

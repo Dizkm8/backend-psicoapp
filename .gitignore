@@ -76,3 +76,4 @@ appsettings.Local.json
 *.vspscc
 *.vssscc
 PsicoAppAPI/Properties/launchSettings.json
+PsicoAppAPI/appsettings.json
