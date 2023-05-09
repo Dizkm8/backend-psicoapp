@@ -5,7 +5,7 @@
 namespace PsicoAppAPI.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AddUserEntity : Migration
+    public partial class CreateUserEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,7 +14,7 @@ namespace PsicoAppAPI.Data.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    RUT = table.Column<string>(type: "TEXT", nullable: false),
+                    Rut = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     FirstLastName = table.Column<string>(type: "TEXT", nullable: true),
                     SecondLastName = table.Column<string>(type: "TEXT", nullable: true),
@@ -27,7 +27,7 @@ namespace PsicoAppAPI.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.RUT);
+                    table.PrimaryKey("PK_Users", x => x.Rut);
                 });
         }
 

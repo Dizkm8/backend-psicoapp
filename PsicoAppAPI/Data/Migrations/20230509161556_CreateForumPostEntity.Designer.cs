@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PsicoAppAPI.Data;
 
@@ -9,10 +10,12 @@ using PsicoAppAPI.Data;
 
 namespace PsicoAppAPI.Data.Migrations
 {
-    [DbContext(typeof(PsicoAppContext))]
-    partial class PsicoAppContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DataContext))]
+    [Migration("20230509161556_CreateForumPostEntity")]
+    partial class CreateForumPostEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -40,9 +43,35 @@ namespace PsicoAppAPI.Data.Migrations
                     b.ToTable("FeedPosts");
                 });
 
+            modelBuilder.Entity("PsicoAppAPI.Models.ForumPost", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateOnly?>("PublishedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Tag")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ForumPosts");
+                });
+
             modelBuilder.Entity("PsicoAppAPI.Models.User", b =>
                 {
-                    b.Property<string>("RUT")
+                    b.Property<string>("Rut")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -72,7 +101,7 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("RUT");
+                    b.HasKey("Rut");
 
                     b.ToTable("Users");
                 });
