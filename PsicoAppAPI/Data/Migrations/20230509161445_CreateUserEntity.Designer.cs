@@ -9,9 +9,9 @@ using PsicoAppAPI.Data;
 
 namespace PsicoAppAPI.Data.Migrations
 {
-    [DbContext(typeof(PsicoAppContext))]
-    [Migration("20230509042949_AddUserEntity")]
-    partial class AddUserEntity
+    [DbContext(typeof(DataContext))]
+    [Migration("20230509161445_CreateUserEntity")]
+    partial class CreateUserEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace PsicoAppAPI.Data.Migrations
 
             modelBuilder.Entity("PsicoAppAPI.Models.User", b =>
                 {
-                    b.Property<string>("RUT")
+                    b.Property<string>("Rut")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -51,7 +51,7 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("RUT");
+                    b.HasKey("Rut");
 
                     b.ToTable("Users");
                 });
