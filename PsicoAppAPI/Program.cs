@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using PsicoAppAPI.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,7 +9,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddDbContext<PsicoAppContext>(opt =>
+{
+    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,5 +27,17 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<PsicoAppContext>();
+var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+// try
+// {
+//     context.Database.Migrate(); 
+//     DbInitializer.Initialize(context);
+// }
+// catch (Exception ex)
+// {
+//     logger.LogError(ex, " A problem ocurred during migration ");
+// }
 
 app.Run();
