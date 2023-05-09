@@ -5,7 +5,7 @@ namespace PsicoAppAPI.Data
 {
     public class Seed
     {
-        public static async Task SeedData(PsicoAppContext context)
+        public static async Task SeedData(DataContext context)
         {
             if(context == null) throw new ArgumentNullException(nameof(context));
             if(context.Users.Any()) return;
@@ -15,6 +15,8 @@ namespace PsicoAppAPI.Data
             var usersList = JsonSerializer.Deserialize<List<User>>(userData, options);
             await context.Users.AddRangeAsync(usersList);
             await context.SaveChangesAsync();
+
+            
         }
     }
 }
