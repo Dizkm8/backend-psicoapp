@@ -141,5 +141,14 @@ public class ForumController : ControllerBase
         return Ok(comment);
     }
     
-    
+    /// <summary>
+    /// Get all forum posts in database context
+    /// </summary>
+    /// <returns>All posts collected</returns>
+    [HttpGet]
+    public IActionResult GetForumPosts()
+    {
+        var posts = _context.ForumPosts.ToList();
+        return Ok(posts);
+    }
 }
