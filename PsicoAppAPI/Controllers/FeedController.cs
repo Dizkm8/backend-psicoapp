@@ -56,4 +56,15 @@ public class FeedController : ControllerBase
         }
         return Ok(post);
     }
+    
+    /// <summary>
+    /// Get all feed posts in database context
+    /// </summary>
+    /// <returns>All posts collected</returns>
+    [HttpGet]
+    public IActionResult GetFeedPosts()
+    {
+        var posts = _context.FeedPosts.ToList();
+        return Ok(posts);
+    }
 }
