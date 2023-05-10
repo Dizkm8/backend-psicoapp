@@ -26,5 +26,18 @@ namespace PsicoAppAPI.Controllers
             var users = _context.Users.ToList();
             return Ok(users);
         }
+
+        /// <summary>
+        /// Add a user in database context 
+        /// </summary>
+        /// <param name="user">User to add</param>
+        /// <returns>User saved</returns>
+        [HttpPost]
+        public IActionResult AddUser(User user)
+        {
+            _context.Users.Add(user);
+            _context.SaveChanges();
+            return Ok(user);
+        }
     }
 }
