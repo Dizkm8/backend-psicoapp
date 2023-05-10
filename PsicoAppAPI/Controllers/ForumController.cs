@@ -105,4 +105,23 @@ public class ForumController : ControllerBase
         _context.SaveChanges();
         return Ok(comment);
     }
+    
+    /// <summary>
+    /// Deletes a forum post comment given its id
+    /// </summary>
+    /// <param name="id">comment id</param>
+    /// <returns>Operation result</returns>
+    [HttpDelete("{id}")]
+    public IActionResult DeletePostComment(int id)
+    {
+        var comment = _context.Comments.FirstOrDefault(e => e.Id == id);
+        if (comment == default(Comment))
+        {
+            return NotFound();
+        }
+        _context.Comments.Remove(comment);
+        
+        _context.SaveChanges();
+        return Ok();
+    }
 }
