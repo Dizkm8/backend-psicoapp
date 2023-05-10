@@ -16,6 +16,10 @@ namespace PsicoAppAPI.Controllers
 
         public UsersController(DataContext context) => _context = context;
 
+        /// <summary>
+        /// Get all users in database context
+        /// </summary>
+        /// <returns>All users collected</returns>
         [HttpGet]
         public IActionResult GetUsers()
         {
