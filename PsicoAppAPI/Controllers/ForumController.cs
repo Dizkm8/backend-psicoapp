@@ -92,4 +92,17 @@ public class ForumController : ControllerBase
         }
         return NoContent();
     }
+    
+    /// <summary>
+    /// Add a forum post comment in database context 
+    /// </summary>
+    /// <param name="comment">Comment to add</param>
+    /// <returns>Comment saved</returns>
+    [HttpPost]
+    public IActionResult AddPostComment(Comment comment)
+    {
+        _context.Comments.Add(comment);
+        _context.SaveChanges();
+        return Ok(comment);
+    }
 }
