@@ -165,4 +165,18 @@ public class ForumController : ControllerBase
             .ToList();
         return Ok(comments);
     }
+    
+    /// <summary>
+    /// Get all forum posts that have a given tag in database context
+    /// </summary>
+    /// <param name="tag">tag to search</param>
+    /// <returns>All posts collected</returns>
+    [HttpGet("{tag}")]
+    public IActionResult GetForumPostsByTag(string tag)
+    {
+        var posts = _context.ForumPosts
+            .Where(e => e.Tag == tag)
+            .ToList();
+        return Ok(posts);
+    }
 }
