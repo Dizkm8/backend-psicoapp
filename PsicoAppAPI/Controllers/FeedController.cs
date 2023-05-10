@@ -24,4 +24,20 @@ public class FeedController : ControllerBase
         _context.SaveChanges();
         return Ok(post);
     }
+
+    /// <summary>
+    /// Deletes a feed post given its id
+    /// </summary>
+    /// <param name="id">post id</param>
+    /// <returns>Operation result</returns>
+    [HttpDelete("{id}")]
+    public IActionResult DeleteFeedPost(int id)
+    {
+        var deletedRows = _context.FeedPosts.Where(e => e.Id == id).ExecuteDelete();
+        if (deletedRows <= 0)
+        {
+            return NotFound();
+        }
+        return Ok();
+    }
 }
