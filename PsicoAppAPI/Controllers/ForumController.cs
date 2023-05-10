@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PsicoAppAPI.Models;
 using PsicoAppAPI.Data;
+
 namespace PsicoAppAPI.Controllers;
 
 [ApiController]
@@ -20,6 +22,22 @@ public class ForumController : ControllerBase
     {
         _context.ForumPosts.Add(post);
         _context.SaveChanges();
+        return Ok(post);
+    }
+    
+    /// <summary>
+    /// Get a forum post by its id in database context
+    /// </summary>
+    /// <param name="id">post id</param>
+    /// <returns>Operation result</returns>
+    [HttpGet("{id}")]
+    public IActionResult GetForumPost(int id)
+    {
+        var post = _context.ForumPosts.FirstOrDefault(e => e.Id == id);
+        if (post == default(ForumPost))
+        {
+            return NotFound();
+        }
         return Ok(post);
     }
 }
