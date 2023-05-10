@@ -39,5 +39,17 @@ namespace PsicoAppAPI.Controllers
             _context.SaveChanges();
             return Ok(user);
         }
+
+        /// <summary>
+        /// Get a user by rut in database context
+        /// </summary>
+        /// <param name="rut">Rut identifier</param>
+        /// <returns>User finded</returns>
+        [HttpGet("{rut}")]
+        public IActionResult GetUser(string rut)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.Rut == rut);
+            return Ok(user);
+        }
     }
 }
