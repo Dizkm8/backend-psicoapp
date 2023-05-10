@@ -151,4 +151,18 @@ public class ForumController : ControllerBase
         var posts = _context.ForumPosts.ToList();
         return Ok(posts);
     }
+    
+    /// <summary>
+    /// Get all comments of a forum post in database context
+    /// </summary>
+    /// <param name="postId">post id</param>
+    /// <returns>All comments collected</returns>
+    [HttpGet("{postId}")]
+    public IActionResult GetForumPostComments(int postId)
+    {
+        var comments = _context.Comments
+            .Where(e => e.PostId == postId)
+            .ToList();
+        return Ok(comments);
+    }
 }
