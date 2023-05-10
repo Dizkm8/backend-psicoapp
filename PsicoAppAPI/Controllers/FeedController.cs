@@ -40,4 +40,20 @@ public class FeedController : ControllerBase
         }
         return Ok();
     }
+
+    /// <summary>
+    /// Get a feed post by id in database context
+    /// </summary>
+    /// <param name="id">post id</param>
+    /// <returns>Operation result</returns>
+    [HttpGet("{id}")]
+    public IActionResult GetFeedPost(int id)
+    {
+        var post = _context.FeedPosts.FirstOrDefault(e => e.Id == id);
+        if (post == default(FeedPost))
+        {
+            return NotFound();
+        }
+        return Ok(post);
+    }
 }
