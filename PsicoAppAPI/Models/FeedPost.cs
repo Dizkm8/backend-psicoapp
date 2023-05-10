@@ -13,8 +13,8 @@ namespace PsicoAppAPI.Models
         public DateOnly? OnPublished { get; set; }
         public string? Tag { get; set; }
 
-        public string UserId { get; set; }
-        public string UserName { get; set; }
-        public User User { get; set; } = null!;
+        // public string UserId { get; set; }
+        // public string UserName { get; set; }
+        // public User User { get; set; } = null!;
     }
 }
