@@ -124,4 +124,22 @@ public class ForumController : ControllerBase
         _context.SaveChanges();
         return Ok();
     }
+    
+    /// <summary>
+    /// Get a forum post comment by id in database context
+    /// </summary>
+    /// <param name="id">comment id</param>
+    /// <returns>Operation result</returns>
+    [HttpGet("{id}")]
+    public IActionResult GetForumPostComment(int id)
+    {
+        var comment = _context.Comments.FirstOrDefault(e => e.Id == id);
+        if (comment == default(Comment))
+        {
+            return NotFound();
+        }
+        return Ok(comment);
+    }
+    
+    
 }
