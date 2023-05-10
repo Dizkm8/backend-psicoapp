@@ -53,14 +53,28 @@ namespace PsicoAppAPI.Controllers
             return Ok(user);
         }
 
-        /// <summary>
-        /// Updates a user based on their rut
-        /// </summary>
-        /// <param name="rut">user Rut</param>
-        /// <param name="user">new user Data</param>
-        /// <returns>Saved User</returns>
+        [HttpPut("{rut}, {isEnabled}")]
+        public async Task<IActionResult> ChangeUserStatus( string rut, bool isEnabled)
+        {
+            if (!UserExists(rut))
+            {
+                return NotFound();
+            }
+            _context.Find<User>(rut).IsEnabled = isEnabled;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
+            return NoContent();
+        }
+        
+
         [HttpPut("{rut}")]
-        public async Task<IActionResult>  UpdateUser(string rut, User user)
+        public async Task<IActionResult> UpdateUser(string rut, User user)
         {
             if (rut != user.Rut)
             {
@@ -94,8 +108,8 @@ namespace PsicoAppAPI.Controllers
         /// <param name="rut">user rut</param>
         /// <returns>True if exists</returns>
         private bool UserExists(string rut)
-    {
-        return _context.Users.Any(e => e.Rut == rut);
-    }
+        {
+            return _context.Users.Any(e => e.Rut == rut);
+        }
     }
 }
