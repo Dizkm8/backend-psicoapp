@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PsicoAppAPI.Data;
 using PsicoAppAPI.Models;
 
@@ -51,5 +52,50 @@ namespace PsicoAppAPI.Controllers
             var user = _context.Users.FirstOrDefault(x => x.Rut == rut);
             return Ok(user);
         }
+
+        /// <summary>
+        /// Updates a user based on their rut
+        /// </summary>
+        /// <param name="rut">user Rut</param>
+        /// <param name="user">new user Data</param>
+        /// <returns>Saved User</returns>
+        [HttpPut("{rut}")]
+        public async Task<IActionResult>  UpdateUser(string rut, User user)
+        {
+            if (rut != user.Rut)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(user).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(rut))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Checks if exists a user by their rut
+        /// </summary>
+        /// <param name="rut">user rut</param>
+        /// <returns>True if exists</returns>
+        private bool UserExists(string rut)
+    {
+        return _context.Users.Any(e => e.Rut == rut);
+    }
     }
 }
