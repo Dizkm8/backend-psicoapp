@@ -65,4 +65,31 @@ public class ForumController : ControllerBase
         _context.SaveChanges();
         return Ok();
     }
+    
+    /// <summary>
+    /// Change forum post status to approved or disapproved by their id
+    /// </summary>
+    /// <param name="id">post id</param>
+    /// <param name="isApproved">approved status</param>
+    /// <returns>Task</returns>
+    [HttpPut("{id}, {isApproved}")]
+    public async Task<IActionResult> ChangeForumPostStatus(int id, bool isApproved)
+    {
+        var post = _context.Find<ForumPost>(id);
+        if (post == null)
+        {
+            return NotFound();
+        }
+        post.IsApproved = isApproved;
+        
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            throw;
+        }
+        return NoContent();
+    }
 }
