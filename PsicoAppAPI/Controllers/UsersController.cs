@@ -53,6 +53,12 @@ namespace PsicoAppAPI.Controllers
             return Ok(user);
         }
 
+        /// <summary>
+        /// Change user status to enabled or disabled by their rut
+        /// </summary>
+        /// <param name="rut">user rut</param>
+        /// <param name="isEnabled">enabled status or not</param>
+        /// <returns>Task</returns>
         [HttpPut("{rut}, {isEnabled}")]
         public async Task<IActionResult> ChangeUserStatus( string rut, bool isEnabled)
         {
@@ -72,7 +78,7 @@ namespace PsicoAppAPI.Controllers
             return NoContent();
         }
         
-
+    
         [HttpPut("{rut}")]
         public async Task<IActionResult> UpdateUser(string rut, User user)
         {
