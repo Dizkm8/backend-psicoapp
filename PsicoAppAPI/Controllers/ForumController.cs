@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Data;
 
@@ -24,7 +25,7 @@ public class ForumController : ControllerBase
         _context.SaveChanges();
         return Ok(post);
     }
-    
+
     /// <summary>
     /// Get a forum post by its id in database context
     /// </summary>
@@ -39,5 +40,29 @@ public class ForumController : ControllerBase
             return NotFound();
         }
         return Ok(post);
+    }
+
+    /// <summary>
+    /// Deletes a forum post given its id
+    /// </summary>
+    /// <param name="id">post id</param>
+    /// <returns>Operation result</returns>
+    [HttpDelete("{id}")]
+    public IActionResult DeleteForumPost(int id)
+    {
+        var post = _context.ForumPosts.FirstOrDefault(e => e.Id == id);
+        if (post == default(ForumPost))
+        {
+            return NotFound();
+        }
+        _context.ForumPosts.Remove(post);
+        
+        var comments = _context.Comments
+            .Where(e => e.PostId == id)
+            .ToList();
+        _context.Comments.RemoveRange(comments);
+        
+        _context.SaveChanges();
+        return Ok();
     }
 }
