@@ -59,18 +59,7 @@ public class CommentsController : ControllerBase
         }
         return Ok(comment);
     }
-    
-    /// <summary>
-    /// Get all forum posts in database context
-    /// </summary>
-    /// <returns>All posts collected</returns>
-    [HttpGet]
-    public IActionResult GetForumPosts()
-    {
-        var posts = _context.ForumPosts.ToList();
-        return Ok(posts);
-    }
-    
+
     /// <summary>
     /// Get all comments of a forum post in database context
     /// </summary>
@@ -83,19 +72,5 @@ public class CommentsController : ControllerBase
             .Where(e => e.PostId == postId)
             .ToList();
         return Ok(comments);
-    }
-    
-    /// <summary>
-    /// Get all forum posts that have a given tag in database context
-    /// </summary>
-    /// <param name="tag">tag to search</param>
-    /// <returns>All posts collected</returns>
-    [HttpGet("{tag}")]
-    public IActionResult GetForumPostsByTag(string tag)
-    {
-        var posts = _context.ForumPosts
-            .Where(e => e.Tag == tag)
-            .ToList();
-        return Ok(posts);
     }
 }
