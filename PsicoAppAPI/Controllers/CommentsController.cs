@@ -65,7 +65,7 @@ public class CommentsController : ControllerBase
     /// </summary>
     /// <param name="postId">post id</param>
     /// <returns>All comments collected</returns>
-    [HttpGet("{postId}")]
+    [HttpGet("post/{postId}")]
     public IActionResult GetForumPostComments(int postId)
     {
         var comments = _context.Comments
