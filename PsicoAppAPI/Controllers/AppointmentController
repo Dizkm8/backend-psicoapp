@@ -12,5 +12,17 @@ public class AppointmentsController : ControllerBase
     private readonly DataContext _context;
 
     public AppointmentsController(DataContext context) => _context = context;
+    /// <summary>
+    /// Add a appointment in database context 
+    /// </summary>
+    /// <param name="Appointment">Comment to add</param>
+    /// <returns>Comment saved</returns> 
+    [HttpPost]
+    public IActionResult AddAppointment(Appointment appointment)
+    {
+        _context.Appointments.Add(appointment);
+        _context.SaveChanges();
+        return Ok(appointment);
+    }
 
 }
