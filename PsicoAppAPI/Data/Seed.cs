@@ -15,8 +15,8 @@ namespace PsicoAppAPI.Data
             if (context == null) throw new ArgumentNullException(nameof(context));
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             await SeedUsers(context, options);
-            await SeedFeedPost(context, options);
-            await SeedForumPost(context, options);
+            await SeedFeedPosts(context, options);
+            await SeedForumPosts(context, options);
             await SeedComments(context, options);
             await context.SaveChangesAsync();
         }
@@ -41,7 +41,7 @@ namespace PsicoAppAPI.Data
         /// <param name="context"> Database Context </param>
         /// <param name="options"> Options to Deserialize json </param>
         /// <returns>Database adding Task</returns>
-        private static async Task SeedFeedPost(DataContext context, JsonSerializerOptions options)
+        private static async Task SeedFeedPosts(DataContext context, JsonSerializerOptions options)
         {
             if (context.FeedPosts.Any()) return;
             var feedPostsData = File.ReadAllText("Data/Seeds/FeedPostSeedData.json");
@@ -55,7 +55,7 @@ namespace PsicoAppAPI.Data
         /// <param name="context"> Database Context </param>
         /// <param name="options"> Options to Deserialize json </param>
         /// <returns>Database adding Task</returns>
-        private static async Task SeedForumPost(DataContext context, JsonSerializerOptions options)
+        private static async Task SeedForumPosts(DataContext context, JsonSerializerOptions options)
         {
             if (context.ForumPosts.Any()) return;
             var forumPostsData = File.ReadAllText("Data/Seeds/ForumPostSeedData.json");
@@ -64,7 +64,7 @@ namespace PsicoAppAPI.Data
         }
 
         /// <summary>
-        /// Seed the database with the forum posts in the json file if the database is empty.
+        /// Seed the database with the comments in the json file if the database is empty.
         /// </summary>
         /// <param name="context"> Database Context </param>
         /// <param name="options"> Options to Deserialize json </param>
