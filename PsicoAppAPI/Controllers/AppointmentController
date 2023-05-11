@@ -68,5 +68,16 @@ public class AppointmentsController : ControllerBase
             .ToList();
         return Ok(appointments);
     }
+    
+        /// <summary>
+    /// Get all Appointments in database context
+    /// </summary>
+    /// <returns>All Appointments collected</returns>
+    [HttpGet]
+    public IActionResult GetAppointmentsAdmin()
+    {
+        var appointments = _context.Appointments.ToList();
+        return Ok(appointments);
+    }
 
 }
