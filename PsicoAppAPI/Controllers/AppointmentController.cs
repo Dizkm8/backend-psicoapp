@@ -1,4 +1,4 @@
-sing Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Data;
@@ -15,7 +15,7 @@ public class AppointmentsController : ControllerBase
     /// <summary>
     /// Add a appointment in database context 
     /// </summary>
-    /// <param name="Appointment">Comment to add</param>
+    /// <param name="appointment">appointments to add</param>
     /// <returns>Comment saved</returns> 
     [HttpPost]
     public IActionResult AddAppointment(Appointment appointment)
@@ -25,7 +25,7 @@ public class AppointmentsController : ControllerBase
         return Ok(appointment);
     }
     
-        /// <summary>
+    /// <summary>
     /// Get a Appointment by id in database context
     /// </summary>
     /// <param name="id">Appointment id</param>
@@ -44,9 +44,9 @@ public class AppointmentsController : ControllerBase
     /// <summary>
     /// Get all Appointments of a user in database context
     /// </summary>
-    /// <param name="ClienteId">Client Rut</param>
-    /// <returns>All comments collected</returns>
-    [HttpGet("{ClientId}")]
+    /// <param name="clienteId">Client Rut</param>
+    /// <returns>All appointments collected</returns>
+    [HttpGet("{clientId}")]
     public IActionResult GetAppointmentsClient(String ClientId)
     {
         var appointments = _context.Appointments
@@ -55,21 +55,7 @@ public class AppointmentsController : ControllerBase
         return Ok(appointments);
     }
     
-        /// <summary>
-    /// Get all Appointments of a client in database context
-    /// </summary>
-    /// <param name="ClienteId">Client Rut</param>
-    /// <returns>All comments collected</returns>
-    [HttpGet("{ClientId}")]
-    public IActionResult GetAppointmentsClient(String ClientId)
-    {
-        var appointments = _context.Appointments
-            .Where(e => e.ClientId == ClientId )
-            .ToList();
-        return Ok(appointments);
-    }
-    
-        /// <summary>
+    /// <summary>
     /// Get all Appointments in database context
     /// </summary>
     /// <returns>All Appointments collected</returns>
