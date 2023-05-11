@@ -18,6 +18,7 @@ namespace PsicoAppAPI.Data
             await SeedFeedPosts(context, options);
             await SeedForumPosts(context, options);
             await SeedComments(context, options);
+            await SeedAppointments(context, options);
             await context.SaveChangesAsync();
         }
         
@@ -75,6 +76,20 @@ namespace PsicoAppAPI.Data
             var commentsData = File.ReadAllText("Data/Seeds/CommentSeedData.json");
             var commentsList = JsonSerializer.Deserialize<List<Comment>>(commentsData, options);
             await context.Comments.AddRangeAsync(commentsList);
+        }
+
+        /// <summary>
+        /// Seed the database with the appointments in the json file if the database is empty.
+        /// </summary>
+        /// <param name="context"> Database Context </param>
+        /// <param name="options"> Options to Deserialize json </param>
+        /// <returns>Database adding Task</returns>
+        private static async Task SeedAppointments(DataContext context, JsonSerializerOptions options)
+        {
+            if (context.Appointments.Any()) return;
+            var appointmentsData = File.ReadAllText("Data/Seeds/AppointmentSeedData.json");
+            var appointmentsList = JsonSerializer.Deserialize<List<Appointment>>(appointmentsData, options);
+            await context.Appointments.AddRangeAsync(appointmentsList);
         }
     }
 }
