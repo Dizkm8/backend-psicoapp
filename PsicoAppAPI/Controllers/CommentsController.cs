@@ -43,6 +43,8 @@ public class CommentsController : ControllerBase
         _context.SaveChanges();
         return Ok();
     }
+
+    // TODO: [AN-111] Añadir UpdatePostComment
     
     /// <summary>
     /// Get a forum post comment by id in database context
@@ -50,7 +52,7 @@ public class CommentsController : ControllerBase
     /// <param name="id">comment id</param>
     /// <returns>Operation result</returns>
     [HttpGet("{id}")]
-    public IActionResult GetForumPostComment(int id)
+    public IActionResult GetPostComment(int id)
     {
         var comment = _context.Comments.FirstOrDefault(e => e.Id == id);
         if (comment == default(Comment))
@@ -59,14 +61,25 @@ public class CommentsController : ControllerBase
         }
         return Ok(comment);
     }
-
+    
+    /// <summary>
+    /// Get all comments in database context
+    /// </summary>
+    /// <returns>All posts collected</returns>
+    [HttpGet]
+    public IActionResult GetPostComments()
+    {
+        var posts = _context.Comments.ToList();
+        return Ok(posts);
+    }
+    
     /// <summary>
     /// Get all comments of a forum post in database context
     /// </summary>
     /// <param name="postId">post id</param>
     /// <returns>All comments collected</returns>
-    [HttpGet("post/{postId}")]
-    public IActionResult GetForumPostComments(int postId)
+    [HttpGet("forum/{postId}")]
+    public IActionResult GetPostCommentsByForum(int postId)
     {
         var comments = _context.Comments
             .Where(e => e.PostId == postId)

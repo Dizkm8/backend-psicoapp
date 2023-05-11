@@ -65,6 +65,8 @@ public class ForumController : ControllerBase
         _context.SaveChanges();
         return Ok();
     }
+
+    // TODO: [AN-110] Añadir UpdateForumPost
     
     /// <summary>
     /// Change forum post status to approved or disapproved by their id
@@ -72,7 +74,7 @@ public class ForumController : ControllerBase
     /// <param name="id">post id</param>
     /// <param name="isApproved">approved status</param>
     /// <returns>Task</returns>
-    [HttpPut("{id}, {isApproved}")]
+    [HttpPut("{id}/{isApproved}")]
     public async Task<IActionResult> ChangeForumPostStatus(int id, bool isApproved)
     {
         var post = _context.Find<ForumPost>(id);
@@ -92,7 +94,7 @@ public class ForumController : ControllerBase
         }
         return NoContent();
     }
-
+    
     /// <summary>
     /// Get all forum posts in database context
     /// </summary>
@@ -103,7 +105,7 @@ public class ForumController : ControllerBase
         var posts = _context.ForumPosts.ToList();
         return Ok(posts);
     }
-
+    
     /// <summary>
     /// Get all forum posts that have a given tag in database context
     /// </summary>
