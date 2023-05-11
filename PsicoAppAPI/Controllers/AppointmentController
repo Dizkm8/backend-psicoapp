@@ -1,0 +1,16 @@
+sing Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PsicoAppAPI.Models;
+using PsicoAppAPI.Data;
+
+namespace PsicoAppAPI.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class AppointmentsController : ControllerBase
+{
+    private readonly DataContext _context;
+
+    public AppointmentsController(DataContext context) => _context = context;
+
+}
