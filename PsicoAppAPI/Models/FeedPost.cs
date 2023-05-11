@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+// TODO: [AN-112] Aplicar herencia para FeedPost y ForumPost (o fusionarlas)
 namespace PsicoAppAPI.Models
 {
     public class FeedPost
