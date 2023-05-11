@@ -17,6 +17,7 @@ namespace PsicoAppAPI.Data
             await SeedUsers(context, options);
             await SeedFeedPost(context, options);
             await SeedForumPost(context, options);
+            await SeedComments(context, options);
             await context.SaveChangesAsync();
         }
         
@@ -60,6 +61,20 @@ namespace PsicoAppAPI.Data
             var forumPostsData = File.ReadAllText("Data/Seeds/ForumPostSeedData.json");
             var forumPostsList = JsonSerializer.Deserialize<List<ForumPost>>(forumPostsData, options);
             await context.ForumPosts.AddRangeAsync(forumPostsList);
+        }
+
+        /// <summary>
+        /// Seed the database with the forum posts in the json file if the database is empty.
+        /// </summary>
+        /// <param name="context"> Database Context </param>
+        /// <param name="options"> Options to Deserialize json </param>
+        /// <returns>Database adding Task</returns>
+        private static async Task SeedComments(DataContext context, JsonSerializerOptions options)
+        {
+            if (context.Comments.Any()) return;
+            var commentsData = File.ReadAllText("Data/Seeds/CommentSeedData.json");
+            var commentsList = JsonSerializer.Deserialize<List<Comment>>(commentsData, options);
+            await context.Comments.AddRangeAsync(commentsList);
         }
     }
 }
