@@ -40,5 +40,19 @@ public class AppointmentsController : ControllerBase
         }
         return Ok(appointment);
     }
+    
+    /// <summary>
+    /// Get all Appointments of a user in database context
+    /// </summary>
+    /// <param name="ClienteId">Client Rut</param>
+    /// <returns>All comments collected</returns>
+    [HttpGet("{ClientId}")]
+    public IActionResult GetAppointmentsClient(String ClientId)
+    {
+        var appointments = _context.Appointments
+            .Where(e => e.ClientId == ClientId )
+            .ToList();
+        return Ok(appointments);
+    }
 
 }
