@@ -109,7 +109,7 @@ public class ForumController : ControllerBase
     /// </summary>
     /// <param name="tag">tag to search</param>
     /// <returns>All posts collected</returns>
-    [HttpGet("{tag}")]
+    [HttpGet("tag/{tag}")]
     public IActionResult GetForumPostsByTag(string tag)
     {
         var posts = _context.ForumPosts
