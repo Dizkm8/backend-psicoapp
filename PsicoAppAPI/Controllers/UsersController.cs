@@ -59,7 +59,7 @@ namespace PsicoAppAPI.Controllers
         /// <param name="rut">user rut</param>
         /// <param name="isEnabled">enabled status or not</param>
         /// <returns>Task</returns>
-        [HttpPut("{rut}, {isEnabled}")]
+        [HttpPut("{rut}/{isEnabled}")]
         public async Task<IActionResult> ChangeUserStatus( string rut, bool isEnabled)
         {
             if (!UserExists(rut))

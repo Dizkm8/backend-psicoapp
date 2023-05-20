@@ -43,6 +43,8 @@ public class CommentsController : ControllerBase
         _context.SaveChanges();
         return Ok();
     }
+
+    // TODO: [AN-111] Añadir UpdatePostComment
     
     /// <summary>
     /// Get a forum post comment by id in database context
@@ -50,7 +52,7 @@ public class CommentsController : ControllerBase
     /// <param name="id">comment id</param>
     /// <returns>Operation result</returns>
     [HttpGet("{id}")]
-    public IActionResult GetForumPostComment(int id)
+    public IActionResult GetPostComment(int id)
     {
         var comment = _context.Comments.FirstOrDefault(e => e.Id == id);
         if (comment == default(Comment))
@@ -61,13 +63,13 @@ public class CommentsController : ControllerBase
     }
     
     /// <summary>
-    /// Get all forum posts in database context
+    /// Get all comments in database context
     /// </summary>
     /// <returns>All posts collected</returns>
     [HttpGet]
-    public IActionResult GetForumPosts()
+    public IActionResult GetPostComments()
     {
-        var posts = _context.ForumPosts.ToList();
+        var posts = _context.Comments.ToList();
         return Ok(posts);
     }
     
@@ -76,26 +78,12 @@ public class CommentsController : ControllerBase
     /// </summary>
     /// <param name="postId">post id</param>
     /// <returns>All comments collected</returns>
-    [HttpGet("{postId}")]
-    public IActionResult GetForumPostComments(int postId)
+    [HttpGet("forum/{postId}")]
+    public IActionResult GetPostCommentsByForum(int postId)
     {
         var comments = _context.Comments
             .Where(e => e.PostId == postId)
             .ToList();
         return Ok(comments);
-    }
-    
-    /// <summary>
-    /// Get all forum posts that have a given tag in database context
-    /// </summary>
-    /// <param name="tag">tag to search</param>
-    /// <returns>All posts collected</returns>
-    [HttpGet("{tag}")]
-    public IActionResult GetForumPostsByTag(string tag)
-    {
-        var posts = _context.ForumPosts
-            .Where(e => e.Tag == tag)
-            .ToList();
-        return Ok(posts);
     }
 }
