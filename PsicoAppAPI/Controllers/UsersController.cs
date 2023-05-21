@@ -27,18 +27,49 @@ namespace PsicoAppAPI.Controllers
             var users = _context.Users.ToList();
             return Ok(users);
         }
+         /// <summary>
+        /// checks if the user exists in the database and if the entered password matches the one registered in the database
+        /// </summary>
+        /// <returns>user whose login credentials match</returns>
+        [HttpGet]
+        [Route("login")]
+        public IActionResult Login(string id, string password)
+        {
+            if (UserExists(id)){
+                if (PasswordExists(password)){
+                    var user = _context.Users.FirstOrDefault(x => x.Rut == id);
+                    return Ok(user);
+                }
+                else{
+                    // if the password does not match returns not found error message(TEMPORALY MUST FIX LATER) //
+                    return NotFound();
+                }
+            }  
+            else{
+                // if the id is no registered returns not found error message(TEMPORALY MUST FIX LATER) //
+                return NotFound();
+
+            }
+        }
 
         /// <summary>
-        /// Add a user in database context 
+        /// Add a user in database context if user´s id is not registered in the data base
         /// </summary>
         /// <param name="user">User to add</param>
         /// <returns>User saved</returns>
         [HttpPost]
+        [Route("sign-up")]
         public IActionResult AddUser(User user)
         {
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            return Ok(user);
+            if (!UserExists(user.Rut)){
+                _context.Users.Add(user);
+                _context.SaveChanges();
+                return Ok(user);
+            }
+            else{
+                return NotFound();
+                // if the id is already registered returns not found error message(TEMPORALY MUST FIX LATER) //
+            }
         }
 
         /// <summary>
@@ -52,6 +83,9 @@ namespace PsicoAppAPI.Controllers
             var user = _context.Users.FirstOrDefault(x => x.Rut == rut);
             return Ok(user);
         }
+        
+
+
 
         /// <summary>
         /// Change user status to enabled or disabled by their rut
@@ -116,6 +150,11 @@ namespace PsicoAppAPI.Controllers
         private bool UserExists(string rut)
         {
             return _context.Users.Any(e => e.Rut == rut);
+        }
+
+        private bool PasswordExists(string password)
+        {
+            return _context.Users.Any(e => e.Password == password);
         }
     }
 }
