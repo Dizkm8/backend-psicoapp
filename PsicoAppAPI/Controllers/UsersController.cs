@@ -32,7 +32,7 @@ namespace PsicoAppAPI.Controllers
         /// </summary>
         /// <returns>user whose login credentials match</returns>
         [HttpGet]
-        [Route("Login")]
+        [Route("login")]
         public IActionResult Login(string id, string password)
         {
             if (UserExists(id)){
@@ -58,7 +58,7 @@ namespace PsicoAppAPI.Controllers
         /// <param name="user">User to add</param>
         /// <returns>User saved</returns>
         [HttpPost]
-        [Route("Sign_up")]
+        [Route("sign-up")]
         public IActionResult AddUser(User user)
         {
             if (!UserExists(user.Rut)){
