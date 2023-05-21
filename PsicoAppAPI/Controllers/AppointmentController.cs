@@ -9,6 +9,7 @@ namespace PsicoAppAPI.Controllers;
 [Route("api/[controller]")]
 public class AppointmentsController : ControllerBase
 {
+    //TODO: [AN-125] Set routes
     private readonly DataContext _context;
 
     public AppointmentsController(DataContext context) => _context = context;
