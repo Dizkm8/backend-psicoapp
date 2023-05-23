@@ -6,27 +6,23 @@ using System.Threading.Tasks;
 
 namespace PsicoAppAPI.Models
 {
-    public enum UserType {
-        Admin,
-        Client,
-        Psychologist
-    }
+    
 
-    public class User
+    public abstract class User
     {
         public string? Name { get; set; }
         public string? FirstLastName { get; set; }
         public string? SecondLastName { get; set; }
         [Key]
-        public string? Rut { get; set; }
+        public int Id { get; set; }
         public string? Email { get; set; }
         public string? Gender { get; set; }
         public bool IsEnabled { get; set; }
         public int Phone { get; set; }
         public string? Password { get; set; }
-        public UserType Type { get; set; }
 
-        // public List<FeedPost> FeedPosts { get; set; } = new();
+        
+
 
     }
 }

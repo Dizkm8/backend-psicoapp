@@ -42,20 +42,20 @@ namespace PsicoAppAPI.Controllers
         /// Login: checks if the user exists in the database and if the entered password matches the one registered in the database
         /// </summary>
         /// <returns>user whose login credentials match</returns>
-        [AllowAnonymous] // Permite que este endpoint sea accesible sin autenticación
+        [AllowAnonymous] // Allows the endpoint to be access without authentification
         [HttpPost("login")]
-        public IActionResult Login(string id, string password)
+        public IActionResult Login(int id, string password)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Rut == id && x.Password == password);
+            var user = _context.Users.FirstOrDefault(x => x.Id == id && x.Password == password);
 
             if (user == null)
             {
-                return Unauthorized(); // Devuelve un código 401 si las credenciales son inválidas
+                return Unauthorized(); // Returns 401 code if the credentials do not match
             }
 
-            var token = GenerateJwtToken(user.Rut);
+            var token = GenerateJwtToken(user.Id.ToString());
 
-            return Ok(new { Token = token }); // Devuelve el token JWT en la respuesta
+            return Ok(new { Token = token }); // Returns JWT toker
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace PsicoAppAPI.Controllers
         [HttpPost("sign-up")]
         public IActionResult AddUser(User user)
         {
-            if (!UserExists(user.Rut))
+            if (!UserExists(user.Id))
             {
                 _context.Users.Add(user);
                 _context.SaveChanges();
@@ -78,11 +78,11 @@ namespace PsicoAppAPI.Controllers
             }
         }
 
-        // Resto del código...
+        // Rest of the code.
 
-        private bool UserExists(string rut)
+        private bool UserExists(int id)
         {
-            return _context.Users.Any(e => e.Rut == rut);
+            return _context.Users.Any(e => e.Id == id);
         }
 
         private string GenerateJwtToken(string userId)
