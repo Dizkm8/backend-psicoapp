@@ -15,7 +15,7 @@ namespace PsicoAppAPI.Models
 
         //Relationships
         //N:1 Specialist
-        public int SpecialistId { get; set; }
+        public string? SpecialistId { get; set; }
         public string? SpecialistName { get; set; }
         public Specialist Specialist { get; set; } = null!;
     }

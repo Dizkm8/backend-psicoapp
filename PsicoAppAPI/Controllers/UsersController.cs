@@ -44,7 +44,7 @@ namespace PsicoAppAPI.Controllers
         /// <returns>user whose login credentials match</returns>
         [AllowAnonymous] // Allows the endpoint to be access without authentification
         [HttpPost("login")]
-        public IActionResult Login(int id, string password)
+        public IActionResult Login(string id, string password)
         {
             var user = _context.Users.FirstOrDefault(x => x.Id == id && x.Password == password);
 
@@ -53,7 +53,7 @@ namespace PsicoAppAPI.Controllers
                 return Unauthorized(); // Returns 401 code if the credentials do not match
             }
 
-            var token = GenerateJwtToken(user.Id.ToString());
+            var token = GenerateJwtToken(user.Id);
 
             return Ok(new { Token = token }); // Returns JWT toker
         }
@@ -80,7 +80,7 @@ namespace PsicoAppAPI.Controllers
 
         // Rest of the code.
 
-        private bool UserExists(int id)
+        private bool UserExists(string id)
         {
             return _context.Users.Any(e => e.Id == id);
         }

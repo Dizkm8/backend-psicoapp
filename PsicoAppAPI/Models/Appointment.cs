@@ -14,12 +14,12 @@ public class Appointment
 
 
     //N:1 Client
-    public int ClientId { get; set; }
+    public string? ClientId { get; set; }
     public string? ClientName { get; set; }
     public Client Client { get; set; } = null!;
 
      //N:1 Specialist
-    public int specialisttId { get; set; }
-    public int specialistName { get; set; }  
+    public string? specialisttId { get; set; }
+    public string? specialistName { get; set; }  
     public Specialist Specialist { get; set; } = null!;
 }
