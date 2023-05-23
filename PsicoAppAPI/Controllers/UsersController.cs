@@ -11,6 +11,7 @@ using PsicoAppAPI.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using PsicoAppAPI.DTOs;
 
 namespace PsicoAppAPI.Controllers
 {
@@ -39,23 +40,23 @@ namespace PsicoAppAPI.Controllers
         }
 
         /// <summary>
-        /// Login: checks if the user exists in the database and if the entered password matches the one registered in the database
+        /// Checks if the user exists in the database and if the entered password matches the one registered in the database
         /// </summary>
         /// <returns>user whose login credentials match</returns>
-        [AllowAnonymous] // Permite que este endpoint sea accesible sin autenticación
+        [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Login(string id, string password)
+        public IActionResult Login([FromBody] LoginModelDto loginModelDto)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Rut == id && x.Password == password);
-
-            if (user == null)
-            {
-                return Unauthorized(); // Devuelve un código 401 si las credenciales son inválidas
-            }
+            var user = _context.Users?.FirstOrDefault(x =>
+            x.Rut == loginModelDto.Id &&
+            x.Password == loginModelDto.Password);
+            
+            if (user == null) return Unauthorized(); // Maybe we could change Unauthorized to NotFound here?
+            if(user.Rut == null) return NotFound();
 
             var token = GenerateJwtToken(user.Rut);
 
-            return Ok(new { Token = token }); // Devuelve el token JWT en la respuesta
+            return Ok(new { Token = token }); // Return the JWT token in the response
         }
 
         /// <summary>
