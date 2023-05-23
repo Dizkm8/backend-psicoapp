@@ -8,11 +8,11 @@ using PsicoAppAPI.Data;
 
 #nullable disable
 
-namespace PsicoAppAPI.Data.Migrations
+namespace PsicoAppAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230523183541_CreateClientEntity")]
-    partial class CreateClientEntity
+    [Migration("20230523234619_CreateFeedPostsEntity")]
+    partial class CreateFeedPostsEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

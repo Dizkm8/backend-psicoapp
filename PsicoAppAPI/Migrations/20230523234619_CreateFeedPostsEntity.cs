@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace PsicoAppAPI.Data.Migrations
+namespace PsicoAppAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateAppointmentEntity : Migration
+    public partial class CreateFeedPostsEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

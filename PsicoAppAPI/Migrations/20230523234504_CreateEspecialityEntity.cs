@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace PsicoAppAPI.Data.Migrations
+namespace PsicoAppAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateSpecialitiesEntity : Migration
+    public partial class CreateEspecialityEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

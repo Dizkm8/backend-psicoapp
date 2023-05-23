@@ -8,11 +8,11 @@ using PsicoAppAPI.Data;
 
 #nullable disable
 
-namespace PsicoAppAPI.Data.Migrations
+namespace PsicoAppAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230523184050_UpdateAppointmentEntity")]
-    partial class UpdateAppointmentEntity
+    [Migration("20230523234530_CreateEspecialistEntity")]
+    partial class CreateEspecialistEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
