@@ -11,6 +11,7 @@ using PsicoAppAPI.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using PsicoAppAPI.DTOs;
 
 namespace PsicoAppAPI.Controllers
 {
@@ -39,23 +40,23 @@ namespace PsicoAppAPI.Controllers
         }
 
         /// <summary>
-        /// Login: checks if the user exists in the database and if the entered password matches the one registered in the database
+        /// Checks if the user exists in the database and if the entered password matches the one registered in the database
         /// </summary>
         /// <returns>user whose login credentials match</returns>
-        [AllowAnonymous] // Allows the endpoint to be access without authentification
+        [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Login(string id, string password)
+        public IActionResult Login([FromBody] LoginModelDto loginModelDto)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id == id && x.Password == password);
+            var user = _context.Users?.FirstOrDefault(x =>
+            x.Rut == loginModelDto.Id &&
+            x.Password == loginModelDto.Password);
+            
+            if (user == null) return Unauthorized(); // Maybe we could change Unauthorized to NotFound here?
+            if(user.Rut == null) return NotFound();
 
-            if (user == null)
-            {
-                return Unauthorized(); // Returns 401 code if the credentials do not match
-            }
+            var token = GenerateJwtToken(user.Rut);
 
-            var token = GenerateJwtToken(user.Id);
-
-            return Ok(new { Token = token }); // Returns JWT toker
+            return Ok(new { Token = token }); // Return the JWT token in the response
         }
 
         /// <summary>
@@ -66,7 +67,7 @@ namespace PsicoAppAPI.Controllers
         [HttpPost("sign-up")]
         public IActionResult AddUser(User user)
         {
-            if (!UserExists(user.Id))
+            if (!UserExists(user.Rut))
             {
                 _context.Users.Add(user);
                 _context.SaveChanges();
@@ -78,11 +79,11 @@ namespace PsicoAppAPI.Controllers
             }
         }
 
-        // Rest of the code.
+        // Resto del código...
 
-        private bool UserExists(string id)
+        private bool UserExists(string rut)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.Rut == rut);
         }
 
         private string GenerateJwtToken(string userId)
