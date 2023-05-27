@@ -48,7 +48,7 @@ public class AppointmentsController : ControllerBase
     /// <param name="clienteId">Client Rut</param>
     /// <returns>All appointments collected</returns>
     [HttpGet("client/{clientId}")]
-    public IActionResult GetAppointmentsClient(String clientId)
+    public IActionResult GetAppointmentsClient(string clientId)
     {
         var appointments = _context.Appointments
             .Where(e => e.ClientId == clientId )
