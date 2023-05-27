@@ -48,13 +48,13 @@ namespace PsicoAppAPI.Controllers
         public IActionResult Login([FromBody] LoginModelDto loginModelDto)
         {
             var user = _context.Users?.FirstOrDefault(x =>
-            x.Rut == loginModelDto.Id &&
+            x.Id == loginModelDto.Id &&
             x.Password == loginModelDto.Password);
             
             if (user == null) return Unauthorized(); // Maybe we could change Unauthorized to NotFound here?
-            if(user.Rut == null) return NotFound();
+            if(user.Id == null) return NotFound();
 
-            var token = GenerateJwtToken(user.Rut);
+            var token = GenerateJwtToken(user.Id);
 
             return Ok(new { Token = token }); // Return the JWT token in the response
         }
@@ -67,7 +67,7 @@ namespace PsicoAppAPI.Controllers
         [HttpPost("sign-up")]
         public IActionResult AddUser(User user)
         {
-            if (!UserExists(user.Rut))
+            if (!UserExists(user.Id))
             {
                 _context.Users.Add(user);
                 _context.SaveChanges();
@@ -81,9 +81,9 @@ namespace PsicoAppAPI.Controllers
 
         // Resto del código...
 
-        private bool UserExists(string rut)
+        private bool UserExists(string id)
         {
-            return _context.Users.Any(e => e.Rut == rut);
+            return _context.Users.Any(e => e.Id == id);
         }
 
         private string GenerateJwtToken(string userId)
