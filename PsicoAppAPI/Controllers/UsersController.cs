@@ -51,19 +51,19 @@ namespace PsicoAppAPI.Controllers
             return Ok(new { Token = token }); // Return the JWT token in the response
         }
 
-        /// <summary>
-        /// Add a user in database context if user's id is not registered in the database
-        /// </summary>
-        /// <param name="user">User to add</param>
-        /// <returns>User saved</returns>
-        [HttpPost("sign-up")]
-        public async Task<ActionResult> AddUser(User user)
-        {
-            var userExists = _userRepository.UserExists(user);
-            if (userExists) return Conflict();
-            await _userRepository.AddUserAndSaveChanges(user);
-            return Ok(user);
-        }
+        // /// <summary>
+        // /// Add a user in database context if user's id is not registered in the database
+        // /// </summary>
+        // /// <param name="user">User to add</param>
+        // /// <returns>User saved</returns>
+        // [HttpPost("sign-up")]
+        // public async Task<ActionResult> AddUser(User user)
+        // {
+        //     var userExists = _userRepository.UserExists(user);
+        //     if (userExists) return Conflict();
+        //     await _userRepository.AddUserAndSaveChanges(user);
+        //     return Ok(user);
+        // }
 
         private string GenerateJwtToken(string userId)
         {
