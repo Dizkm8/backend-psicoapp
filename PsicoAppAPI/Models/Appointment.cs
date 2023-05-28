@@ -22,4 +22,10 @@ public class Appointment
     public string? specialisttId { get; set; }
     public string? specialistName { get; set; }  
     public Specialist Specialist { get; set; } = null!;
+
+    //N:1 Appointment status
+    public string? AppointmentStatusName { get; set; }
+
+    public int AppointmentStatusId{ get; set; }
+    public AppointmentStatus appointmentStatus { get; set; } = null!;
 }
