@@ -79,7 +79,7 @@ namespace PsicoAppAPI.Controllers
             }
         }
 
-        // Resto del código...
+        // more code...
 
         private bool UserExists(string id)
         {
