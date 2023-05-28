@@ -12,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.Repositories;
 
 namespace PsicoAppAPI.Controllers
 {
@@ -20,11 +21,13 @@ namespace PsicoAppAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly IUserRepository _userRepository;
         private readonly string _jwtSecret;
 
-        public UsersController(DataContext context, IConfiguration configuration)
+        public UsersController(DataContext context, IConfiguration configuration, IUserRepository userRepository)
         {
             _context = context;
+            _userRepository = userRepository;
             _jwtSecret = configuration.GetValue<string>("JwtSettings:Secret");
         }
 
@@ -35,8 +38,7 @@ namespace PsicoAppAPI.Controllers
         [HttpGet]
         public IActionResult GetUsers()
         {
-            var users = _context.Users.ToList();
-            return Ok(users);
+            return Ok(_userRepository.GetUsers());
         }
 
         /// <summary>

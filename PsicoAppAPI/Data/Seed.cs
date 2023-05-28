@@ -14,11 +14,11 @@ namespace PsicoAppAPI.Data
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            await SeedUsers(context, options);
-            await SeedFeedPosts(context, options);
-            await SeedForumPosts(context, options);
-            await SeedComments(context, options);
-            await SeedAppointments(context, options);
+            // await SeedUsers(context, options);
+            // await SeedFeedPosts(context, options);
+            // await SeedForumPosts(context, options);
+            // await SeedComments(context, options);
+            // await SeedAppointments(context, options);
             await context.SaveChangesAsync();
         }
         
