@@ -1,3 +1,4 @@
+using PsicoAppAPI.DTOs;
 using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.Repositories;
@@ -22,24 +23,25 @@ public interface IUserRepository
     /// <param name="password"></param>
     /// <returns></returns>
     public User? GetUserByCredentials(string id, string password);
+
     /// <summary>
-    /// Asynchronous add a user to the database
+    /// Asynchronous add a client to database and save the changes
     /// </summary>
-    /// <param name="user">User to add</param>
-    /// <returns>Added user</returns>
-    public Task<User?> AddUser(User? user);
-    
+    /// <param name="client">Client to add</param>
+    /// <returns>Added client</returns>
+    public Task<Client?> AddClientAndSaveChanges(Client client);
+
     /// <summary>
-    /// Asynchronous add a user to database and save the changes
+    /// Asynchronous add a specialist to database and save the changes
     /// </summary>
-    /// <param name="user">User to add</param>
-    /// <returns>Added user</returns>
-    public Task<User?> AddUserAndSaveChanges(User user);
-    
+    /// <param name="specialist;">Specialist to add</param>
+    /// <returns>Added specialist</returns>
+    public Task<Specialist?> AddSpecialistAndSavechanges(Specialist specialist);
+
     public User? UpdateUser(User user);
     public void DeleteUser(User user);
     public bool SaveChanges();
-    
+
     /// <summary>
     /// check if a user exists with the same Id
     /// </summary>

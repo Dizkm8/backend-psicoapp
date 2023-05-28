@@ -51,19 +51,39 @@ namespace PsicoAppAPI.Controllers
             return Ok(new { Token = token }); // Return the JWT token in the response
         }
 
-        // /// <summary>
-        // /// Add a user in database context if user's id is not registered in the database
-        // /// </summary>
-        // /// <param name="user">User to add</param>
-        // /// <returns>User saved</returns>
-        // [HttpPost("sign-up")]
-        // public async Task<ActionResult> AddUser(User user)
-        // {
-        //     var userExists = _userRepository.UserExists(user);
-        //     if (userExists) return Conflict();
-        //     await _userRepository.AddUserAndSaveChanges(user);
-        //     return Ok(user);
-        // }
+        /// <summary>
+        /// Add a user in database context if user's id is not registered in the database
+        /// </summary>
+        /// <param name="user">User to add</param>
+        /// <returns>User saved</returns>
+        [HttpPost("add-client-non-admin")]
+        public async Task<ActionResult> AddClient(RegisterClientDto clientDto)
+        {
+            var client = new Client()
+            {
+                Id = clientDto.Id,
+                Name = clientDto.Name,
+                FirstLastName = clientDto.FirstLastName,
+                SecondLastName = clientDto.SecondLastName,
+                Password = clientDto.Password,
+                Email = clientDto.Email,
+                Gender = clientDto.Gender,
+                IsEnabled = true,
+                Phone = clientDto.Phone,
+                IsAdministrator = false,
+            };
+            var userExists = _userRepository.UserExists(client);
+            if (userExists)
+            {
+                return Conflict(new
+                {
+                    message = "User already exists.",
+                    userId = clientDto.Id,
+                });
+            }
+            await _userRepository.AddClientAndSaveChanges(client);
+            return Ok(client);
+        }
 
         private string GenerateJwtToken(string userId)
         {

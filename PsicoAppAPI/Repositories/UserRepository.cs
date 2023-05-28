@@ -1,4 +1,5 @@
 using PsicoAppAPI.Data;
+using PsicoAppAPI.DTOs;
 using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.Repositories;
@@ -26,19 +27,19 @@ public class UserRepository : IUserRepository
             x.Password == password);
     }
 
-    public async Task<User?> AddUser(User user)
+    public async Task<Client?> AddClientAndSaveChanges(Client client)
     {
-        var addedUser = await _context.Users.AddAsync(user);
-        return addedUser.Entity;
-    }
-
-    public async Task<User?> AddUserAndSaveChanges(User user)
-    {
-        var addedUser = await _context.Users.AddAsync(user);
+        var addedClient = await _context.Clients.AddAsync(client);
         await _context.SaveChangesAsync();
-        return addedUser.Entity;
+        return addedClient.Entity;
     }
 
+    public async Task<Specialist?> AddSpecialistAndSavechanges(Specialist specialist)
+    {
+        var addedSpecialist = await _context.Specialists.AddAsync(specialist);
+        await _context.SaveChangesAsync();
+        return addedSpecialist.Entity;
+    }
 
     public User? UpdateUser(User user)
     {
@@ -52,7 +53,7 @@ public class UserRepository : IUserRepository
 
     public bool SaveChanges()
     {
-        throw new NotImplementedException();
+        return _context.SaveChanges() > 0;
     }
 
     public bool UserExists(string id)
