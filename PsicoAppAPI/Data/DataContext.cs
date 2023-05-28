@@ -19,6 +19,8 @@ namespace PsicoAppAPI.Data
         public DbSet<Appointment>? Appointments { get; set; }
         public DbSet<Comment>? Comments { get; set; }
 
+        public DbSet<AppointmentStatus>? appointmentStatuses { get; set; }
+
         public DataContext(DbContextOptions options) : base(options)
         {
         }

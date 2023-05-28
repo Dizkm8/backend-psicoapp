@@ -28,6 +28,14 @@ namespace PsicoAppAPI.Models
 
         public List<Comment> Comments { get; set; } = new();
 
+        
+
+        
+
+        
+
+
+
        
 
     }

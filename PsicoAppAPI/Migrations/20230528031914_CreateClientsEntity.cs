@@ -5,7 +5,7 @@
 namespace PsicoAppAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateClientEntity : Migration
+    public partial class CreateClientsEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
