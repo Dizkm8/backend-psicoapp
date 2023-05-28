@@ -14,7 +14,7 @@ public class UserRepository : IUserRepository
 
     public List<User>? GetUsers() => _context.Users?.ToList();
 
-    public User GetUserById(string id)
+    public User? GetUserById(string id)
     {
         throw new NotImplementedException();
     }
@@ -26,12 +26,21 @@ public class UserRepository : IUserRepository
             x.Password == password);
     }
 
-    public User AddUser(User user)
+    public async Task<User?> AddUser(User user)
     {
-        throw new NotImplementedException();
+        var addedUser = await _context.Users.AddAsync(user);
+        return addedUser.Entity;
     }
 
-    public User UpdateUser(User user)
+    public async Task<User?> AddUserAndSaveChanges(User user)
+    {
+        var addedUser = await _context.Users.AddAsync(user);
+        await _context.SaveChangesAsync();
+        return addedUser.Entity;
+    }
+
+
+    public User? UpdateUser(User user)
     {
         throw new NotImplementedException();
     }
@@ -48,8 +57,13 @@ public class UserRepository : IUserRepository
 
     public bool UserExists(string id)
     {
-        if(id == null) throw new ArgumentNullException(nameof(id));
-        if(_context.Users == null) throw new ArgumentNullException(nameof(_context.Users));
+        if (id == null) throw new ArgumentNullException(nameof(id));
         return _context.Users.Any(e => e.Id == id);
+    }
+
+    public bool UserExists(User? user)
+    {
+        if (user == null) return false;
+        return user.Id != null && UserExists(user.Id);
     }
 }

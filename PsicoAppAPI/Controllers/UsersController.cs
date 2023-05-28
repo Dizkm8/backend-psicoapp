@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using PsicoAppAPI.Data;
 using PsicoAppAPI.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -20,13 +14,11 @@ namespace PsicoAppAPI.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly DataContext _context;
         private readonly IUserRepository _userRepository;
         private readonly string _jwtSecret;
 
-        public UsersController(DataContext context, IConfiguration configuration, IUserRepository userRepository)
+        public UsersController(IConfiguration configuration, IUserRepository userRepository)
         {
-            _context = context;
             _userRepository = userRepository;
             _jwtSecret = configuration.GetValue<string>("JwtSettings:Secret");
         }
@@ -49,12 +41,10 @@ namespace PsicoAppAPI.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginModelDto loginModelDto)
         {
-            var user = _context.Users?.FirstOrDefault(x =>
-            x.Id == loginModelDto.Id &&
-            x.Password == loginModelDto.Password);
-            
+            var user = _userRepository.GetUserByCredentials(loginModelDto.Id, loginModelDto.Password);
+
             if (user == null) return Unauthorized(); // Maybe we could change Unauthorized to NotFound here?
-            if(user.Id == null) return NotFound();
+            if (user.Id == null) return NotFound();
 
             var token = GenerateJwtToken(user.Id);
 
@@ -67,25 +57,12 @@ namespace PsicoAppAPI.Controllers
         /// <param name="user">User to add</param>
         /// <returns>User saved</returns>
         [HttpPost("sign-up")]
-        public IActionResult AddUser(User user)
+        public async Task<ActionResult> AddUser(User user)
         {
-            if (!UserExists(user.Id))
-            {
-                _context.Users.Add(user);
-                _context.SaveChanges();
-                return Ok(user);
-            }
-            else
-            {
-                return Conflict();
-            }
-        }
-
-        // more code...
-
-        private bool UserExists(string id)
-        {
-            return _context.Users.Any(e => e.Id == id);
+            var userExists = _userRepository.UserExists(user);
+            if (userExists) return Conflict();
+            await _userRepository.AddUserAndSaveChanges(user);
+            return Ok(user);
         }
 
         private string GenerateJwtToken(string userId)
@@ -99,7 +76,8 @@ namespace PsicoAppAPI.Controllers
                     new Claim(ClaimTypes.Name, userId)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
