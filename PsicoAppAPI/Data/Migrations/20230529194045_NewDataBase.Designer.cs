@@ -8,11 +8,11 @@ using PsicoAppAPI.Data;
 
 #nullable disable
 
-namespace PsicoAppAPI.Migrations
+namespace PsicoAppAPI.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230528032055_CreateFeedPostsEntity")]
-    partial class CreateFeedPostsEntity
+    [Migration("20230529194045_NewDataBase")]
+    partial class NewDataBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,7 +75,44 @@ namespace PsicoAppAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("appointmentStatuses");
+                    b.ToTable("AppointmentStatuses");
+                });
+
+            modelBuilder.Entity("PsicoAppAPI.Models.Client", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FirstLastName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsAdministrator")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Phone")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SecondLastName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.Comment", b =>
@@ -181,27 +218,9 @@ namespace PsicoAppAPI.Migrations
                     b.ToTable("ForumPosts");
                 });
 
-            modelBuilder.Entity("PsicoAppAPI.Models.Speciality", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("specialities");
-                });
-
-            modelBuilder.Entity("PsicoAppAPI.Models.User", b =>
+            modelBuilder.Entity("PsicoAppAPI.Models.Specialist", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -228,38 +247,32 @@ namespace PsicoAppAPI.Migrations
                     b.Property<string>("SecondLastName")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("PsicoAppAPI.Models.Client", b =>
-                {
-                    b.HasBaseType("PsicoAppAPI.Models.User");
-
-                    b.Property<bool>("IsAdministrator")
-                        .HasColumnType("INTEGER");
-
-                    b.HasDiscriminator().HasValue("Client");
-                });
-
-            modelBuilder.Entity("PsicoAppAPI.Models.Specialist", b =>
-                {
-                    b.HasBaseType("PsicoAppAPI.Models.User");
-
                     b.Property<int>("SpecialityId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("SpecialityName")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("SpecialityName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("SpecialityId");
 
-                    b.HasDiscriminator().HasValue("Specialist");
+                    b.ToTable("Specialists");
+                });
+
+            modelBuilder.Entity("PsicoAppAPI.Models.Speciality", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Specialities");
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.Appointment", b =>
@@ -338,21 +351,16 @@ namespace PsicoAppAPI.Migrations
                     b.Navigation("Appointment");
                 });
 
-            modelBuilder.Entity("PsicoAppAPI.Models.ForumPost", b =>
-                {
-                    b.Navigation("Comments");
-                });
-
-            modelBuilder.Entity("PsicoAppAPI.Models.Speciality", b =>
-                {
-                    b.Navigation("Specialists");
-                });
-
             modelBuilder.Entity("PsicoAppAPI.Models.Client", b =>
                 {
                     b.Navigation("Appointment");
 
                     b.Navigation("FeedPosts");
+                });
+
+            modelBuilder.Entity("PsicoAppAPI.Models.ForumPost", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.Specialist", b =>
@@ -362,6 +370,11 @@ namespace PsicoAppAPI.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("FeedPosts");
+                });
+
+            modelBuilder.Entity("PsicoAppAPI.Models.Speciality", b =>
+                {
+                    b.Navigation("Specialists");
                 });
 #pragma warning restore 612, 618
         }

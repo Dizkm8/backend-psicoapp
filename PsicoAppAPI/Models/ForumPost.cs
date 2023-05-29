@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PsicoAppAPI.Models
+﻿namespace PsicoAppAPI.Models
 {
     public class ForumPost
     {
