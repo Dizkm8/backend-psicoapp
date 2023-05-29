@@ -17,11 +17,22 @@ namespace PsicoAppAPI.Data
             if (context == null) throw new ArgumentNullException(nameof(context));
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             await SeedClients(context, options);
+            await SeedSpecialities(context, options);
             // await SeedFeedPosts(context, options);
             // await SeedForumPosts(context, options);
             // await SeedComments(context, options);
             // await SeedAppointments(context, options);
             await context.SaveChangesAsync();
+        }
+
+        private static async Task SeedSpecialities(DataContext context, JsonSerializerOptions options)
+        {
+            var result = context.Specialities?.Any();
+            if (result == true || result == null) return;
+            var specialitiesData = File.ReadAllText("Data/Seeds/SpecialitiesData.json");
+            var specialitiesList = JsonSerializer.Deserialize<List<Speciality>>(specialitiesData, options);
+            if(specialitiesList == null) return;
+            await context.Specialities.AddRangeAsync(specialitiesList);
         }
 
         // /// <summary>

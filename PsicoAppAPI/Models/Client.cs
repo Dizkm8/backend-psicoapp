@@ -4,7 +4,7 @@ namespace PsicoAppAPI.Models
     {
         public bool IsAdministrator { get; set; }
 
-        #region RELATION_SHIPS
+        #region MODEL_RELATIONSHIPS
         public List<FeedPost> FeedPosts { get; set; } = new();
         public List<Appointment> Appointment { get; set; } = new();
         #endregion
