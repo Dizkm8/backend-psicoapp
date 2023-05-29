@@ -21,9 +21,32 @@ namespace PsicoAppAPI.Data
             await SeedSpecialists(context, options);
             await SeedFeedPosts(context, options);
             await SeedForumPosts(context, options);
+            await SeedComments(context, options);
             await context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Seed the database with the comments in the json file if the database is empty.
+        /// </summary>
+        /// <param name="context">Database context</param>
+        /// <param name="options">Options to deserialize json</param>
+        /// <returns>Database adding task</returns>
+        private static async Task SeedComments(DataContext context, JsonSerializerOptions options)
+        {
+            var result = context.Comments?.Any();
+            if (result == true || result == null) return;
+            var commentsData = File.ReadAllText("Data/Seeds/CommentsData.json");
+            var commentsList = JsonSerializer.Deserialize<List<Comment>>(commentsData, options);
+            if (commentsList == null) return;
+            await context.Comments.AddRangeAsync(commentsList);
+        }
+
+        /// <summary>
+        /// Seed the database with the forum posts in the json file if the database is empty.
+        /// </summary>
+        /// <param name="context">Database context</param>
+        /// <param name="options">Options to deserialize json</param>
+        /// <returns>Database adding task</returns>
         private static async Task SeedForumPosts(DataContext context, JsonSerializerOptions options)
         {
             var result = context.ForumPosts?.Any();
