@@ -18,7 +18,7 @@ public class Appointment
     public string? ClientId { get; set; }
     public Client Client { get; set; } = null!;
 
-    public string? SpecialisttId { get; set; }
+    public string? SpecialistId { get; set; }
     public Specialist Specialist { get; set; } = null!;
 
     public int AppointmentStatusId { get; set; }

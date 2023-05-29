@@ -11,7 +11,7 @@ using PsicoAppAPI.Data;
 namespace PsicoAppAPI.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230529225652_NewDataBase")]
+    [Migration("20230529225832_NewDataBase")]
     partial class NewDataBase
     {
         /// <inheritdoc />
@@ -36,9 +36,6 @@ namespace PsicoAppAPI.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SpecialistId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SpecialisttId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
