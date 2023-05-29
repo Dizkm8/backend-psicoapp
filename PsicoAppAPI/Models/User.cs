@@ -20,10 +20,5 @@ namespace PsicoAppAPI.Models
         public bool IsEnabled { get; set; }
         public int Phone { get; set; }
         public string? Password { get; set; }
-
-        
-
-
     }
 }
-//test
