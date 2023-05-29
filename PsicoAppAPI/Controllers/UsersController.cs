@@ -116,7 +116,6 @@ namespace PsicoAppAPI.Controllers
                 Phone = specialistDto.Phone,
                 Password = specialistDto.Password,
                 SpecialityId = specialistDto.SpecialityId,
-                SpecialityName = specialistDto.SpecialityName,
             };
             await _userRepository.AddSpecialistAndSavechanges(specialist);
             return Ok(specialistDto);

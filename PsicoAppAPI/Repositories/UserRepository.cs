@@ -13,7 +13,9 @@ public class UserRepository : IUserRepository
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    public List<User>? GetUsers() => _context.Users?.ToList();
+    public List<User>? GetUsers() =>
+        throw new NotImplementedException();
+    // _context.Users?.ToList();
 
     public User? GetUserById(string id)
     {
@@ -22,9 +24,10 @@ public class UserRepository : IUserRepository
 
     public User? GetUserByCredentials(string id, string password)
     {
-        return _context.Users?.FirstOrDefault(x =>
-            x.Id == id &&
-            x.Password == password);
+        throw new NotImplementedException();
+        // return _context.Users?.FirstOrDefault(x =>
+        //     x.Id == id &&
+        //     x.Password == password);
     }
 
     public async Task<Client?> AddClientAndSaveChanges(Client client)
@@ -36,9 +39,10 @@ public class UserRepository : IUserRepository
 
     public async Task<Specialist?> AddSpecialistAndSavechanges(Specialist specialist)
     {
-        var addedSpecialist = await _context.Specialists.AddAsync(specialist);
-        await _context.SaveChangesAsync();
-        return addedSpecialist.Entity;
+        throw new NotImplementedException();
+        // var addedSpecialist = await _context.Specialists.AddAsync(specialist);
+        // await _context.SaveChangesAsync();
+        // return addedSpecialist.Entity;
     }
 
     public User? UpdateUser(User user)
@@ -58,15 +62,17 @@ public class UserRepository : IUserRepository
 
     public async Task<bool> UserExists(string id)
     {
-        if (id == null) throw new ArgumentNullException(nameof(id));
-        var result = await _context.Users.FindAsync(id) != null;
-        return result;
+        throw new NotImplementedException();
+        // if (id == null) throw new ArgumentNullException(nameof(id));
+        // var result = await _context.Users.FindAsync(id) != null;
+        // return result;
     }
 
     public async Task<bool> UserExists(User? user)
     {
-        if (user == null) return false;
-        var result = user.Id != null && await UserExists(user.Id);
-        return result;
+        // if (user == null) return false;
+        // var result = user.Id != null && await UserExists(user.Id);
+        // return result;
+        throw new NotImplementedException();
     }
 }
