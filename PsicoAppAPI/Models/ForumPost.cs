@@ -8,7 +8,7 @@
         public string? Content { get; set; }
         public DateOnly? PublishedOn { get; set; }
         public string? Tag { get; set; }
-        public bool IsApproved { get; set; }
+
 
         #endregion
 

@@ -176,9 +176,6 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateOnly?>("PublishedOn")
                         .HasColumnType("TEXT");
 

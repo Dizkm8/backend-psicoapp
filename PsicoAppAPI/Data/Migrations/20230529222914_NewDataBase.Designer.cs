@@ -11,7 +11,7 @@ using PsicoAppAPI.Data;
 namespace PsicoAppAPI.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230529215749_NewDataBase")]
+    [Migration("20230529222914_NewDataBase")]
     partial class NewDataBase
     {
         /// <inheritdoc />
@@ -178,9 +178,6 @@ namespace PsicoAppAPI.Data.Migrations
 
                     b.Property<string>("Content")
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("INTEGER");
 
                     b.Property<DateOnly?>("PublishedOn")
                         .HasColumnType("TEXT");
