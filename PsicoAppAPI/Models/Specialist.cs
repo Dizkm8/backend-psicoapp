@@ -13,7 +13,7 @@ namespace PsicoAppAPI.Models
         //N:1 Speciality
         public int SpecialityId{ get; set; }
 
-        public int SpecialityName { get; set; }
+        public string SpecialityName { get; set; } = string.Empty;
         public Speciality Speciality{get;} = null!;
 
         //1:N FeedPost

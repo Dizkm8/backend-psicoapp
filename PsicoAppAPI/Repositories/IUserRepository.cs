@@ -47,11 +47,11 @@ public interface IUserRepository
     /// </summary>
     /// <param name="id">User Id to check</param>
     /// <returns>True if exists</returns>
-    public bool UserExists(string id);
+    public Task<bool> UserExists(string id);
     /// <summary>
     /// Check if a user exists in the database extracting their Id
     /// </summary>
     /// <param name="user">User to check</param>
     /// <returns>True if exists</returns>
-    public bool UserExists(User? user);
+    public Task<bool> UserExists(User? user);
 }

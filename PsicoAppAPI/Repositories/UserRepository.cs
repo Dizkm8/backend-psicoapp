@@ -56,15 +56,17 @@ public class UserRepository : IUserRepository
         return _context.SaveChanges() > 0;
     }
 
-    public bool UserExists(string id)
+    public async Task<bool> UserExists(string id)
     {
         if (id == null) throw new ArgumentNullException(nameof(id));
-        return _context.Users.Any(e => e.Id == id);
+        var result = await _context.Users.FindAsync(id) != null;
+        return result;
     }
 
-    public bool UserExists(User? user)
+    public async Task<bool> UserExists(User? user)
     {
         if (user == null) return false;
-        return user.Id != null && UserExists(user.Id);
+        var result = user.Id != null && await UserExists(user.Id);
+        return result;
     }
 }

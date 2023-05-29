@@ -59,6 +59,15 @@ namespace PsicoAppAPI.Controllers
         [HttpPost("add-client-non-admin")]
         public async Task<ActionResult> AddClient(RegisterClientDto clientDto)
         {
+            var userExists = await _userRepository.UserExists(clientDto.Id);
+            if (userExists)
+            {
+                return Conflict(new
+                {
+                    message = "User already exists.",
+                    userId = clientDto.Id,
+                });
+            }
             var client = new Client()
             {
                 Id = clientDto.Id,
@@ -72,18 +81,47 @@ namespace PsicoAppAPI.Controllers
                 Phone = clientDto.Phone,
                 IsAdministrator = false,
             };
-            var userExists = _userRepository.UserExists(client);
+            await _userRepository.AddClientAndSaveChanges(client);
+            return Ok(clientDto);
+        }
+
+        [HttpPost("add-specialist")]
+        public async Task<ActionResult> CreateSpecialist(RegisterSpecialistDto specialistDto)
+        {
+            // // Check if the specified SpecialityId exists
+            // var existingSpeciality = await _userRepository.GetUserById(specialistDto.SpecialityId);
+            // if (existingSpeciality == null)
+            // {
+            //     return BadRequest("Invalid SpecialityId. Please provide a valid SpecialityId.");
+            // }
+            var userExists = await _userRepository.UserExists(specialistDto.Id);
             if (userExists)
             {
                 return Conflict(new
                 {
                     message = "User already exists.",
-                    userId = clientDto.Id,
+                    userId = specialistDto.Id,
                 });
             }
-            await _userRepository.AddClientAndSaveChanges(client);
-            return Ok(client);
+
+            // Map the properties from the DTO to the Specialist entity
+            var specialist = new Specialist
+            {
+                Name = specialistDto.Name,
+                FirstLastName = specialistDto.FirstLastName,
+                SecondLastName = specialistDto.SecondLastName,
+                Id = specialistDto.Id,
+                Email = specialistDto.Email,
+                Gender = specialistDto.Gender,
+                Phone = specialistDto.Phone,
+                Password = specialistDto.Password,
+                SpecialityId = specialistDto.SpecialityId,
+                SpecialityName = specialistDto.SpecialityName,
+            };
+            await _userRepository.AddSpecialistAndSavechanges(specialist);
+            return Ok(specialistDto);
         }
+
 
         private string GenerateJwtToken(string userId)
         {
