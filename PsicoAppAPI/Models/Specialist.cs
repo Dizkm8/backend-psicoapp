@@ -2,37 +2,25 @@ namespace PsicoAppAPI.Models
 {
     public class Specialist : User
     {
-        //relationships
-
-        //N:1 Speciality
-        public int SpecialityId{ get; set; }
-
-        public string SpecialityName { get; set; } = string.Empty;
-        public Speciality Speciality{get;} = null!;
-
-        //1:N FeedPost
-
-        public List<FeedPost> FeedPosts { get; set; } = new();
-
-        //1:N FeedPost
-
-        public List<Appointment> Appointment { get; set; } = new();
-
-        //1:N FeedPost
-
-        public List<Comment> Comments { get; set; } = new();
-
-        
-
-        
-
-        
+        #region MODEL_RELATIONSHIPS
 
 
+        #region MANY_TO_ONE_RELATIONSHIP
+        public int SpecialityId { get; set; }
+        public Speciality Speciality { get; set; } = null!;
 
-       
+        #endregion
 
+
+        #region ONE_TO_MANY_RELATIONSHIPS
+
+        public List<FeedPost> FeedPosts { get; } = new();
+        public List<Appointment> Appointment { get; } = new();
+        public List<Comment> Comments { get; } = new();
+
+        #endregion
+
+
+        #endregion
     }
-
-    
 }

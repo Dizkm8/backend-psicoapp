@@ -2,16 +2,21 @@ namespace PsicoAppAPI.Models
 {
     public class FeedPost
     {
+        #region CLASS_ATTRIBUTES
+
         public int Id { get; set; }
         public string? Title { get; set; }
         public string? Content { get; set; }
-        public DateOnly? OnPublished { get; set; }
+        public DateOnly? PublishedOn { get; set; }
         public string? Tag { get; set; }
 
-        //Relationships
-        //N:1 Specialist
+        #endregion
+        
+
+        #region MANY_TO_ONE_RELATIONSHIP
         public string? SpecialistId { get; set; }
-        public string? SpecialistName { get; set; }
         public Specialist Specialist { get; set; } = null!;
+
+        #endregion
     }
 }

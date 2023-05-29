@@ -4,6 +4,8 @@ namespace PsicoAppAPI.Models
 {
     public abstract class User
     {
+        #region CLASS_ATTRIBUTES
+        
         [Key]
         public string? Id { get; set; }
         public string? Name { get; set; }
@@ -14,5 +16,7 @@ namespace PsicoAppAPI.Models
         public bool IsEnabled { get; set; }
         public int Phone { get; set; }
         public string? Password { get; set; }
+
+        #endregion
     }
 }

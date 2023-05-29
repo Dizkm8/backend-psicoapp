@@ -2,6 +2,7 @@
 {
     public class ForumPost
     {
+        #region CLASS_ATTRIBUTES
         public int Id { get; set; }
         public string? Title { get; set; }
         public string? Content { get; set; }
@@ -9,17 +10,28 @@
         public string? Tag { get; set; }
         public bool IsApproved { get; set; }
 
-
-        //Relationships
-        //N:1 Client
-         public string? ClientId { get; set; }
-         public string? ClientName { get; set; }
-         public Client Client { get; set; } = null!;
-
-        //1:N Comments
-          public List<Comment> Comments { get; set; } = new();
+        #endregion
 
 
+        #region MODEL_RELATIONSHIPS
+
+
+        #region MANY_TO_ONE_RELATIONSHIP
+
+        public string ClientId { get; set; } = null!;
+        public Client Client { get; set; } = null!;
+
+        #endregion
+
+
+        #region ONE_TO_MANY_RELATIONSHIP
+
+        public List<Comment> Comments { get; set; } = new();
+
+        #endregion
         
+
+        #endregion
+
     }
 }

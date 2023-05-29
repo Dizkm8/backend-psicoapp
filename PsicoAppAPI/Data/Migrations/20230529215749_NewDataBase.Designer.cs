@@ -11,7 +11,7 @@ using PsicoAppAPI.Data;
 namespace PsicoAppAPI.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230529194045_NewDataBase")]
+    [Migration("20230529215749_NewDataBase")]
     partial class NewDataBase
     {
         /// <inheritdoc />
@@ -32,26 +32,17 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Property<int>("AppointmentStatusId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("AppointmentStatusName")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ClientId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ClientName")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SpecialistId")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("SpecialisttId")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("specialistName")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("specialisttId")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -127,16 +118,10 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Property<int>("ForumPostId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ForumPostTitle")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("PostId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SpecialistId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SpecialistName")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -160,13 +145,10 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateOnly?>("OnPublished")
+                    b.Property<DateOnly?>("PublishedOn")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SpecialistId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SpecialistName")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Tag")
@@ -191,9 +173,7 @@ namespace PsicoAppAPI.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ClientId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ClientName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Content")
@@ -250,10 +230,6 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Property<int>("SpecialityId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("SpecialityName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("SpecialityId");
@@ -277,7 +253,7 @@ namespace PsicoAppAPI.Data.Migrations
 
             modelBuilder.Entity("PsicoAppAPI.Models.Appointment", b =>
                 {
-                    b.HasOne("PsicoAppAPI.Models.AppointmentStatus", "appointmentStatus")
+                    b.HasOne("PsicoAppAPI.Models.AppointmentStatus", "AppointmentStatus")
                         .WithMany("Appointment")
                         .HasForeignKey("AppointmentStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -291,11 +267,11 @@ namespace PsicoAppAPI.Data.Migrations
                         .WithMany("Appointment")
                         .HasForeignKey("SpecialistId");
 
+                    b.Navigation("AppointmentStatus");
+
                     b.Navigation("Client");
 
                     b.Navigation("Specialist");
-
-                    b.Navigation("appointmentStatus");
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.Comment", b =>
@@ -306,13 +282,13 @@ namespace PsicoAppAPI.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PsicoAppAPI.Models.Specialist", "specialist")
+                    b.HasOne("PsicoAppAPI.Models.Specialist", "Specialist")
                         .WithMany("Comments")
                         .HasForeignKey("SpecialistId");
 
                     b.Navigation("ForumPost");
 
-                    b.Navigation("specialist");
+                    b.Navigation("Specialist");
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.FeedPost", b =>
@@ -332,18 +308,22 @@ namespace PsicoAppAPI.Data.Migrations
                 {
                     b.HasOne("PsicoAppAPI.Models.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Client");
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.Specialist", b =>
                 {
-                    b.HasOne("PsicoAppAPI.Models.Speciality", null)
+                    b.HasOne("PsicoAppAPI.Models.Speciality", "Speciality")
                         .WithMany("Specialists")
                         .HasForeignKey("SpecialityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Speciality");
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.AppointmentStatus", b =>

@@ -4,28 +4,26 @@ namespace PsicoAppAPI.Models;
 
 public class Appointment
 {
+    #region CLASS_ATTRIBUTES
+
     [Key]
     public int Id { get; set; }
     public DateTime AppointmentDate { get; set; }
     public int Status { get; set; }
-    
 
-    //Relationships
+    #endregion
 
 
-    //N:1 Client
+    #region ONE_TO_MANY_RELATIONSHIPS
+
     public string? ClientId { get; set; }
-    public string? ClientName { get; set; }
     public Client Client { get; set; } = null!;
 
-     //N:1 Specialist
-    public string? specialisttId { get; set; }
-    public string? specialistName { get; set; }  
+    public string? SpecialisttId { get; set; }
     public Specialist Specialist { get; set; } = null!;
 
-    //N:1 Appointment status
-    public string? AppointmentStatusName { get; set; }
+    public int AppointmentStatusId { get; set; }
+    public AppointmentStatus AppointmentStatus { get; set; } = null!;
 
-    public int AppointmentStatusId{ get; set; }
-    public AppointmentStatus appointmentStatus { get; set; } = null!;
+    #endregion
 }

@@ -2,11 +2,18 @@ namespace PsicoAppAPI.Models
 {
     public class Client : User
     {
+        #region CLASS_ATTRIBUTES
+        
         public bool IsAdministrator { get; set; }
 
-        #region MODEL_RELATIONSHIPS
-        public List<FeedPost> FeedPosts { get; set; } = new();
-        public List<Appointment> Appointment { get; set; } = new();
+        #endregion
+
+
+        #region ONE_TO_MANY_RELATIONSHIPS
+        
+        public List<FeedPost> FeedPosts { get; } = new();
+        public List<Appointment> Appointment { get; } = new();
+
         #endregion
     }
 }

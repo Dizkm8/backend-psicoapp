@@ -68,8 +68,7 @@ namespace PsicoAppAPI.Data.Migrations
                     PublishedOn = table.Column<DateOnly>(type: "TEXT", nullable: true),
                     Tag = table.Column<string>(type: "TEXT", nullable: true),
                     IsApproved = table.Column<bool>(type: "INTEGER", nullable: false),
-                    ClientId = table.Column<string>(type: "TEXT", nullable: true),
-                    ClientName = table.Column<string>(type: "TEXT", nullable: true)
+                    ClientId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -78,7 +77,8 @@ namespace PsicoAppAPI.Data.Migrations
                         name: "FK_ForumPosts_Clients_ClientId",
                         column: x => x.ClientId,
                         principalTable: "Clients",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,7 +87,6 @@ namespace PsicoAppAPI.Data.Migrations
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     SpecialityId = table.Column<int>(type: "INTEGER", nullable: false),
-                    SpecialityName = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     FirstLastName = table.Column<string>(type: "TEXT", nullable: true),
                     SecondLastName = table.Column<string>(type: "TEXT", nullable: true),
@@ -117,11 +116,8 @@ namespace PsicoAppAPI.Data.Migrations
                     AppointmentDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Status = table.Column<int>(type: "INTEGER", nullable: false),
                     ClientId = table.Column<string>(type: "TEXT", nullable: true),
-                    ClientName = table.Column<string>(type: "TEXT", nullable: true),
-                    specialisttId = table.Column<string>(type: "TEXT", nullable: true),
-                    specialistName = table.Column<string>(type: "TEXT", nullable: true),
+                    SpecialisttId = table.Column<string>(type: "TEXT", nullable: true),
                     SpecialistId = table.Column<string>(type: "TEXT", nullable: true),
-                    AppointmentStatusName = table.Column<string>(type: "TEXT", nullable: true),
                     AppointmentStatusId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -154,9 +150,7 @@ namespace PsicoAppAPI.Data.Migrations
                     Body = table.Column<string>(type: "TEXT", nullable: true),
                     PostId = table.Column<int>(type: "INTEGER", nullable: false),
                     SpecialistId = table.Column<string>(type: "TEXT", nullable: true),
-                    SpecialistName = table.Column<string>(type: "TEXT", nullable: true),
-                    ForumPostId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ForumPostTitle = table.Column<int>(type: "INTEGER", nullable: false)
+                    ForumPostId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -182,10 +176,9 @@ namespace PsicoAppAPI.Data.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Title = table.Column<string>(type: "TEXT", nullable: true),
                     Content = table.Column<string>(type: "TEXT", nullable: true),
-                    OnPublished = table.Column<DateOnly>(type: "TEXT", nullable: true),
+                    PublishedOn = table.Column<DateOnly>(type: "TEXT", nullable: true),
                     Tag = table.Column<string>(type: "TEXT", nullable: true),
                     SpecialistId = table.Column<string>(type: "TEXT", nullable: true),
-                    SpecialistName = table.Column<string>(type: "TEXT", nullable: true),
                     ClientId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
