@@ -9,7 +9,6 @@ public class Appointment
     [Key]
     public int Id { get; set; }
     public DateTime AppointmentDate { get; set; }
-    public int Status { get; set; }
 
     #endregion
 

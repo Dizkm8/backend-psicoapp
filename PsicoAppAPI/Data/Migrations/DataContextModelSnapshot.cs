@@ -38,9 +38,6 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Property<string>("SpecialisttId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AppointmentStatusId");

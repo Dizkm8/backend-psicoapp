@@ -113,7 +113,6 @@ namespace PsicoAppAPI.Data.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     AppointmentDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Status = table.Column<int>(type: "INTEGER", nullable: false),
                     ClientId = table.Column<string>(type: "TEXT", nullable: true),
                     SpecialisttId = table.Column<string>(type: "TEXT", nullable: true),
                     SpecialistId = table.Column<string>(type: "TEXT", nullable: true),
