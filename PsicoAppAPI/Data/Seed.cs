@@ -22,7 +22,24 @@ namespace PsicoAppAPI.Data
             await SeedFeedPosts(context, options);
             await SeedForumPosts(context, options);
             await SeedComments(context, options);
+            await SeedAppointmentsStatus(context, options);
             await context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Seed the database with the appointments status in the json file if the database is empty.
+        /// </summary>
+        /// <param name="context">Database context</param>
+        /// <param name="options">Options to deserialize json</param>
+        /// <returns>Database adding task</returns>
+        private static async Task SeedAppointmentsStatus(DataContext context, JsonSerializerOptions options)
+        {
+            var result = context.AppointmentStatuses?.Any();
+            if (result == true || result == null) return;
+            var appointmentsStatusData = File.ReadAllText("Data/Seeds/AppointmentsStatusData.json");
+            var appointmentsStatusList = JsonSerializer.Deserialize<List<AppointmentStatus>>(appointmentsStatusData, options);
+            if (appointmentsStatusList == null) return;
+            await context.AppointmentStatuses.AddRangeAsync(appointmentsStatusList);
         }
 
         /// <summary>
