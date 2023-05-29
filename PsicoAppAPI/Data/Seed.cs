@@ -19,11 +19,19 @@ namespace PsicoAppAPI.Data
             await SeedClients(context, options);
             await SeedSpecialities(context, options);
             await SeedSpecialists(context, options);
-            // await SeedFeedPosts(context, options);
-            // await SeedForumPosts(context, options);
-            // await SeedComments(context, options);
-            // await SeedAppointments(context, options);
+            await SeedFeedPosts(context, options);
+            
             await context.SaveChangesAsync();
+        }
+
+        private static async Task SeedFeedPosts(DataContext context, JsonSerializerOptions options)
+        {
+            var result = context.FeedPosts?.Any();
+            if (result == true || result == null) return;
+            var feedPostsData = File.ReadAllText("Data/Seeds/FeedPostsData.json");
+            var feedPostsList = JsonSerializer.Deserialize<List<FeedPost>>(feedPostsData, options);
+            if (feedPostsList == null) return;
+            await context.FeedPosts.AddRangeAsync(feedPostsList);
         }
 
         /// <summary>
