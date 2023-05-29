@@ -147,7 +147,6 @@ namespace PsicoAppAPI.Data.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Body = table.Column<string>(type: "TEXT", nullable: true),
-                    PostId = table.Column<int>(type: "INTEGER", nullable: false),
                     SpecialistId = table.Column<string>(type: "TEXT", nullable: true),
                     ForumPostId = table.Column<int>(type: "INTEGER", nullable: false)
                 },

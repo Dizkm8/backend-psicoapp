@@ -115,9 +115,6 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Property<int>("ForumPostId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("PostId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("SpecialistId")
                         .HasColumnType("TEXT");
 
