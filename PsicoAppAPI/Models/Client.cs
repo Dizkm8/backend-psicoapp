@@ -1,25 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
-
 namespace PsicoAppAPI.Models
-{    public class Client : User{
+{
+    public class Client : User
+    {
+        #region CLASS_ATTRIBUTES
+        
         public bool IsAdministrator { get; set; }
 
+        #endregion
 
-        //Relationships
 
-        //1:N FeedPost
-        public List<FeedPost> FeedPosts { get; set; } = new();
-        //1:N Appointment
-        public List<Appointment> Appointment { get; set; } = new();
-
+        #region ONE_TO_MANY_RELATIONSHIPS
         
+        public List<FeedPost> FeedPosts { get; } = new();
+        public List<Appointment> Appointment { get; } = new();
+
+        #endregion
     }
-
-
-    
 }

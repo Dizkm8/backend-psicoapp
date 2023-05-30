@@ -3,6 +3,10 @@ using PsicoAppAPI.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using PsicoAppAPI.Repositories;
+using PsicoAppAPI.Services.Interfaces;
+using PsicoAppAPI.Services;
+using PsicoAppAPI.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +16,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+//Inject ClientRepository to the container as the implementation of IClientRepository
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IClientService, ClientService>();
 // Add database context with the configuration in appsettings.json
 builder.Services.AddDbContext<DataContext>(opt =>
 {
@@ -43,6 +49,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors(opt =>
 {
     opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:3000");
+    opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:5000");
 });
 
 app.UseHttpsRedirection();
