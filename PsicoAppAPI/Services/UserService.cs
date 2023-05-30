@@ -42,8 +42,12 @@ namespace PsicoAppAPI.Services
             return user;
         }
 
-        private string GenerateJwtToken(string userId)
+        private string? GenerateJwtToken(string userId)
         {
+            //Temporary stuff to future use role getter method
+            var user = _userRepository.GetUserById(userId).Result;
+            if (user == null) return null;
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
