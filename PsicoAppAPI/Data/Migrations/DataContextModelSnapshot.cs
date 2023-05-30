@@ -93,17 +93,12 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Property<int>("ForumPostId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("SpecialistId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ForumPostId");
-
-                    b.HasIndex("SpecialistId");
 
                     b.HasIndex("UserId");
 
@@ -279,10 +274,6 @@ namespace PsicoAppAPI.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PsicoAppAPI.Models.Specialist", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("SpecialistId");
-
                     b.HasOne("PsicoAppAPI.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -333,11 +324,6 @@ namespace PsicoAppAPI.Data.Migrations
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.ForumPost", b =>
-                {
-                    b.Navigation("Comments");
-                });
-
-            modelBuilder.Entity("PsicoAppAPI.Models.Specialist", b =>
                 {
                     b.Navigation("Comments");
                 });

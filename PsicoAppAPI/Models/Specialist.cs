@@ -24,12 +24,6 @@ namespace PsicoAppAPI.Models
         public Speciality Speciality { get; set; } = null!;
         #endregion
 
-
-        #region ONE_TO_MANY_RELATIONSHIPS
-        public List<Comment> Comments { get; } = new();
-        #endregion
-
-
         #endregion
     }
 }
