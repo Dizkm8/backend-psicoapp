@@ -12,7 +12,6 @@ namespace PsicoAppAPI.Controllers
         public ClientController(IClientService clientService)
         {
             _clientService = clientService;
-
         }
 
         /// <summary>
@@ -31,7 +30,7 @@ namespace PsicoAppAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { error = "Token generation failed" });
             }
-            return Ok(new { Token = token }); // Return the JWT token in the response
+            return Ok(new { Token = token });
         }
     }
 }
