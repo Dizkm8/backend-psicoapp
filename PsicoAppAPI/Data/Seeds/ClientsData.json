@@ -4,19 +4,19 @@
         "UserId" : "33160943"
     },
     {
-        "IsAdministrator" : true,
+        "IsAdministrator" : false,
         "UserId" : "46872940"
     },
     {
-        "IsAdministrator" : true,
+        "IsAdministrator" : false,
         "UserId" : "66726305"
     },
     {
-        "IsAdministrator" : true,
+        "IsAdministrator" : false,
         "UserId" : "59792563"
     },
     {
-        "IsAdministrator" : true,
+        "IsAdministrator" : false,
         "UserId" : "02343479"
     }
 ]
