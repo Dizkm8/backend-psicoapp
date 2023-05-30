@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace PsicoAppAPI.Models
 {
+    [Keyless]
     public class Specialist
     {
         #region MODEL_RELATIONSHIPS

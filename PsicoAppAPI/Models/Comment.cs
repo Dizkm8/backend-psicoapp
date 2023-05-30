@@ -14,8 +14,8 @@ public class Comment
 
 
     #region  MANY_TO_ONE_RELATIONSHIP
-    public string? SpecialistId { get; set; }
-    public User Specialist { get; set; } = null!;
+    public string? UserId { get; set; }
+    public User User { get; set; } = null!;
 
     public int ForumPostId { get; set; }
     public ForumPost ForumPost { get; set; } = null!;

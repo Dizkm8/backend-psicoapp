@@ -25,26 +25,6 @@ namespace PsicoAppAPI.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Clients",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    IsAdministrator = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    FirstLastName = table.Column<string>(type: "TEXT", nullable: true),
-                    SecondLastName = table.Column<string>(type: "TEXT", nullable: true),
-                    Email = table.Column<string>(type: "TEXT", nullable: true),
-                    Gender = table.Column<string>(type: "TEXT", nullable: true),
-                    IsEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Phone = table.Column<int>(type: "INTEGER", nullable: false),
-                    Password = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clients", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Specialities",
                 columns: table => new
                 {
@@ -58,34 +38,10 @@ namespace PsicoAppAPI.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ForumPosts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", nullable: true),
-                    Content = table.Column<string>(type: "TEXT", nullable: true),
-                    PublishedOn = table.Column<DateOnly>(type: "TEXT", nullable: true),
-                    Tag = table.Column<string>(type: "TEXT", nullable: true),
-                    ClientId = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ForumPosts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ForumPosts_Clients_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Clients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Specialists",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
-                    SpecialityId = table.Column<int>(type: "INTEGER", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     FirstLastName = table.Column<string>(type: "TEXT", nullable: true),
                     SecondLastName = table.Column<string>(type: "TEXT", nullable: true),
@@ -97,13 +53,7 @@ namespace PsicoAppAPI.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Specialists", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Specialists_Specialities_SpecialityId",
-                        column: x => x.SpecialityId,
-                        principalTable: "Specialities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_User", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -113,8 +63,8 @@ namespace PsicoAppAPI.Data.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     AppointmentDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ClientId = table.Column<string>(type: "TEXT", nullable: true),
-                    SpecialistId = table.Column<string>(type: "TEXT", nullable: true),
+                    RequestingUserId = table.Column<string>(type: "TEXT", nullable: false),
+                    RequestedUserId = table.Column<string>(type: "TEXT", nullable: false),
                     AppointmentStatusId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -127,40 +77,32 @@ namespace PsicoAppAPI.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Appointments_Clients_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Clients",
-                        principalColumn: "Id");
+                        name: "FK_Appointments_User_RequestedUserId",
+                        column: x => x.RequestedUserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Appointments_Specialists_SpecialistId",
-                        column: x => x.SpecialistId,
-                        principalTable: "Specialists",
-                        principalColumn: "Id");
+                        name: "FK_Appointments_User_RequestingUserId",
+                        column: x => x.RequestingUserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comments",
+                name: "Clients",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Body = table.Column<string>(type: "TEXT", nullable: true),
-                    SpecialistId = table.Column<string>(type: "TEXT", nullable: true),
-                    ForumPostId = table.Column<int>(type: "INTEGER", nullable: false)
+                    IsAdministrator = table.Column<bool>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_ForumPosts_ForumPostId",
-                        column: x => x.ForumPostId,
-                        principalTable: "ForumPosts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Comments_Specialists_SpecialistId",
-                        column: x => x.SpecialistId,
-                        principalTable: "Specialists",
+                        name: "FK_Clients_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id");
                 });
 
@@ -174,21 +116,85 @@ namespace PsicoAppAPI.Data.Migrations
                     Content = table.Column<string>(type: "TEXT", nullable: true),
                     PublishedOn = table.Column<DateOnly>(type: "TEXT", nullable: true),
                     Tag = table.Column<string>(type: "TEXT", nullable: true),
-                    SpecialistId = table.Column<string>(type: "TEXT", nullable: true),
-                    ClientId = table.Column<string>(type: "TEXT", nullable: true)
+                    UserId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FeedPosts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FeedPosts_Clients_ClientId",
-                        column: x => x.ClientId,
-                        principalTable: "Clients",
+                        name: "FK_FeedPosts_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ForumPosts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
+                    Content = table.Column<string>(type: "TEXT", nullable: true),
+                    PublishedOn = table.Column<DateOnly>(type: "TEXT", nullable: true),
+                    Tag = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ForumPosts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FeedPosts_Specialists_SpecialistId",
-                        column: x => x.SpecialistId,
-                        principalTable: "Specialists",
+                        name: "FK_ForumPosts_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Specialists",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "TEXT", nullable: true),
+                    SpecialityId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.ForeignKey(
+                        name: "FK_Specialists_Specialities_SpecialityId",
+                        column: x => x.SpecialityId,
+                        principalTable: "Specialities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Specialists_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Content = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: true),
+                    ForumPostId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_ForumPosts_ForumPostId",
+                        column: x => x.ForumPostId,
+                        principalTable: "ForumPosts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id");
                 });
 
@@ -198,14 +204,19 @@ namespace PsicoAppAPI.Data.Migrations
                 column: "AppointmentStatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Appointments_ClientId",
+                name: "IX_Appointments_RequestedUserId",
                 table: "Appointments",
-                column: "ClientId");
+                column: "RequestedUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Appointments_SpecialistId",
+                name: "IX_Appointments_RequestingUserId",
                 table: "Appointments",
-                column: "SpecialistId");
+                column: "RequestingUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Clients_UserId",
+                table: "Clients",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_ForumPostId",
@@ -213,29 +224,29 @@ namespace PsicoAppAPI.Data.Migrations
                 column: "ForumPostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_SpecialistId",
+                name: "IX_Comments_UserId",
                 table: "Comments",
-                column: "SpecialistId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedPosts_ClientId",
+                name: "IX_FeedPosts_UserId",
                 table: "FeedPosts",
-                column: "ClientId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedPosts_SpecialistId",
-                table: "FeedPosts",
-                column: "SpecialistId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ForumPosts_ClientId",
+                name: "IX_ForumPosts_UserId",
                 table: "ForumPosts",
-                column: "ClientId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Specialists_SpecialityId",
                 table: "Specialists",
                 column: "SpecialityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Specialists_UserId",
+                table: "Specialists",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -245,10 +256,16 @@ namespace PsicoAppAPI.Data.Migrations
                 name: "Appointments");
 
             migrationBuilder.DropTable(
+                name: "Clients");
+
+            migrationBuilder.DropTable(
                 name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "FeedPosts");
+
+            migrationBuilder.DropTable(
+                name: "Specialists");
 
             migrationBuilder.DropTable(
                 name: "AppointmentStatuses");
@@ -257,13 +274,10 @@ namespace PsicoAppAPI.Data.Migrations
                 name: "ForumPosts");
 
             migrationBuilder.DropTable(
-                name: "Specialists");
-
-            migrationBuilder.DropTable(
-                name: "Clients");
-
-            migrationBuilder.DropTable(
                 name: "Specialities");
+
+            migrationBuilder.DropTable(
+                name: "User");
         }
     }
 }

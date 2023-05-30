@@ -14,8 +14,8 @@ namespace PsicoAppAPI.Models
         
 
         #region MANY_TO_ONE_RELATIONSHIP
-        public string? SpecialistId { get; set; }
-        public User Specialist { get; set; } = null!;
+        public string? UserId { get; set; }
+        public User User { get; set; } = null!;
 
         #endregion
     }

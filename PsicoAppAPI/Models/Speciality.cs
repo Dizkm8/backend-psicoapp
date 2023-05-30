@@ -11,9 +11,9 @@ namespace PsicoAppAPI.Models
         #endregion
 
         
-        #region ONE_TO_MANY_RELATIONSHIPS
-        public List<Specialist> Specialists { get; set; } = new(); 
-        #endregion
+        // #region ONE_TO_MANY_RELATIONSHIPS
+        // public List<User> User { get; set; } = new(); 
+        // #endregion
         
     }    
 }

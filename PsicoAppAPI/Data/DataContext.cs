@@ -20,6 +20,24 @@ namespace PsicoAppAPI.Data
         public DataContext(DbContextOptions options) : base(options)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.RequestingUser)
+                .WithMany()
+                .HasForeignKey(a => a.RequestedUserId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Appointment>()
+                .HasOne(a => a.RequestedUser)
+                .WithMany()
+                .HasForeignKey(a => a.RequestedUserId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+            base.OnModelCreating(modelBuilder);
+        }
         #endregion
 
     }
