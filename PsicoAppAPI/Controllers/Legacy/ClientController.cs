@@ -7,12 +7,12 @@ namespace PsicoAppAPI.Controllers
 {
     public class ClientController : BaseApiController
     {
-        private readonly IClientService _clientService;
+        // private readonly IClientService _clientService;
 
-        public ClientController(IClientService clientService)
-        {
-            _clientService = clientService;
-        }
+        // public ClientController(IClientService clientService)
+        // {
+        //     _clientService = clientService;
+        // }
 
         // /// <summary>
         // /// Checks if the user exists in the database and if the entered password matches the one registered in the database
