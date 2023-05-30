@@ -215,7 +215,7 @@ namespace PsicoAppAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.Appointment", b =>

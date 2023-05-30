@@ -11,7 +11,7 @@ using PsicoAppAPI.Data;
 namespace PsicoAppAPI.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230530204104_NewDataBase")]
+    [Migration("20230530205728_NewDataBase")]
     partial class NewDataBase
     {
         /// <inheritdoc />
@@ -218,7 +218,7 @@ namespace PsicoAppAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.Appointment", b =>

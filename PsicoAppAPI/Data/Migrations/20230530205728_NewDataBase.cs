@@ -38,7 +38,7 @@ namespace PsicoAppAPI.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
+                name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
@@ -53,7 +53,7 @@ namespace PsicoAppAPI.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -77,15 +77,15 @@ namespace PsicoAppAPI.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Appointments_User_RequestedUserId",
+                        name: "FK_Appointments_Users_RequestedUserId",
                         column: x => x.RequestedUserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Appointments_User_RequestingUserId",
+                        name: "FK_Appointments_Users_RequestingUserId",
                         column: x => x.RequestingUserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -100,9 +100,9 @@ namespace PsicoAppAPI.Data.Migrations
                 constraints: table =>
                 {
                     table.ForeignKey(
-                        name: "FK_Clients_User_UserId",
+                        name: "FK_Clients_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -122,9 +122,9 @@ namespace PsicoAppAPI.Data.Migrations
                 {
                     table.PrimaryKey("PK_FeedPosts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FeedPosts_User_UserId",
+                        name: "FK_FeedPosts_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -144,9 +144,9 @@ namespace PsicoAppAPI.Data.Migrations
                 {
                     table.PrimaryKey("PK_ForumPosts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ForumPosts_User_UserId",
+                        name: "FK_ForumPosts_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -166,9 +166,9 @@ namespace PsicoAppAPI.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Specialists_User_UserId",
+                        name: "FK_Specialists_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -192,9 +192,9 @@ namespace PsicoAppAPI.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Comments_User_UserId",
+                        name: "FK_Comments_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id");
                 });
 
@@ -277,7 +277,7 @@ namespace PsicoAppAPI.Data.Migrations
                 name: "Specialities");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Users");
         }
     }
 }

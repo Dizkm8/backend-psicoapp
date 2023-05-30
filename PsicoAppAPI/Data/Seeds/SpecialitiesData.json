@@ -1,34 +1,26 @@
 [
     {
-        "Id": 1,
         "Name": "Speciality 1"
     },
     {
-        "Id": 2,
         "Name": "Speciality 2"
     },
     {
-        "Id": 3,
         "Name": "Speciality 3"
     },
     {
-        "Id": 4,
         "Name": "Speciality 4"
     },
     {
-        "Id": 5,
         "Name": "Speciality 5"
     },
     {
-        "Id": 6,
         "Name": "Speciality 6"
     },
     {
-        "Id": 7,
         "Name": "Speciality 7"
     },
     {
-        "Id": 8,
         "Name": "Speciality 8"
     }
 ]
