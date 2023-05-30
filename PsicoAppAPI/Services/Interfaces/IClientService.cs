@@ -5,8 +5,8 @@ namespace PsicoAppAPI.Services.Interfaces
 {
     public interface IClientService
     {
-        public Task<Client?> GetClient(LoginUserDto loginUserDto);
+        // public Task<Client?> GetClient(LoginUserDto loginUserDto);
 
-        public string? GenerateToken(string? id);
+        // public string? GenerateToken(string? id);
     }
 }

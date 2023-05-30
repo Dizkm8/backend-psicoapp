@@ -16,15 +16,43 @@ namespace PsicoAppAPI.Data
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            await SeedClients(context, options);
+            await CallEachSeeder(context, options);
+            await context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Centralize the call to each seeder method.
+        /// </summary>
+        /// <param name="context">Database context</param>
+        /// <param name="options">Options to deserialize json</param>
+        /// <returns>Database adding task</returns>
+        public static async Task CallEachSeeder(DataContext context, JsonSerializerOptions options)
+        {
+            await SeedAppointmentsStatus(context, options);
             await SeedSpecialities(context, options);
+            await SeedUsers(context, options);
+            await SeedClients(context, options);
             await SeedSpecialists(context, options);
             await SeedFeedPosts(context, options);
             await SeedForumPosts(context, options);
             await SeedComments(context, options);
-            await SeedAppointmentsStatus(context, options);
             await SeedAppointments(context, options);
-            await context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Seed the database with the clients in the json file if the database is empty.
+        /// </summary>
+        /// <param name="context"> Database Context </param>
+        /// <param name="options"> Options to Deserialize json </param>
+        /// <returns>Database adding Task</returns>
+        private static async Task SeedClients(DataContext context, JsonSerializerOptions options)
+        {
+            var result = context.Clients?.Any();
+            if (result == true || result == null) return;
+            var clientsData = File.ReadAllText("Data/Seeds/ClientsData.json");
+            var clientsList = JsonSerializer.Deserialize<List<Client>>(clientsData, options);
+            if (clientsList == null) return;
+            await context.Clients.AddRangeAsync(clientsList);
         }
 
         /// <summary>
@@ -133,20 +161,20 @@ namespace PsicoAppAPI.Data
             await context.Specialities.AddRangeAsync(specialitiesList);
         }
 
-        // /// <summary>
-        // /// Seed the database with the clients in the json file if the database is empty.
-        // /// </summary>
-        // /// <param name="context"> Database Context </param>
-        // /// <param name="options"> Options to Deserialize json </param>
-        // /// <returns>Database adding Task</returns>
-        private static async Task SeedClients(DataContext context, JsonSerializerOptions options)
+        /// <summary>
+        /// Seed the database with the users in the json file if the database is empty.
+        /// </summary>
+        /// <param name="context"> Database Context </param>
+        /// <param name="options"> Options to Deserialize json </param>
+        /// <returns>Database adding Task</returns>
+        private static async Task SeedUsers(DataContext context, JsonSerializerOptions options)
         {
             var result = context.Clients?.Any();
             if (result == true || result == null) return;
-            var clientData = File.ReadAllText("Data/Seeds/ClientsData.json");
-            var clientList = JsonSerializer.Deserialize<List<Client>>(clientData, options);
-            if (clientList == null) return;
-            await context.Clients.AddRangeAsync(clientList);
+            var userData = File.ReadAllText("Data/Seeds/UsersData.json");
+            var userList = JsonSerializer.Deserialize<List<User>>(userData, options);
+            if (userList == null) return;
+            await context.Users.AddRangeAsync(userList);
         }
 
         #endregion

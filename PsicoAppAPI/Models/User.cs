@@ -2,10 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PsicoAppAPI.Models
 {
-    public abstract class User
+    public class User
     {
         #region CLASS_ATTRIBUTES
-        
+
         [Key]
         public string? Id { get; set; }
         public string? Name { get; set; }
@@ -16,6 +16,13 @@ namespace PsicoAppAPI.Models
         public bool IsEnabled { get; set; }
         public int Phone { get; set; }
         public string? Password { get; set; }
+
+        #region ONE_TO_MANY_RELATIONSHIPS
+
+        public List<FeedPost> FeedPosts { get; } = new();
+        public List<Appointment> Appointment { get; } = new();
+
+        #endregion
 
         #endregion
     }
