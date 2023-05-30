@@ -16,6 +16,19 @@ namespace PsicoAppAPI.Data
         {
             if (context == null) throw new ArgumentNullException(nameof(context));
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            // Currently disable to avoid compilation errors
+            // await CallEachSeeder(context, options);
+            await context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Centralize the call to each seeder method.
+        /// </summary>
+        /// <param name="context">Database context</param>
+        /// <param name="options">Options to deserialize json</param>
+        /// <returns>Database adding task</returns>
+        public static async Task CallEachSeeder(DataContext context, JsonSerializerOptions options)
+        {
             await SeedClients(context, options);
             await SeedSpecialities(context, options);
             await SeedSpecialists(context, options);
@@ -24,7 +37,6 @@ namespace PsicoAppAPI.Data
             await SeedComments(context, options);
             await SeedAppointmentsStatus(context, options);
             await SeedAppointments(context, options);
-            await context.SaveChangesAsync();
         }
 
         /// <summary>

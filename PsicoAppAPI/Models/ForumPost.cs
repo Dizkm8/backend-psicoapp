@@ -18,8 +18,8 @@
 
         #region MANY_TO_ONE_RELATIONSHIP
 
-        public string ClientId { get; set; } = null!;
-        public Client Client { get; set; } = null!;
+        public string? ClientId { get; set; }
+        public User Client { get; set; } = null!;
 
         #endregion
 
