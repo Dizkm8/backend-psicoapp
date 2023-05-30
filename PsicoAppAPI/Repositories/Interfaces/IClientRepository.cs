@@ -10,14 +10,12 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// <param name="id">Client id</param>
         /// <returns>The client if it's found, null if not</returns>
         public Task<Client?> GetClientById(string id);
-
         /// <summary>
-        /// Asynchronously get a client by their credentials 
+        ///  Add a client to database
         /// </summary>
-        /// <param name="id">Client Id</param>
-        /// <param name="password">Client password</param>
-        /// <returns>The client if it's found, null if not</returns>
-        public Task<Client?> GetClientByCredentials(string id, string password);
+        /// <param name="client">Client to add</param>
+        /// <returns>True if could be added</returns>
+        public bool AddClient(Client client);
         /// <summary>
         /// Asynchronous add a client to database and save the changes
         /// </summary>
@@ -29,6 +27,11 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// </summary>
         /// <returns>True if any change was made</returns>
         public bool SaveChanges();
+        /// <summary>
+        /// Asynchronous save the changes in the database
+        /// </summary>
+        /// <returns>True if any change was made</returns>
+        public Task<bool> SaveChangesAsync();
         /// <summary>
         /// Check if a client exists in the database
         /// </summary>
