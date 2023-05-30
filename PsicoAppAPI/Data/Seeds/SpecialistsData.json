@@ -1,22 +1,22 @@
 [
     {
-        "Id" : "16652652",
+        "UserId" : "16652652",
         "SpecialityId" : 1
     },
     {
-        "Id" : "26240198",
+        "UserId" : "26240198",
         "SpecialityId" : 2
     },
     {
-        "Id" : "12648814",
+        "UserId" : "12648814",
         "SpecialityId" : 3
     },
     {
-        "Id" : "01397240",
+        "UserId" : "01397240",
         "SpecialityId" : 4
     },
     {
-        "Id" : "45585001",
+        "UserId" : "45585001",
         "SpecialityId" : 5
     }
 ]
