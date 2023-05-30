@@ -1,10 +1,15 @@
-using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace PsicoAppAPI.Models
 {
-    [Keyless]
     public class Specialist
     {
+        #region CLASS_ATTRIBUTES
+        [Key]
+        public int Id { get; set; }
+        #endregion
+        
+
         #region MODEL_RELATIONSHIPS
 
 

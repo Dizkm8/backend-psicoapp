@@ -1,11 +1,12 @@
-using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace PsicoAppAPI.Models
 {
-    [Keyless]
     public class Client
     {
         #region CLASS_ATTRIBUTES
+        [Key]
+        public int Id { get; set; }
         public bool IsAdministrator { get; set; }
         #endregion
 
