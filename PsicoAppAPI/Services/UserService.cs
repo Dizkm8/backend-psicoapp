@@ -1,6 +1,10 @@
+using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.Models;
@@ -9,13 +13,13 @@ using PsicoAppAPI.Services.Interfaces;
 
 namespace PsicoAppAPI.Services
 {
-    public class ClientService : IClientService
+    public class UserService : IUserService
     {
         private readonly string _jwtSecret;
-        private readonly IClientRepository _clientRepository;
-        public ClientService(IConfiguration configuration, IClientRepository clientRepository)
+        private readonly IUserRepository _userRepository;
+        public UserService(IConfiguration configuration, IUserRepository userRepository)
         {
-            _clientRepository = clientRepository ?? throw new ArgumentNullException(nameof(clientRepository));
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             var token = configuration.GetValue<string>("JwtSettings:Secret") ??
                 throw new ArgumentException("JwtSettings:Secret is null");
             _jwtSecret = token;
@@ -31,15 +35,19 @@ namespace PsicoAppAPI.Services
         }
 
 
-        public async Task<Client?> GetClient(LoginUserDto loginUserDto)
+        public async Task<User?> GetUser(LoginUserDto loginUserDto)
         {
             if (string.IsNullOrWhiteSpace(loginUserDto.Id) || string.IsNullOrWhiteSpace(loginUserDto.Password)) return null;
-            var client = await _clientRepository.GetClientByCredentials(loginUserDto.Id, loginUserDto.Password);
-            return client;
+            var user = await _userRepository.GetUserByCredentials(loginUserDto.Id, loginUserDto.Password);
+            return user;
         }
 
-        private string GenerateJwtToken(string userId)
+        private string? GenerateJwtToken(string userId)
         {
+            //Temporary stuff to future use role getter method
+            var user = _userRepository.GetUserById(userId).Result;
+            if (user == null) return null;
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -47,7 +55,7 @@ namespace PsicoAppAPI.Services
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, userId),
-                    new Claim(ClaimTypes.Role, "Client")
+                    new Claim(ClaimTypes.Role, "CLIENT") // NEED TO BE CHANGED!! TEMPORARY HARDCODED
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),

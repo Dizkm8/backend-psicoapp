@@ -3,9 +3,9 @@ using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.Services.Interfaces
 {
-    public interface IClientService
+    public interface IUserService
     {
-        public Task<Client?> GetClient(LoginUserDto loginUserDto);
+        public Task<User?> GetUser(LoginUserDto loginUserDto);
 
         public string? GenerateToken(string? id);
     }

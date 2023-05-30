@@ -8,14 +8,14 @@ public class Comment
     
     [Key]
     public int Id { get; set; }
-    public string? Body { get; set; }
+    public string? Content { get; set; }
 
     #endregion
 
 
     #region  MANY_TO_ONE_RELATIONSHIP
-    public string? SpecialistId { get; set; }
-    public Specialist Specialist { get; set; } = null!;
+    public string? UserId { get; set; }
+    public User User { get; set; } = null!;
 
     public int ForumPostId { get; set; }
     public ForumPost ForumPost { get; set; } = null!;
