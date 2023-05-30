@@ -37,7 +37,7 @@ namespace PsicoAppAPI.Data
             await SeedClients(context, options);
             await SeedSpecialists(context, options);
             await SeedFeedPosts(context, options);
-            // await SeedForumPosts(context, options);
+            await SeedForumPosts(context, options);
             // await SeedComments(context, options);
             await SeedAppointments(context, options);
         }
