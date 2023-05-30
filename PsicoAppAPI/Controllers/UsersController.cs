@@ -1,24 +1,40 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using PsicoAppAPI.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using PsicoAppAPI.DTOs;
-using PsicoAppAPI.Repositories;
+using PsicoAppAPI.Services.Interfaces;
 
 namespace PsicoAppAPI.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseApiController
     {
-        private readonly string _jwtSecret;
+        private readonly IUserService _userService;
 
-        public UsersController(IConfiguration configuration)
+        public UsersController(IUserService userService)
         {
-            _jwtSecret = configuration.GetValue<string>("JwtSettings:Secret");
+            _userService = userService;
+        }
+
+        /// <summary>
+        /// Login the user if the credentials match and return a JWT token with the user's id and role
+        /// </summary>
+        /// <returns>JWT Token with id and role if credentials match,
+        /// if not return a Status 400.
+        /// In case of token generation failed return Status 500.
+        /// All error returns include a message.
+        /// </returns>
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginUserDto loginUserDto)
+        {
+            var user = await _userService.GetUser(loginUserDto);
+
+            if (user == null) return BadRequest("Invalid credentials");
+            var token = _userService.GenerateToken(user.Id);
+            if (string.IsNullOrEmpty(token))
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { error = "Token generation failed" });
+            }
+            return Ok(new { Token = token });
         }
 
         // /// <summary>
