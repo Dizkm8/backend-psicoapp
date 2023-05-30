@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PsicoAppAPI.Data;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Repositories.Interfaces;
@@ -43,6 +44,13 @@ namespace PsicoAppAPI.Repositories
             return result;
         }
 
+        public async Task<Client?> GetClientByCredentials(string id, string password)
+        {
+            var client = await _context.Clients.FirstOrDefaultAsync(client =>
+                client.Id == id && client.Password == password);
+            return client;
+        }
+
         public bool SaveChanges()
         {
             return _context.SaveChanges() > 0;
@@ -53,5 +61,7 @@ namespace PsicoAppAPI.Repositories
             var result = await _context.SaveChangesAsync() > 0;
             return result;
         }
+
+
     }
 }

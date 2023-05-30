@@ -10,6 +10,14 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// <param name="id">Client id</param>
         /// <returns>The client if it's found, null if not</returns>
         public Task<Client?> GetClientById(string id);
+
+        /// <summary>
+        /// Asynchronously get a client by their Id and password
+        /// </summary>
+        /// <param name="id">ClientId</param>
+        /// <param name="password">Client password</param>
+        /// <returns>Client if it's found, null if not</returns>
+        public Task<Client?> GetClientByCredentials(string id, string password);
         /// <summary>
         ///  Add a client to database
         /// </summary>
