@@ -6,14 +6,14 @@ namespace PsicoAppAPI.Data
     public class DataContext : DbContext
     {
         #region CLASS_ATTRIBUTES
-        public DbSet<Client>? Clients { get; set; }
-        public DbSet<Specialist>? Specialists { get; set; }
-        public DbSet<Speciality>? Specialities { get; set; }
-        public DbSet<FeedPost>? FeedPosts { get; set; }
-        public DbSet<ForumPost>? ForumPosts { get; set; }
-        public DbSet<Appointment>? Appointments { get; set; }
-        public DbSet<Comment>? Comments { get; set; }
-        public DbSet<AppointmentStatus>? AppointmentStatuses { get; set; }
+        public DbSet<Client> Clients { get; set; } = null!;
+        public DbSet<Specialist> Specialists { get; set; } = null!;
+        public DbSet<Speciality> Specialities { get; set; } = null!;
+        public DbSet<FeedPost> FeedPosts { get; set; } = null!;
+        public DbSet<ForumPost> ForumPosts { get; set; } = null!;
+        public DbSet<Appointment> Appointments { get; set; } = null!;
+        public DbSet<Comment> Comments { get; set; } = null!;
+        public DbSet<AppointmentStatus> AppointmentStatuses { get; set; } = null!;
         #endregion
 
         #region CLASS_METHODS
