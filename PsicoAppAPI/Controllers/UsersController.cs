@@ -29,7 +29,7 @@ namespace PsicoAppAPI.Controllers
             var user = await _userService.GetUser(loginUserDto);
 
             if (user == null) return BadRequest("Invalid credentials");
-            var token = _userService.GenerateToken(user.Id);
+            var token = await _userService.GenerateToken(user.Id);
             if (string.IsNullOrEmpty(token))
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { error = "Token generation failed" });
