@@ -44,5 +44,13 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// <param name="Client">Client to extract userId</param>
         /// <returns>True if exists</returns>
         public Task<bool> ClientExists(Client client);
+
+        /// <summary>
+        /// Create a new Client with a userId and flag it as administrator or not
+        /// </summary>
+        /// <param name="isAdministrator">Administrator flag</param>
+        /// <param name="userId">Existing user id</param>
+        /// <returns>Client instance created</returns>
+        public Client CreateClient(bool isAdministrator, string userId);
     }
 }

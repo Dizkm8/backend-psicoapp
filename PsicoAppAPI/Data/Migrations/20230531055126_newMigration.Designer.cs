@@ -11,8 +11,8 @@ using PsicoAppAPI.Data;
 namespace PsicoAppAPI.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230530214335_NewDataBase")]
-    partial class NewDataBase
+    [Migration("20230531055126_newMigration")]
+    partial class newMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
