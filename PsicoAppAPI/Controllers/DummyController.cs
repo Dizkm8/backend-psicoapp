@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.DTOs;
@@ -9,10 +10,14 @@ namespace PsicoAppAPI.Controllers
     {
         private readonly IClientRepository _clientRepository;
         private readonly ISpecialistRepository _specialistRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-
-        public DummyController(IClientRepository clientRepository, ISpecialistRepository specialistRepository)
+        public DummyController(IClientRepository clientRepository, ISpecialistRepository specialistRepository,
+            IUserRepository userRepository, IMapper mapper)
         {
+            _mapper = mapper;
+            _userRepository = userRepository;
             _specialistRepository = specialistRepository;
             _clientRepository = clientRepository;
         }
@@ -54,6 +59,4 @@ namespace PsicoAppAPI.Controllers
             return Ok("Specialist role test passed");
         }
     }
-
-
 }
