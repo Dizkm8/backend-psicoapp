@@ -48,7 +48,9 @@ namespace PsicoAppAPI.Data
             var clientsData = File.ReadAllText("Data/Seeds/ClientsData.json");
             var clientsList = JsonSerializer.Deserialize<List<Client>>(clientsData, options);
             if (clientsList == null) return;
-
+            // Probably context.Clients will not be null, but this validation
+            // avoids the warning message
+            if (context.Clients == null) throw new Exception("Clients table is null");
             context.Clients.AddRange(clientsList);
             context.SaveChanges();
         }
@@ -65,6 +67,9 @@ namespace PsicoAppAPI.Data
             var appointmentsData = File.ReadAllText("Data/Seeds/AppointmentsData.json");
             var appointmentsList = JsonSerializer.Deserialize<List<Appointment>>(appointmentsData, options);
             if (appointmentsList == null) return;
+            // Probably Appointments table will not be null, but this validation
+            // avoids the warning message
+            if (context.Appointments == null) throw new Exception("Appointments table is null");
             context.Appointments.AddRange(appointmentsList);
             context.SaveChanges();
         }
@@ -81,6 +86,9 @@ namespace PsicoAppAPI.Data
             var appointmentsStatusData = File.ReadAllText("Data/Seeds/AppointmentsStatusData.json");
             var appointmentsStatusList = JsonSerializer.Deserialize<List<AppointmentStatus>>(appointmentsStatusData, options);
             if (appointmentsStatusList == null) return;
+            // Probably AppointmentStatuses table will not be null, but this validation
+            // avoids the warning message
+            if (context.AppointmentStatuses == null) throw new Exception("AppointmentStatuses table is null");
             context.AppointmentStatuses.AddRange(appointmentsStatusList);
             context.SaveChanges();
         }
@@ -97,6 +105,9 @@ namespace PsicoAppAPI.Data
             var commentsData = File.ReadAllText("Data/Seeds/CommentsData.json");
             var commentsList = JsonSerializer.Deserialize<List<Comment>>(commentsData, options);
             if (commentsList == null) return;
+            // Probably Comments table will not be null, but this validation
+            // avoids the warning message
+            if (context.Comments == null) throw new Exception("Comments table is null");
             context.Comments.AddRange(commentsList);
             context.SaveChanges();
         }
@@ -113,6 +124,9 @@ namespace PsicoAppAPI.Data
             var forumPostsData = File.ReadAllText("Data/Seeds/ForumPostsData.json");
             var forumPostsList = JsonSerializer.Deserialize<List<ForumPost>>(forumPostsData, options);
             if (forumPostsList == null) return;
+            // Probably ForumPosts table will not be null, but this validation
+            // avoids the warning message
+            if (context.ForumPosts == null) throw new Exception("ForumPosts table is null");
             context.ForumPosts.AddRange(forumPostsList);
             context.SaveChanges();
         }
@@ -125,6 +139,9 @@ namespace PsicoAppAPI.Data
             var feedPostsData = File.ReadAllText("Data/Seeds/FeedPostsData.json");
             var feedPostsList = JsonSerializer.Deserialize<List<FeedPost>>(feedPostsData, options);
             if (feedPostsList == null) return;
+            // Probably FeedPosts table will not be null, but this validation
+            // avoids the warning message
+            if (context.FeedPosts == null) throw new Exception("FeedPosts table is null");
             context.FeedPosts.AddRange(feedPostsList);
             context.SaveChanges();
         }
@@ -141,6 +158,9 @@ namespace PsicoAppAPI.Data
             var specialistsData = File.ReadAllText("Data/Seeds/SpecialistsData.json");
             var specialistsList = JsonSerializer.Deserialize<List<Specialist>>(specialistsData, options);
             if (specialistsList == null) return;
+            // Probably Specialists table will not be null, but this validation
+            // avoids the warning message
+            if (context.Specialists == null) throw new Exception("Specialists table is null");
             context.Specialists.AddRange(specialistsList);
             context.SaveChanges();
         }
@@ -157,6 +177,9 @@ namespace PsicoAppAPI.Data
             var specialitiesData = File.ReadAllText("Data/Seeds/SpecialitiesData.json");
             var specialitiesList = JsonSerializer.Deserialize<List<Speciality>>(specialitiesData, options);
             if (specialitiesList == null) return;
+            // Probably Specialities table will not be null, but this validation
+            // avoids the warning message
+            if (context.Specialities == null) throw new Exception("Specialities table is null");
             context.Specialities.AddRange(specialitiesList);
             context.SaveChanges();
         }

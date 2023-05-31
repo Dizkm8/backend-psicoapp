@@ -45,6 +45,25 @@ namespace PsicoAppAPI.Controllers
             return Ok(new { Token = token });
         }
 
+        /// <summary>
+        /// Register a new client user.
+        /// </summary>
+        /// <param name="registerClientDto">
+        /// Id: User's identifier, must be unique and not null or empty
+        /// Name: User's name, must be not null and have at least 2 characters
+        /// FirstLastName: User's first last name, must be not null and have at least 2 characters
+        /// SecondLastName: User's second last name, must be not null and have at least 2 characters
+        /// Email: User's email, must be not null, have a valid email format and be unique
+        /// Gender: User's gender, must be not null or empty
+        /// Phone: User's phone, must be not null and have 8 digits
+        /// Password: User's password, mut be not null and have a length between 10 and 15 characters
+        /// </param>
+        /// <returns>
+        /// If the ModelState have errors based on params requeriments, return a Status 400 with the errors.
+        /// If the Email or Id already exists, return a Status 400 with the errors (can return both at the same time).
+        /// If the user cannot be added to the database, return a Status 500 with a generic error.
+        /// If the user is added to the database, return a Status 200 with the user's data.
+        /// </returns>
         [AllowAnonymous]
         [HttpPost("register-client")]
         public async Task<ActionResult> RegisterClient([FromBody] RegisterClientDto registerClientDto)
