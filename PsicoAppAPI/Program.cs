@@ -18,6 +18,8 @@ builder.Services.AddSwaggerGen();
 //Inject ClientRepository to the container as the implementation of IClientRepository
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<ISpecialistRepository, SpecialistRepository>();
 // Add database context with the configuration in appsettings.json
 builder.Services.AddDbContext<DataContext>(opt =>
 {
