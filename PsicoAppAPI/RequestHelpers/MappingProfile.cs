@@ -1,4 +1,6 @@
 using AutoMapper;
+using PsicoAppAPI.DTOs;
+using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.RequestHelpers
 {
@@ -6,6 +8,7 @@ namespace PsicoAppAPI.RequestHelpers
     {
         public MappingProfiles()
         {
+            CreateMap<RegisterClientDto, User>();
         }
     }
 }
