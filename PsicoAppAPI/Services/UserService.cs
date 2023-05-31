@@ -54,10 +54,46 @@ namespace PsicoAppAPI.Services
             user.IsEnabled = true;
             _ = await _userRepository.AddUserAndSaveChanges(user);
             // If user.Id is null its summons an empty string, RegisterClientDto it cannot be null
-            // because of class itself and controller validations, anyways, I made this to avoid warning message
+            // because of class itself with the controller validations,
+            /// anyways, I made this to avoid warning message
             var client = _clientRepository.CreateClient(false, user.Id ?? "");
             _ = await _clientRepository.AddClientAndSaveChanges(client);
             return registerClientDto;
+        }
+
+        public async Task<User?> GetUserByEmail(string? email)
+        {
+            if(email == null) return null;
+            var user = await _userRepository.GetUserByEmail(email);
+            return user;
+        }
+
+        public async Task<bool> ExistsUserWithEmail(string? email)
+        {
+            if(email == null) return false;
+            var result = await _userRepository.ExistsUserWithEmail(email);
+            return result;
+        }
+
+        public async Task<bool> ExistsUserById(string? id)
+        {
+            if(id == null) return false;
+            var result = await _userRepository.GetUserById(id) != null;
+            return result;
+        }
+
+        public async Task<bool> ExistsUserByIdOrEmail(string? id, string? email)
+        {
+            if(id == null || email == null) return false;
+            var result = await _userRepository.ExistsUserByIdOrEmail(id, email);
+            return result;
+        }
+
+        public async Task<User?> GetUserByIdOrEmail(string? id, string? email)
+        {
+            if(id == null || email == null) return null;
+            var result = await _userRepository.GetUserByIdOrEmail(id, email);
+            return result;
         }
         #endregion
 
