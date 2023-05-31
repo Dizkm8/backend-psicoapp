@@ -57,5 +57,14 @@ namespace PsicoAppAPI.Repositories
             var result = await ClientExists(client.UserId);
             return result;
         }
+
+        public Client CreateClient(bool isAdministrator, string userId)
+        {
+            return new Client
+            {
+                IsAdministrator = isAdministrator,
+                UserId = userId
+            };
+        }
     }
 }
