@@ -6,7 +6,6 @@ namespace PsicoAppAPI.RequestHelpers
     {
         public MappingProfiles()
         {
-            
         }
     }
 }
