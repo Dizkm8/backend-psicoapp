@@ -14,7 +14,7 @@ namespace PsicoAppAPI.Extensions
             {
                 // Migrate the database, create if it doesn't exist
                 context.Database.Migrate();
-                Seed.SeedData(context).Wait();
+                Seed.SeedData(context);
             }
             catch (Exception ex)
             {
