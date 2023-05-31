@@ -8,12 +8,10 @@ namespace PsicoAppAPI.Controllers
 {
     public class UsersController : BaseApiController
     {
-        private readonly IMapper _mapper;
         private readonly IUserService _userService;
 
-        public UsersController(IUserService userService, IMapper mapper)
+        public UsersController(IUserService userService)
         {
-            _mapper = mapper;
             _userService = userService;
         }
 
