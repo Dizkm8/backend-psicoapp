@@ -8,12 +8,10 @@ namespace PsicoAppAPI.Controllers
 {
     public class UsersController : BaseApiController
     {
-        private readonly IMapper _mapper;
         private readonly IUserService _userService;
 
-        public UsersController(IUserService userService, IMapper mapper)
+        public UsersController(IUserService userService)
         {
-            _mapper = mapper;
             _userService = userService;
         }
 
@@ -36,7 +34,7 @@ namespace PsicoAppAPI.Controllers
         {
             var user = await _userService.GetUser(loginUserDto);
 
-            if (user == null) return BadRequest("Invalid credentials");
+            if (user is null) return BadRequest("Invalid credentials");
             var token = await _userService.GenerateToken(user.Id);
             if (string.IsNullOrEmpty(token))
             {
@@ -44,12 +42,26 @@ namespace PsicoAppAPI.Controllers
             }
             return Ok(new { Token = token });
         }
-        
+
         /// <summary>
-        /// 
+        /// Register a new client user.
         /// </summary>
-        /// <param name="registerClientDto"></param>
-        /// <returns></returns>
+        /// <param name="registerClientDto">
+        /// Id: User's identifier, must be unique and not null or empty
+        /// Name: User's name, must be not null and have at least 2 characters
+        /// FirstLastName: User's first last name, must be not null and have at least 2 characters
+        /// SecondLastName: User's second last name, must be not null and have at least 2 characters
+        /// Email: User's email, must be not null, have a valid email format and be unique
+        /// Gender: User's gender, must be not null or empty
+        /// Phone: User's phone, must be not null and have 8 digits
+        /// Password: User's password, mut be not null and have a length between 10 and 15 characters
+        /// </param>
+        /// <returns>
+        /// If the ModelState have errors based on params requeriments, return a Status 400 with the errors.
+        /// If the Email or Id already exists, return a Status 400 with the errors (can return both at the same time).
+        /// If the user cannot be added to the database, return a Status 500 with a generic error.
+        /// If the user is added to the database, return a Status 200 with the user's data.
+        /// </returns>
         [AllowAnonymous]
         [HttpPost("register-client")]
         public async Task<ActionResult> RegisterClient([FromBody] RegisterClientDto registerClientDto)
@@ -59,8 +71,20 @@ namespace PsicoAppAPI.Controllers
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 return BadRequest(new { errors });
             }
+
+            var existsEmail = await _userService.ExistsUserWithEmail(registerClientDto.Email);
+            if (existsEmail) ModelState.AddModelError("Email", "Email already exists");
+
+            var existsId = await _userService.ExistsUserById(registerClientDto.Id);
+            if (existsId) ModelState.AddModelError("Id", "Id already exists");
+            // Return Id or Email duplicated error if exists
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+
             var clientAdded = await _userService.AddClient(registerClientDto);
-            if (clientAdded == null) return BadRequest("Could not add client");
+            if (clientAdded is null) return StatusCode(StatusCodes.Status500InternalServerError,
+                new { error = "Internal error adding User" });
+
             return Ok(clientAdded);
         }
     }

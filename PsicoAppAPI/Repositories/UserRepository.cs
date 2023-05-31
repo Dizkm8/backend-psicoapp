@@ -25,6 +25,18 @@ namespace PsicoAppAPI.Repositories
             return result;
         }
 
+        public async Task<bool> ExistsUserByIdOrEmail(string id, string email)
+        {
+            var result = await GetUserByIdOrEmail(id, email) != null;
+            return result;
+        }
+
+        public async Task<bool> ExistsUserWithEmail(string email)
+        {
+            var result = await GetUserByEmail(email) != null;
+            return result;
+        }
+
         public async Task<User?> GetUserByCredentials(string id, string password)
         {
             var user = await _context.Users.FirstOrDefaultAsync(user =>
@@ -32,10 +44,24 @@ namespace PsicoAppAPI.Repositories
             return user;
         }
 
+        public async Task<User?> GetUserByEmail(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(user =>
+                user.Email == email);
+            return user;
+        }
+
         public async Task<User?> GetUserById(string id)
         {
             var result = await _context.FindAsync<User>(id);
             return result;
+        }
+
+        public async Task<User?> GetUserByIdOrEmail(string id, string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(user =>
+                user.Id == id || user.Email == email);
+            return user;
         }
 
         public bool SaveChanges()
