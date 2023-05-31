@@ -36,7 +36,7 @@ namespace PsicoAppAPI.Controllers
         {
             var user = await _userService.GetUser(loginUserDto);
 
-            if (user == null) return BadRequest("Invalid credentials");
+            if (user is null) return BadRequest("Invalid credentials");
             var token = await _userService.GenerateToken(user.Id);
             if (string.IsNullOrEmpty(token))
             {
@@ -65,7 +65,7 @@ namespace PsicoAppAPI.Controllers
 
 
             var clientAdded = await _userService.AddClient(registerClientDto);
-            if (clientAdded == null) return StatusCode(StatusCodes.Status500InternalServerError,
+            if (clientAdded is null) return StatusCode(StatusCodes.Status500InternalServerError,
                 new { error = "Internal error adding User" });
 
             return Ok(clientAdded);

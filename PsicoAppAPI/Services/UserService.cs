@@ -23,7 +23,7 @@ namespace PsicoAppAPI.Services
 
         #region CONSTANTS
         const string ADMIN_ROLE = "ADMIN";
-        const string USER_ROLE = "USER";
+        const string CLIENT_ROLE = "CLIENT";
         const string SPECIALIST_ROLE = "SPECIALIST";
         #endregion
         #endregion
@@ -43,8 +43,9 @@ namespace PsicoAppAPI.Services
         public async Task<User?> GetUser(LoginUserDto loginUserDto)
         {
             if (string.IsNullOrWhiteSpace(loginUserDto.Id) || string.IsNullOrWhiteSpace(loginUserDto.Password)) return null;
-            var user = await _userRepository.GetUserByCredentials(loginUserDto.Id, loginUserDto.Password);
-            return user;
+            var user = await _userRepository.GetUserById(loginUserDto.Id);
+            if (user is null) return null;
+            return BCrypt.Net.BCrypt.Verify(loginUserDto.Password, user.Password) ? user : null;
         }
 
         public async Task<RegisterClientDto?> AddClient(RegisterClientDto registerClientDto)
@@ -52,6 +53,9 @@ namespace PsicoAppAPI.Services
             var user = _mapper.Map<User>(registerClientDto);
             if (user == null) return null;
             user.IsEnabled = true;
+            // Hashes the password and then assign to user.Password before save it
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            user.Password = passwordHash;
             _ = await _userRepository.AddUserAndSaveChanges(user);
             // If user.Id is null its summons an empty string, RegisterClientDto it cannot be null
             // because of class itself with the controller validations,
@@ -63,35 +67,35 @@ namespace PsicoAppAPI.Services
 
         public async Task<User?> GetUserByEmail(string? email)
         {
-            if(email == null) return null;
+            if (email == null) return null;
             var user = await _userRepository.GetUserByEmail(email);
             return user;
         }
 
         public async Task<bool> ExistsUserWithEmail(string? email)
         {
-            if(email == null) return false;
+            if (email == null) return false;
             var result = await _userRepository.ExistsUserWithEmail(email);
             return result;
         }
 
         public async Task<bool> ExistsUserById(string? id)
         {
-            if(id == null) return false;
+            if (id == null) return false;
             var result = await _userRepository.GetUserById(id) != null;
             return result;
         }
 
         public async Task<bool> ExistsUserByIdOrEmail(string? id, string? email)
         {
-            if(id == null || email == null) return false;
+            if (id == null || email == null) return false;
             var result = await _userRepository.ExistsUserByIdOrEmail(id, email);
             return result;
         }
 
         public async Task<User?> GetUserByIdOrEmail(string? id, string? email)
         {
-            if(id == null || email == null) return null;
+            if (id == null || email == null) return null;
             var result = await _userRepository.GetUserByIdOrEmail(id, email);
             return result;
         }
@@ -122,7 +126,7 @@ namespace PsicoAppAPI.Services
             var user = _userRepository.GetUserById(userId).Result;
             if (user == null) return null;
             var userRole = await GetUserRole(userId);
-            if (userRole == null) return null;
+            if (userRole is null) return null;
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -147,7 +151,7 @@ namespace PsicoAppAPI.Services
         private async Task<string?> GetUserRole(string userId)
         {
             var client = await _clientRepository.GetClientById(userId);
-            if (client != null) return client.IsAdministrator ? ADMIN_ROLE : USER_ROLE;
+            if (client != null) return client.IsAdministrator ? ADMIN_ROLE : CLIENT_ROLE;
             var specialist = await _specialistRepository.GetSpecialistById(userId);
             return specialist != null ? SPECIALIST_ROLE : null;
         }
