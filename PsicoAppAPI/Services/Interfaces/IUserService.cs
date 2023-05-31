@@ -7,6 +7,6 @@ namespace PsicoAppAPI.Services.Interfaces
     {
         public Task<User?> GetUser(LoginUserDto loginUserDto);
 
-        public string? GenerateToken(string? id);
+        public Task<string?> GenerateToken(string? id);
     }
 }

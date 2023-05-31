@@ -38,13 +38,14 @@ namespace PsicoAppAPI.Services
             _jwtSecret = token;
         }
 
-        public string? GenerateToken(string? id)
+        public async Task<string?> GenerateToken(string? id)
         {
             if (id == null)
             {
                 throw new ArgumentNullException(nameof(id), "User identifier cannot be null");
             }
-            return GenerateJwtToken(id);
+            var token = await GenerateJwtToken(id);
+            return token;
         }
 
 
@@ -63,12 +64,12 @@ namespace PsicoAppAPI.Services
         /// </summary>
         /// <param name="userId">Id of the user</param>
         /// <returns>Token generated or null if the user doesn't exist</returns>
-        private string? GenerateJwtToken(string userId)
+        private async Task<string?> GenerateJwtToken(string userId)
         {
             //Temporary stuff to future use role getter method
             var user = _userRepository.GetUserById(userId).Result;
             if (user == null) return null;
-            var userRole = GetUserRole(userId);
+            var userRole = await GetUserRole(userId);
             if (userRole == null) return null;
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSecret);
@@ -91,11 +92,11 @@ namespace PsicoAppAPI.Services
         /// Get the role of the user based on their Id
         /// </summary>
         /// <returns>Role of the user, null if the user doesn't exists</returns>
-        private string? GetUserRole(string userId)
+        private async Task<string?> GetUserRole(string userId)
         {
-            var client = _clientRepository.GetClientById(userId).Result;
+            var client = await _clientRepository.GetClientById(userId);
             if (client != null) return client.IsAdministrator ? ADMIN_ROLE : USER_ROLE;
-            var specialist = _specialistRepository.GetSpecialistById(userId).Result;
+            var specialist = await _specialistRepository.GetSpecialistById(userId);
             return specialist != null ? SPECIALIST_ROLE : null;
         }
         #endregion
