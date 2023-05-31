@@ -5,7 +5,7 @@ namespace PsicoAppAPI.Repositories.Interfaces
     public interface IClientRepository
     {   
         /// <summary>
-        /// Asynchronously get a Client by the userId attached to it
+        /// Asynchronously get a Client searching into users using the userId attached to it
         /// </summary>
         /// <param name="userId">Respective userId in the client entity</param>
         /// <returns>Client if was found, null if not</returns>

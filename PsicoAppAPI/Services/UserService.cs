@@ -15,10 +15,23 @@ namespace PsicoAppAPI.Services
 {
     public class UserService : IUserService
     {
-        private readonly string _jwtSecret;
-        private readonly IUserRepository _userRepository;
-        public UserService(IConfiguration configuration, IUserRepository userRepository)
+        #region CLASS_ATTRIBUTES
+        readonly string _jwtSecret;
+        readonly IUserRepository _userRepository;
+        readonly IClientRepository _clientRepository;
+        readonly ISpecialistRepository _specialistRepository;
+        const string ADMIN_ROLE = "ADMIN";
+        const string USER_ROLE = "USER";
+        const string SPECIALIST_ROLE = "SPECIALIST";
+        #endregion
+
+
+        #region IUSERSERVICE_METHODS
+        public UserService(IConfiguration configuration, IUserRepository userRepository,
+            IClientRepository clientRepository, ISpecialistRepository specialistRepository)
         {
+            _specialistRepository = specialistRepository;
+            _clientRepository = clientRepository;
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             var token = configuration.GetValue<string>("JwtSettings:Secret") ??
                 throw new ArgumentException("JwtSettings:Secret is null");
@@ -41,13 +54,22 @@ namespace PsicoAppAPI.Services
             var user = await _userRepository.GetUserByCredentials(loginUserDto.Id, loginUserDto.Password);
             return user;
         }
+        #endregion
 
+
+        #region CLASS_METHODS
+        /// <summary>
+        /// Generate a JWT token for the user
+        /// </summary>
+        /// <param name="userId">Id of the user</param>
+        /// <returns>Token generated or null if the user doesn't exist</returns>
         private string? GenerateJwtToken(string userId)
         {
             //Temporary stuff to future use role getter method
             var user = _userRepository.GetUserById(userId).Result;
             if (user == null) return null;
-
+            var userRole = GetUserRole(userId);
+            if (userRole == null) return null;
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -55,7 +77,7 @@ namespace PsicoAppAPI.Services
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, userId),
-                    new Claim(ClaimTypes.Role, "CLIENT") // NEED TO BE CHANGED!! TEMPORARY HARDCODED
+                    new Claim(ClaimTypes.Role, userRole) // NEED TO BE CHANGED!! TEMPORARY HARDCODED
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
@@ -64,5 +86,18 @@ namespace PsicoAppAPI.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+        /// <summary>
+        /// Get the role of the user based on their Id
+        /// </summary>
+        /// <returns>Role of the user, null if the user doesn't exists</returns>
+        private string? GetUserRole(string userId)
+        {
+            var client = _clientRepository.GetClientById(userId).Result;
+            if (client != null) return client.IsAdministrator ? ADMIN_ROLE : USER_ROLE;
+            var specialist = _specialistRepository.GetSpecialistById(userId).Result;
+            return specialist != null ? SPECIALIST_ROLE : null;
+        }
+        #endregion
     }
 }

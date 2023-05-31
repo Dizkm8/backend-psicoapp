@@ -5,7 +5,7 @@ namespace PsicoAppAPI.Repositories.Interfaces
     public interface ISpecialistRepository
     {   
         /// <summary>
-        /// Asynchronously get a Specialist by the userId attached to it
+        /// Asynchronously get a specialists searching into users using the userId attached to it
         /// </summary>
         /// <param name="userId">Respective userId in the Specialist entity</param>
         /// <returns>Specialist if was found, null if not</returns>
