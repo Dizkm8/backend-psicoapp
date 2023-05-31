@@ -33,7 +33,12 @@ namespace PsicoAppAPI.Controllers
             return Ok(specialist);
         }
 
-        
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet("admin-role-test")]
+        public async Task<ActionResult> AdminRoleTest()
+        {
+            return Ok("Admin role test passed");
+        }
     }
 
 
