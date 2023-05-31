@@ -15,12 +15,24 @@ namespace PsicoAppAPI.Controllers
         }
 
         /// <summary>
-        /// Login the user if the credentials match and return a JWT token with the user's id and role
+        /// 
         /// </summary>
-        /// <returns>JWT Token with id and role if credentials match,
-        /// if not return a Status 400.
+        /// <returns>
+        /// </returns>
+        /// 
+        
+        /// <summary>
+        /// Login the user if the credentials match and return a JWT token with the user's id and role.
+        /// </summary>
+        /// <param name="loginUserDto">
+        /// Id: User's identifier
+        /// Password: User's password
+        /// </param>
+        /// <returns>
+        /// JWT Token with id and role if credentials match
+        /// if not, return a Status 400.
         /// In case of token generation failed return Status 500.
-        /// All error returns include a message.
+        /// All error returns includes a message.
         /// </returns>
         [AllowAnonymous]
         [HttpPost("login")]
