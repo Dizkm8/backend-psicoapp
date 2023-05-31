@@ -10,7 +10,6 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// <param name="id">user id</param>
         /// <returns>The user if it's found, null if not</returns>
         public Task<User?> GetUserById(string id);
-
         /// <summary>
         /// Asynchronously get a user by their Id and password
         /// </summary>
@@ -52,5 +51,31 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// <param name="User">User to get Id</param>
         /// <returns>True if exists</returns>
         public Task<bool> UserExists(User user);
+        /// <summary>
+        /// Asynchronously get a user by email
+        /// </summary>
+        /// <param name="email">User's email</param>
+        /// <returns>User if was found, null otherwise</returns>
+        public Task<User?> GetUserByEmail(string email);
+        /// <summary>
+        /// Asynchronously check if a user exists by email
+        /// </summary>
+        /// <param name="email">User's email</param>
+        /// <returns>True if exists, otherwise false</returns>
+        public Task<bool> ExistsUserWithEmail(string email);
+        /// <summary>
+        /// Asynchronously search a user exists by id or email
+        /// </summary>
+        /// <param name="id">User's id</param>
+        /// <param name="email">User's email</param>
+        /// <returns>User if was found, null otherwise</returns>
+        public Task<User?> GetUserByIdOrEmail(string id, string email);
+        /// <summary>
+        /// Asynchronously check if a user exists by id or email
+        /// </summary>
+        /// <param name="id">User's id</param>
+        /// <param name="email">User's email</param>
+        /// <returns>True if exists, otherwise false</returns>
+        public Task<bool> ExistsUserByIdOrEmail(string id, string email);
     }
 }

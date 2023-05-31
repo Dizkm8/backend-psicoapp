@@ -36,7 +36,7 @@ namespace PsicoAppAPI.Controllers
         {
             var user = await _userService.GetUser(loginUserDto);
 
-            if (user == null) return BadRequest("Invalid credentials");
+            if (user is null) return BadRequest("Invalid credentials");
             var token = await _userService.GenerateToken(user.Id);
             if (string.IsNullOrEmpty(token))
             {
@@ -44,12 +44,7 @@ namespace PsicoAppAPI.Controllers
             }
             return Ok(new { Token = token });
         }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="registerClientDto"></param>
-        /// <returns></returns>
+
         [AllowAnonymous]
         [HttpPost("register-client")]
         public async Task<ActionResult> RegisterClient([FromBody] RegisterClientDto registerClientDto)
@@ -59,8 +54,20 @@ namespace PsicoAppAPI.Controllers
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 return BadRequest(new { errors });
             }
+
+            var existsEmail = await _userService.ExistsUserWithEmail(registerClientDto.Email);
+            if (existsEmail) ModelState.AddModelError("Email", "Email already exists");
+
+            var existsId = await _userService.ExistsUserById(registerClientDto.Id);
+            if (existsId) ModelState.AddModelError("Id", "Id already exists");
+            // Return Id or Email duplicated error if exists
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+
             var clientAdded = await _userService.AddClient(registerClientDto);
-            if (clientAdded == null) return BadRequest("Could not add client");
+            if (clientAdded is null) return StatusCode(StatusCodes.Status500InternalServerError,
+                new { error = "Internal error adding User" });
+
             return Ok(clientAdded);
         }
     }

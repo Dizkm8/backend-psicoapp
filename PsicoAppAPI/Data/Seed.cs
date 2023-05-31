@@ -48,6 +48,7 @@ namespace PsicoAppAPI.Data
             var clientsData = File.ReadAllText("Data/Seeds/ClientsData.json");
             var clientsList = JsonSerializer.Deserialize<List<Client>>(clientsData, options);
             if (clientsList == null) return;
+
             context.Clients.AddRange(clientsList);
             context.SaveChanges();
         }
@@ -172,6 +173,13 @@ namespace PsicoAppAPI.Data
             var userData = File.ReadAllText("Data/Seeds/UsersData.json");
             var userList = JsonSerializer.Deserialize<List<User>>(userData, options);
             if (userList == null) return;
+            // Hash the password before save it
+            // Application must crashes if this step is not done
+            userList.ForEach(user =>
+            {
+                var passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                user.Password = passwordHash;
+            });
             context.Users.AddRange(userList);
             context.SaveChanges();
         }
