@@ -87,6 +87,15 @@ namespace PsicoAppAPI.Controllers
             return Ok(clientAdded);
         }
 
+        /// <summary>
+        /// Get the user's profile information extracting Claims included on the JWT token.
+        /// </summary>
+        /// <returns>
+        /// If the JWT was not provided or is invalid, return a Status 401.
+        /// If the JWT have error extracting the Claims, return a Status 404.
+        /// If the user's profile information is not found, return a Status 404.
+        /// If the user's profile information is found, return a Status 200 with the user's profile information.
+        /// </returns>
         [Authorize]
         [HttpGet("profile-information")]
         public async Task<ActionResult> GetProfileInformation()
