@@ -1,4 +1,5 @@
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.Services.Interfaces
@@ -80,5 +81,23 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="email">User's email</param>
         /// <returns>True if exists. Otherwise false</returns>
         public Task<bool> ExistsEmailInOtherUser(string? email);
+        /// <summary>
+        /// Asynchronously update user password
+        /// </summary>
+        /// <param name="newPassword">New user's password</param>
+        /// <returns>True if password could be changes. Otherwise false</returns>
+        public Task<bool> UpdateUserPassword(string? newPassword);
+        /// <summary>
+        /// Asynchronously check if a user exists by their Id in the token extracted using HttpContext injection
+        /// </summary>
+        /// <returns>True if its was found. Otherwise null</returns>
+        public Task<bool> ExistsUserByToken();
+        /// <summary>
+        /// Asynchronously check if the provided password matches with the current user's password 
+        /// The user is found using the userID extracted from the JWT
+        /// </summary>
+        /// <param name="password">User's password</param>
+        /// <returns>true if the password match. Otherwise false</returns>
+        public Task<bool> CheckUsersPasswordUsingToken(string? password);
     }
 }

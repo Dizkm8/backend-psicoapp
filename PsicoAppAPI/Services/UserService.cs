@@ -4,6 +4,7 @@ using System.Text;
 using AutoMapper;
 using Microsoft.IdentityModel.Tokens;
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Repositories.Interfaces;
 using PsicoAppAPI.Services.Interfaces;
@@ -115,7 +116,7 @@ namespace PsicoAppAPI.Services
             return string.IsNullOrEmpty(userRole) ? null : userRole;
         }
 
-        private User UpdateProfileInformationToUser(UpdateProfileInformationDto profileInformationDto, User user)
+        private static User UpdateProfileInformationToUser(UpdateProfileInformationDto profileInformationDto, User user)
         {
             user.Name = profileInformationDto.Name;
             user.FirstLastName = profileInformationDto.FirstLastName;
@@ -124,6 +125,20 @@ namespace PsicoAppAPI.Services
             user.Gender = profileInformationDto.Gender;
             user.Phone = profileInformationDto.Phone;
             return user;
+        }
+        /// <summary>
+        /// Get the userId from the token, found a user in Repository and return it
+        /// </summary>
+        /// <returns>
+        /// User found. If the userId or Token are invalid 
+        /// or simply user doesn't exists on repository return null
+        ///</returns>
+        private async Task<User?> GetUserUsingToken()
+        {
+            var userId = GetUserIdInToken();
+            if (userId is null) return null;
+            var user = await _userRepository.GetUserById(userId);
+            return user is not null ? user : null;
         }
         #endregion
 
@@ -240,10 +255,37 @@ namespace PsicoAppAPI.Services
         {
             if (string.IsNullOrEmpty(email)) return false;
             var user = await GetUserByEmail(email);
-            if(user == null) return false;
+            if (user == null) return false;
             var userId = GetUserIdInToken();
-            if(userId == null) return false;
+            if (userId == null) return false;
             return user.Id != userId;
+        }
+
+        public async Task<bool> UpdateUserPassword(string? newPassword)
+        {
+            if(string.IsNullOrEmpty(newPassword)) return false;
+            var user = await GetUserUsingToken();
+            if(user is null) return false;
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            user.Password = passwordHash;
+            var result = _userRepository.UpdateUserAndSaveChanges(user);
+            return result is not null;
+        }
+
+        public async Task<bool> ExistsUserByToken()
+        {
+            var userId = GetUserIdInToken();
+            if (userId is null) return false;
+            var user = await _userRepository.GetUserById(userId);
+            return user is not null;
+        }
+
+        public async Task<bool> CheckUsersPasswordUsingToken(string? password)
+        {
+            if (string.IsNullOrEmpty(password)) return false;
+            var user = await GetUserUsingToken();
+            if(user is null) return false;
+            return BCrypt.Net.BCrypt.Verify(password, user.Password);
         }
         #endregion
     }
