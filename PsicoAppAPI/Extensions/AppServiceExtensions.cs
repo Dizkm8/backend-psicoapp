@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -28,6 +24,13 @@ namespace PsicoAppAPI.Extensions
             services = AddServices(services);
             services = AddData(services, config);
             services = AddAuthentication(services, config);
+            services = AddHttpContextAccesor(services);
+            return services;
+        }
+
+        private static IServiceCollection AddHttpContextAccesor(IServiceCollection services)
+        {
+            services.AddHttpContextAccessor();
             return services;
         }
 
@@ -91,6 +94,7 @@ namespace PsicoAppAPI.Extensions
             });
             return services;
         }
+
 
 
 

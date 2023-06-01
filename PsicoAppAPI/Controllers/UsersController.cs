@@ -1,4 +1,3 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.DTOs;
@@ -92,8 +91,9 @@ namespace PsicoAppAPI.Controllers
         [HttpGet("profile-information")]
         public async Task<ActionResult> GetProfileInformation()
         {
-            var name = User?.Identity?.Name;
-            return Ok(name);
+            var profileInformationDto = await _userService.GetUserProfileInformation();
+            if (profileInformationDto == null) return NotFound("User profile information not found");
+            return Ok(profileInformationDto);
         }
 
         [Authorize]

@@ -9,6 +9,7 @@ namespace PsicoAppAPI.RequestHelpers
         public MappingProfiles()
         {
             CreateMap<RegisterClientDto, User>();
+            CreateMap<User, ProfileInformationDto>();
         }
     }
 }
