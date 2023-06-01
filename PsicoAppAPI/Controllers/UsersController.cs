@@ -114,8 +114,10 @@ namespace PsicoAppAPI.Controllers
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 return BadRequest(new { errors });
             }
-
-            var existsEmail = await _userService.ExistsUserWithEmail(updateProfileInformationDto.Email);
+            
+            // Needs to validate if exists In Different users to avoid
+            // rejecting the update if the user doesn't change the email
+            var existsEmail = await _userService.ExistsEmailInOtherUser(updateProfileInformationDto.Email);
             if (existsEmail) return BadRequest(new { error = "Email already exists" });
 
             var result = await _userService.UpdateProfileInformation(updateProfileInformationDto);

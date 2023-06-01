@@ -67,5 +67,18 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="id">User's Id</param>
         /// <returns>Profile information Dto shape, null if user cannot be found</returns>
         public Task<ProfileInformationDto?> GetUserProfileInformation();
+        /// <summary>
+        /// Asynchronously check if an email exists in other user than the one with the id
+        /// </summary>
+        /// <param name="email">User's email</param>
+        /// <param name="id">User's id</param>
+        /// <returns>True if exists. Otherwise false</returns>
+        public Task<bool> ExistsEmailInOtherUser(string? email, string? id);
+        /// <summary>
+        /// Asynchronously check if an email exists in other user than the one with the id extracting them from Token
+        /// </summary>
+        /// <param name="email">User's email</param>
+        /// <returns>True if exists. Otherwise false</returns>
+        public Task<bool> ExistsEmailInOtherUser(string? email);
     }
 }

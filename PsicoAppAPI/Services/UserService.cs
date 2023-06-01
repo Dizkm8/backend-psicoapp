@@ -225,6 +225,26 @@ namespace PsicoAppAPI.Services
 
             return profileInformationDto;
         }
+
+        public async Task<bool> ExistsEmailInOtherUser(string? email, string? id)
+        {
+            // GetUserByEmail also checks if email is null or empty
+            // I do it anyways to avoid unnecessary calls
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(id)) return false;
+            var user = await GetUserByEmail(email);
+            if (user == null) return false;
+            return user.Id != id;
+        }
+
+        public async Task<bool> ExistsEmailInOtherUser(string? email)
+        {
+            if (string.IsNullOrEmpty(email)) return false;
+            var user = await GetUserByEmail(email);
+            if(user == null) return false;
+            var userId = GetUserIdInToken();
+            if(userId == null) return false;
+            return user.Id != userId;
+        }
         #endregion
     }
 }
