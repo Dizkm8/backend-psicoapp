@@ -99,6 +99,10 @@ namespace PsicoAppAPI.Services
             var result = await _userRepository.GetUserByIdOrEmail(id, email);
             return result;
         }
+        public Task<User?> UpdateProfileInformation(UpdateProfileInformationDto updateProfileInformationDto)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
 

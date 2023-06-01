@@ -87,5 +87,21 @@ namespace PsicoAppAPI.Controllers
 
             return Ok(clientAdded);
         }
+
+        [Authorize]
+        [HttpGet("profile-information")]
+        public async Task<ActionResult> GetProfileInformation()
+        {
+            var name = User?.Identity?.Name;
+            return Ok(name);
+        }
+
+        [Authorize]
+        [HttpPut("profile-information")]
+        public async Task<ActionResult> UpdateProfileInformation([FromBody] UpdateProfileInformationDto updateProfileInformationDto)
+        {
+            return Ok(updateProfileInformationDto);
+        }
     }
+
 }
