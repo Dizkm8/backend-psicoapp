@@ -19,6 +19,7 @@ namespace PsicoAppAPI.Services
         readonly IUserRepository _userRepository;
         readonly IClientRepository _clientRepository;
         readonly ISpecialistRepository _specialistRepository;
+        readonly IHttpContextAccessor _httpContextAccessor;
         #endregion
 
         #region CONSTANTS
@@ -26,6 +27,64 @@ namespace PsicoAppAPI.Services
         const string CLIENT_ROLE = "CLIENT";
         const string SPECIALIST_ROLE = "SPECIALIST";
         #endregion
+        #endregion
+
+
+        #region CLASS_METHODS
+        public UserService(IConfiguration configuration, IUserRepository userRepository,
+            IClientRepository clientRepository, ISpecialistRepository specialistRepository,
+            IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        {
+            _specialistRepository = specialistRepository ?? throw new ArgumentNullException(nameof(specialistRepository));
+            _clientRepository = clientRepository ?? throw new ArgumentNullException(nameof(clientRepository));
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            var token = configuration.GetValue<string>("JwtSettings:Secret") ??
+                throw new ArgumentException("JwtSettings:Secret is null");
+            _jwtSecret = token;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+        }
+
+        /// <summary>
+        /// Generate a JWT token for the user
+        /// </summary>
+        /// <param name="userId">Id of the user</param>
+        /// <returns>Token generated or null if the user doesn't exist</returns>
+        private async Task<string?> GenerateJwtToken(string userId)
+        {
+            //Temporary stuff to future use role getter method
+            var user = _userRepository.GetUserById(userId).Result;
+            if (user == null) return null;
+            var userRole = await GetUserRole(userId);
+            if (userRole is null) return null;
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_jwtSecret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Name, userId),
+                    new Claim(ClaimTypes.Role, userRole) // NEED TO BE CHANGED!! TEMPORARY HARDCODED
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
+        /// <summary>
+        /// Get the role of the user based on their Id
+        /// </summary>
+        /// <returns>Role of the user, null if the user doesn't exists</returns>
+        private async Task<string?> GetUserRole(string userId)
+        {
+            var client = await _clientRepository.GetClientById(userId);
+            if (client != null) return client.IsAdministrator ? ADMIN_ROLE : CLIENT_ROLE;
+            var specialist = await _specialistRepository.GetSpecialistById(userId);
+            return specialist != null ? SPECIALIST_ROLE : null;
+        }
         #endregion
 
 
@@ -99,61 +158,29 @@ namespace PsicoAppAPI.Services
             var result = await _userRepository.GetUserByIdOrEmail(id, email);
             return result;
         }
-        #endregion
 
-
-        #region CLASS_METHODS
-        public UserService(IConfiguration configuration, IUserRepository userRepository,
-            IClientRepository clientRepository, ISpecialistRepository specialistRepository, IMapper mapper)
+        public Task<User?> UpdateProfileInformation(UpdateProfileInformationDto updateProfileInformationDto)
         {
-            _specialistRepository = specialistRepository ?? throw new ArgumentNullException(nameof(specialistRepository));
-            _clientRepository = clientRepository ?? throw new ArgumentNullException(nameof(clientRepository));
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-            var token = configuration.GetValue<string>("JwtSettings:Secret") ??
-                throw new ArgumentException("JwtSettings:Secret is null");
-            _jwtSecret = token;
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Generate a JWT token for the user
-        /// </summary>
-        /// <param name="userId">Id of the user</param>
-        /// <returns>Token generated or null if the user doesn't exist</returns>
-        private async Task<string?> GenerateJwtToken(string userId)
+        public async Task<ProfileInformationDto?> GetUserProfileInformation()
         {
-            //Temporary stuff to future use role getter method
-            var user = _userRepository.GetUserById(userId).Result;
-            if (user == null) return null;
-            var userRole = await GetUserRole(userId);
-            if (userRole is null) return null;
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSecret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, userId),
-                    new Claim(ClaimTypes.Role, userRole) // NEED TO BE CHANGED!! TEMPORARY HARDCODED
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
+            //Check if the HttpContext is available to work with
+            var httpUser = _httpContextAccessor.HttpContext?.User;
+            if (httpUser == null) return null;
 
-        /// <summary>
-        /// Get the role of the user based on their Id
-        /// </summary>
-        /// <returns>Role of the user, null if the user doesn't exists</returns>
-        private async Task<string?> GetUserRole(string userId)
-        {
-            var client = await _clientRepository.GetClientById(userId);
-            if (client != null) return client.IsAdministrator ? ADMIN_ROLE : CLIENT_ROLE;
-            var specialist = await _specialistRepository.GetSpecialistById(userId);
-            return specialist != null ? SPECIALIST_ROLE : null;
+            //Get Claims from JWT
+            var userId = httpUser.FindFirstValue(ClaimTypes.Name);
+            var userRole = httpUser.FindFirstValue(ClaimTypes.Role);
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(userRole)) return null;
+
+            var user = await _userRepository.GetUserById(userId);
+            var profileInformationDto = _mapper.Map<ProfileInformationDto>(user);
+            // Asign manually item cannot be mapped
+            profileInformationDto.Role = userRole;
+
+            return profileInformationDto;
         }
         #endregion
     }

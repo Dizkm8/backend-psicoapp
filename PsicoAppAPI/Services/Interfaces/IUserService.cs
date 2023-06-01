@@ -55,5 +55,17 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="email">User's email</param>
         /// <returns>User if was found, null otherwise</returns>
         public Task<User?> GetUserByIdOrEmail(string? id, string? email);
+        /// <summary>
+        /// Asynchronously update users information contained on Dto shape
+        /// </summary>
+        /// <param name="updateProfileInformationDto">Dto shape with params to update</param>
+        /// <returns>Updated user, null if user cannot be found/updated</returns>
+        public Task<User?> UpdateProfileInformation(UpdateProfileInformationDto updateProfileInformationDto);
+        /// <summary>
+        /// Asynchronously get user profile information by their Id
+        /// </summary>
+        /// <param name="id">User's Id</param>
+        /// <returns>Profile information Dto shape, null if user cannot be found</returns>
+        public Task<ProfileInformationDto?> GetUserProfileInformation();
     }
 }
