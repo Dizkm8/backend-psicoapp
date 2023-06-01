@@ -10,6 +10,7 @@ namespace PsicoAppAPI.RequestHelpers
         {
             CreateMap<RegisterClientDto, User>();
             CreateMap<User, ProfileInformationDto>();
+            CreateMap<User, UpdateProfileInformationDto>();
         }
     }
 }

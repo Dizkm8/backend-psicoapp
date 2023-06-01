@@ -4,6 +4,7 @@ using System.Text;
 using AutoMapper;
 using Microsoft.IdentityModel.Tokens;
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Repositories.Interfaces;
 using PsicoAppAPI.Services.Interfaces;
@@ -52,7 +53,6 @@ namespace PsicoAppAPI.Services
         /// <returns>Token generated or null if the user doesn't exist</returns>
         private async Task<string?> GenerateJwtToken(string userId)
         {
-            //Temporary stuff to future use role getter method
             var user = _userRepository.GetUserById(userId).Result;
             if (user == null) return null;
             var userRole = await GetUserRole(userId);
@@ -64,7 +64,7 @@ namespace PsicoAppAPI.Services
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, userId),
-                    new Claim(ClaimTypes.Role, userRole) // NEED TO BE CHANGED!! TEMPORARY HARDCODED
+                    new Claim(ClaimTypes.Role, userRole)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
@@ -84,6 +84,61 @@ namespace PsicoAppAPI.Services
             if (client != null) return client.IsAdministrator ? ADMIN_ROLE : CLIENT_ROLE;
             var specialist = await _specialistRepository.GetSpecialistById(userId);
             return specialist != null ? SPECIALIST_ROLE : null;
+        }
+
+        /// <summary>
+        /// Get the user id from the token using HttpContext
+        /// </summary>
+        /// <returns>string with the Id. null if something gone wrong</returns>
+        private string? GetUserIdInToken()
+        {
+            //Check if the HttpContext is available to work with
+            var httpUser = _httpContextAccessor.HttpContext?.User;
+            if (httpUser == null) return null;
+
+            //Get Claims from JWT
+            var userId = httpUser.FindFirstValue(ClaimTypes.Name);
+            return string.IsNullOrEmpty(userId) ? null : userId;
+        }
+
+        /// <summary>
+        /// Get the user role from the token using HttpContext
+        /// </summary>
+        /// <returns>string with the Role. null if something gone wrong</returns>
+        private string? GetUserRoleInToken()
+        {
+            //Check if the HttpContext is available to work with
+            var httpUser = _httpContextAccessor.HttpContext?.User;
+            if (httpUser == null) return null;
+
+            //Get Claims from JWT
+            var userRole = httpUser.FindFirstValue(ClaimTypes.Role);
+            return string.IsNullOrEmpty(userRole) ? null : userRole;
+        }
+
+        private static User UpdateProfileInformationToUser(UpdateProfileInformationDto profileInformationDto, User user)
+        {
+            user.Name = profileInformationDto.Name;
+            user.FirstLastName = profileInformationDto.FirstLastName;
+            user.SecondLastName = profileInformationDto.SecondLastName;
+            user.Email = profileInformationDto.Email;
+            user.Gender = profileInformationDto.Gender;
+            user.Phone = profileInformationDto.Phone;
+            return user;
+        }
+        /// <summary>
+        /// Get the userId from the token, found a user in Repository and return it
+        /// </summary>
+        /// <returns>
+        /// User found. If the userId or Token are invalid 
+        /// or simply user doesn't exists on repository return null
+        ///</returns>
+        private async Task<User?> GetUserUsingToken()
+        {
+            var userId = GetUserIdInToken();
+            if (userId is null) return null;
+            var user = await _userRepository.GetUserById(userId);
+            return user is not null ? user : null;
         }
         #endregion
 
@@ -159,28 +214,78 @@ namespace PsicoAppAPI.Services
             return result;
         }
 
-        public Task<User?> UpdateProfileInformation(UpdateProfileInformationDto updateProfileInformationDto)
+        public async Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser)
         {
-            throw new NotImplementedException();
+            var userId = GetUserIdInToken();
+            if (userId == null) return null;
+            var user = await _userRepository.GetUserById(userId);
+            if (user == null) return null;
+
+            var updateUser = UpdateProfileInformationToUser(newUser, user);
+            var savedUser = _userRepository.UpdateUserAndSaveChanges(updateUser);
+            var mappedDto = _mapper.Map<UpdateProfileInformationDto>(savedUser);
+            return mappedDto;
         }
 
         public async Task<ProfileInformationDto?> GetUserProfileInformation()
         {
-            //Check if the HttpContext is available to work with
-            var httpUser = _httpContextAccessor.HttpContext?.User;
-            if (httpUser == null) return null;
-
-            //Get Claims from JWT
-            var userId = httpUser.FindFirstValue(ClaimTypes.Name);
-            var userRole = httpUser.FindFirstValue(ClaimTypes.Role);
-            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(userRole)) return null;
+            var userId = GetUserIdInToken();
+            var userRole = GetUserRoleInToken();
+            if (userId == null || userRole == null) return null;
 
             var user = await _userRepository.GetUserById(userId);
             var profileInformationDto = _mapper.Map<ProfileInformationDto>(user);
-            // Asign manually item cannot be mapped
+            // Asign manually attribute cannot be mapped
             profileInformationDto.Role = userRole;
 
             return profileInformationDto;
+        }
+
+        public async Task<bool> ExistsEmailInOtherUser(string? email, string? id)
+        {
+            // GetUserByEmail also checks if email is null or empty
+            // I do it anyways to avoid unnecessary calls
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(id)) return false;
+            var user = await GetUserByEmail(email);
+            if (user == null) return false;
+            return user.Id != id;
+        }
+
+        public async Task<bool> ExistsEmailInOtherUser(string? email)
+        {
+            if (string.IsNullOrEmpty(email)) return false;
+            var user = await GetUserByEmail(email);
+            if (user == null) return false;
+            var userId = GetUserIdInToken();
+            if (userId == null) return false;
+            return user.Id != userId;
+        }
+
+        public async Task<bool> UpdateUserPassword(string? newPassword)
+        {
+            if(string.IsNullOrEmpty(newPassword)) return false;
+            var user = await GetUserUsingToken();
+            if(user is null) return false;
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            user.Password = passwordHash;
+            var result = _userRepository.UpdateUserAndSaveChanges(user);
+            return result is not null;
+        }
+
+        public async Task<bool> ExistsUserByToken()
+        {
+            var userId = GetUserIdInToken();
+            if (userId is null) return false;
+            var user = await _userRepository.GetUserById(userId);
+            return user is not null;
+        }
+
+        public async Task<bool> CheckUsersPasswordUsingToken(string? password)
+        {
+            if (string.IsNullOrEmpty(password)) return false;
+            var user = await GetUserUsingToken();
+            if(user is null) return false;
+            return BCrypt.Net.BCrypt.Verify(password, user.Password);
         }
         #endregion
     }
