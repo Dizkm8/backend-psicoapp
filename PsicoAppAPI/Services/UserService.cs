@@ -52,7 +52,6 @@ namespace PsicoAppAPI.Services
         /// <returns>Token generated or null if the user doesn't exist</returns>
         private async Task<string?> GenerateJwtToken(string userId)
         {
-            //Temporary stuff to future use role getter method
             var user = _userRepository.GetUserById(userId).Result;
             if (user == null) return null;
             var userRole = await GetUserRole(userId);
@@ -64,7 +63,7 @@ namespace PsicoAppAPI.Services
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, userId),
-                    new Claim(ClaimTypes.Role, userRole) // NEED TO BE CHANGED!! TEMPORARY HARDCODED
+                    new Claim(ClaimTypes.Role, userRole)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
@@ -84,6 +83,36 @@ namespace PsicoAppAPI.Services
             if (client != null) return client.IsAdministrator ? ADMIN_ROLE : CLIENT_ROLE;
             var specialist = await _specialistRepository.GetSpecialistById(userId);
             return specialist != null ? SPECIALIST_ROLE : null;
+        }
+
+        /// <summary>
+        /// Get the user id from the token using HttpContext
+        /// </summary>
+        /// <returns>string with the Id. null if something gone wrong</returns>
+        private string? GetUserIdInToken()
+        {
+            //Check if the HttpContext is available to work with
+            var httpUser = _httpContextAccessor.HttpContext?.User;
+            if (httpUser == null) return null;
+
+            //Get Claims from JWT
+            var userId = httpUser.FindFirstValue(ClaimTypes.Name);
+            return string.IsNullOrEmpty(userId) ? null : userId;
+        }
+
+        /// <summary>
+        /// Get the user role from the token using HttpContext
+        /// </summary>
+        /// <returns>string with the Role. null if something gone wrong</returns>
+        private string? GetUserRoleInToken()
+        {
+            //Check if the HttpContext is available to work with
+            var httpUser = _httpContextAccessor.HttpContext?.User;
+            if (httpUser == null) return null;
+
+            //Get Claims from JWT
+            var userRole = httpUser.FindFirstValue(ClaimTypes.Role);
+            return string.IsNullOrEmpty(userRole) ? null : userRole;
         }
         #endregion
 
@@ -166,18 +195,13 @@ namespace PsicoAppAPI.Services
 
         public async Task<ProfileInformationDto?> GetUserProfileInformation()
         {
-            //Check if the HttpContext is available to work with
-            var httpUser = _httpContextAccessor.HttpContext?.User;
-            if (httpUser == null) return null;
-
-            //Get Claims from JWT
-            var userId = httpUser.FindFirstValue(ClaimTypes.Name);
-            var userRole = httpUser.FindFirstValue(ClaimTypes.Role);
-            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(userRole)) return null;
+            var userId = GetUserIdInToken();
+            var userRole = GetUserRoleInToken();
+            if (userId == null || userRole == null) return null;
 
             var user = await _userRepository.GetUserById(userId);
             var profileInformationDto = _mapper.Map<ProfileInformationDto>(user);
-            // Asign manually item cannot be mapped
+            // Asign manually attribute cannot be mapped
             profileInformationDto.Role = userRole;
 
             return profileInformationDto;

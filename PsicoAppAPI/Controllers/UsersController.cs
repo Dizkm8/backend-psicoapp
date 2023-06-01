@@ -109,7 +109,17 @@ namespace PsicoAppAPI.Controllers
         [HttpPut("profile-information")]
         public async Task<ActionResult> UpdateProfileInformation([FromBody] UpdateProfileInformationDto updateProfileInformationDto)
         {
-            return Ok(updateProfileInformationDto);
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(new { errors });
+            }
+
+            var existsEmail = await _userService.ExistsUserWithEmail(updateProfileInformationDto.Email);
+            if (existsEmail) return BadRequest(new { error = "Email already exists" });
+
+            var result = await _userService.UpdateProfileInformation(updateProfileInformationDto);
+            return Ok(result);
         }
     }
 
