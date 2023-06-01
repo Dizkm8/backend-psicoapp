@@ -114,6 +114,17 @@ namespace PsicoAppAPI.Services
             var userRole = httpUser.FindFirstValue(ClaimTypes.Role);
             return string.IsNullOrEmpty(userRole) ? null : userRole;
         }
+
+        private User UpdateProfileInformationToUser(UpdateProfileInformationDto profileInformationDto, User user)
+        {
+            user.Name = profileInformationDto.Name;
+            user.FirstLastName = profileInformationDto.FirstLastName;
+            user.SecondLastName = profileInformationDto.SecondLastName;
+            user.Email = profileInformationDto.Email;
+            user.Gender = profileInformationDto.Gender;
+            user.Phone = profileInformationDto.Phone;
+            return user;
+        }
         #endregion
 
 
@@ -188,9 +199,17 @@ namespace PsicoAppAPI.Services
             return result;
         }
 
-        public Task<User?> UpdateProfileInformation(UpdateProfileInformationDto updateProfileInformationDto)
+        public async Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser)
         {
-            throw new NotImplementedException();
+            var userId = GetUserIdInToken();
+            if (userId == null) return null;
+            var user = await _userRepository.GetUserById(userId);
+            if (user == null) return null;
+
+            var updateUser = UpdateProfileInformationToUser(newUser, user);
+            var savedUser = _userRepository.UpdateUserAndSaveChanges(updateUser);
+            var mappedDto = _mapper.Map<UpdateProfileInformationDto>(savedUser);
+            return mappedDto;
         }
 
         public async Task<ProfileInformationDto?> GetUserProfileInformation()

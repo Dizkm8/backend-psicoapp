@@ -119,6 +119,8 @@ namespace PsicoAppAPI.Controllers
             if (existsEmail) return BadRequest(new { error = "Email already exists" });
 
             var result = await _userService.UpdateProfileInformation(updateProfileInformationDto);
+            if (result is null) return StatusCode(StatusCodes.Status500InternalServerError,
+                new { error = "Internal error updating User" });
             return Ok(result);
         }
     }

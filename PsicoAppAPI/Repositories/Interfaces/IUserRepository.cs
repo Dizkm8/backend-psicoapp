@@ -77,5 +77,11 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// <param name="email">User's email</param>
         /// <returns>True if exists, otherwise false</returns>
         public Task<bool> ExistsUserByIdOrEmail(string id, string email);
+        /// <summary>
+        /// Update a user
+        /// </summary>
+        /// <param name="user">User to update</param>
+        /// <returns>User updated. null if something gone wrong</returns>
+        public User UpdateUserAndSaveChanges(User user);
     }
 }
