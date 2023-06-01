@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Services.Interfaces;
 
 namespace PsicoAppAPI.Controllers
@@ -114,7 +115,7 @@ namespace PsicoAppAPI.Controllers
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 return BadRequest(new { errors });
             }
-            
+
             // Needs to validate if exists In Different users to avoid
             // rejecting the update if the user doesn't change the email
             var existsEmail = await _userService.ExistsEmailInOtherUser(updateProfileInformationDto.Email);
@@ -124,6 +125,18 @@ namespace PsicoAppAPI.Controllers
             if (result is null) return StatusCode(StatusCodes.Status500InternalServerError,
                 new { error = "Internal error updating User" });
             return Ok(result);
+        }
+
+        [Authorize]
+        [HttpPut("update-password")]
+        public async Task<ActionResult> UpdatePassword([FromBody] UpdatePasswordDto updatePasswordDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(new { errors });
+            }
+            return Ok(updatePasswordDto);
         }
     }
 
