@@ -30,7 +30,7 @@ namespace PsicoAppAPI.Controllers
         /// </returns>
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginUserDto loginUserDto)
+        public async Task<ActionResult> Login([FromBody] LoginUserDto loginUserDto)
         {
             var user = await _userService.GetUser(loginUserDto);
 
@@ -38,7 +38,8 @@ namespace PsicoAppAPI.Controllers
             var token = await _userService.GenerateToken(user.Id);
             if (string.IsNullOrEmpty(token))
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { error = "Token generation failed" });
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ErrorModel { ErrorCode = 500, Message = "Token generation failed" });
             }
             return Ok(new { Token = token });
         }
@@ -68,8 +69,7 @@ namespace PsicoAppAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                return BadRequest(new { errors });
+                return BadRequest(ModelState);
             }
 
             var existsEmail = await _userService.ExistsUserWithEmail(registerClientDto.Email);
@@ -83,7 +83,7 @@ namespace PsicoAppAPI.Controllers
 
             var clientAdded = await _userService.AddClient(registerClientDto);
             if (clientAdded is null) return StatusCode(StatusCodes.Status500InternalServerError,
-                new { error = "Internal error adding User" });
+                new ErrorModel { ErrorCode = 500, Message = "Internal error adding User" });
 
             return Ok(clientAdded);
         }
@@ -102,10 +102,10 @@ namespace PsicoAppAPI.Controllers
         public async Task<ActionResult> GetProfileInformation()
         {
             var profileInformationDto = await _userService.GetUserProfileInformation();
-            if (profileInformationDto == null) return NotFound("User profile information not found");
+            if (profileInformationDto == null) return Unauthorized("JWT not provided or invalid");
             return Ok(profileInformationDto);
         }
-        
+
         /// <summary>
         /// Update the user's profile information extracting Claims included on the JWT token.
         /// </summary>
@@ -130,8 +130,7 @@ namespace PsicoAppAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                return BadRequest(new { errors });
+                return BadRequest(ModelState);
             }
             // Needs to validate if exists In Different users to avoid
             // rejecting the update if the user doesn't change the email
@@ -172,13 +171,13 @@ namespace PsicoAppAPI.Controllers
             }
             // Check if user exists based on the JWT provided
             var existUser = await _userService.ExistsUserByToken();
-            if(!existUser) return BadRequest(new { error = "User not found" });
+            if (!existUser) return BadRequest(new { error = "User not found" });
             // Check if the old password is correct
             var isPasswordCorrect = await _userService.CheckUsersPasswordUsingToken(updatePasswordDto.CurrentPassword);
-            if(!isPasswordCorrect) return BadRequest(new { error = "Current password is incorrect" });
+            if (!isPasswordCorrect) return BadRequest(new { error = "Current password is incorrect" });
             // Tries to update the password
             var result = await _userService.UpdateUserPassword(updatePasswordDto.NewPassword);
-            if(!result) return StatusCode(StatusCodes.Status500InternalServerError,
+            if (!result) return StatusCode(StatusCodes.Status500InternalServerError,
                 new { error = "Internal error updating User" });
             // No info is returned if the password was updated successfully
             // because the user is logged out after the password is updated
