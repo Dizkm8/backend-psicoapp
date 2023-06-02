@@ -13,12 +13,6 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <returns>User if it was found, null if not</returns>
         public Task<User?> GetUser(LoginUserDto loginUserDto);
         /// <summary>
-        /// Generate a JWT token for the user
-        /// </summary>
-        /// <param name="id">User id to assign token</param>
-        /// <returns>string if the user id exists or wasn't null. Otherwise null</returns>
-        public Task<string?> GenerateToken(string? id);
-        /// <summary>
         /// Async add a new client to the database based on RegisterClientDto shape
         /// </summary>
         /// <param name="registerClientDto">Client to add</param>
@@ -57,17 +51,19 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <returns>User if was found, null otherwise</returns>
         public Task<User?> GetUserByIdOrEmail(string? id, string? email);
         /// <summary>
-        /// Asynchronously update users information contained on Dto shape
+        /// Asynchronously update users information contained on Dto shape by their Id
         /// </summary>
         /// <param name="newUser">Dto shape with params to update</param>
+        /// <param name="userId">user's Id</param>
         /// <returns>Dto with updated user, null if user cannot be found or updated</returns>
-        public Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser);
+        public Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser, string? userId);
         /// <summary>
-        /// Asynchronously get user profile information by their Id
+        /// Asynchronously get user profile information by their Id and role
         /// </summary>
-        /// <param name="id">User's Id</param>
+        /// <param name="userId">User's Id</param>
+        /// <param name="userRole">User's Role</param>
         /// <returns>Profile information Dto shape, null if user cannot be found</returns>
-        public Task<ProfileInformationDto?> GetUserProfileInformation();
+        public Task<ProfileInformationDto?> GetUserProfileInformation(string? userId, string? userRole);
         /// <summary>
         /// Asynchronously check if an email exists in other user than the one with the id
         /// </summary>
@@ -76,28 +72,18 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <returns>True if exists. Otherwise false</returns>
         public Task<bool> ExistsEmailInOtherUser(string? email, string? id);
         /// <summary>
-        /// Asynchronously check if an email exists in other user than the one with the id extracting them from Token
+        /// Asynchronously get a user by their Id
         /// </summary>
-        /// <param name="email">User's email</param>
-        /// <returns>True if exists. Otherwise false</returns>
-        public Task<bool> ExistsEmailInOtherUser(string? email);
+        /// <param name="id">user id</param>
+        /// <returns>The user if it's found, null if not</returns>
+        public Task<User?> GetUserById(string? id);
         /// <summary>
-        /// Asynchronously update user password
+        /// Asynchronously update user password by their Id
         /// </summary>
-        /// <param name="newPassword">New user's password</param>
-        /// <returns>True if password could be changes. Otherwise false</returns>
-        public Task<bool> UpdateUserPassword(string? newPassword);
-        /// <summary>
-        /// Asynchronously check if a user exists by their Id in the token extracted using HttpContext injection
-        /// </summary>
-        /// <returns>True if its was found. Otherwise null</returns>
-        public Task<bool> ExistsUserByToken();
-        /// <summary>
-        /// Asynchronously check if the provided password matches with the current user's password 
-        /// The user is found using the userID extracted from the JWT
-        /// </summary>
-        /// <param name="password">User's password</param>
-        /// <returns>true if the password match. Otherwise false</returns>
-        public Task<bool> CheckUsersPasswordUsingToken(string? password);
+        /// <param name="userId">User's Id</param>
+        /// <param name="hashedPassword">User's hashed password</param>
+        /// <returns>True if password could be changed. Otherwise false</returns>
+        public Task<bool> UpdateUserPassword(string? userId, string? hashedPassword);
+        
     }
 }

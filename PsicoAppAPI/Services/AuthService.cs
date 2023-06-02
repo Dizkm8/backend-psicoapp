@@ -17,6 +17,7 @@ namespace PsicoAppAPI.Services
         private readonly IUsersUnitOfWork _usersUnitOfWork;
         private readonly IMapperService _mapperService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IBCryptService _bcryptService;
         #endregion
 
         #region CONSTANTS
@@ -29,7 +30,8 @@ namespace PsicoAppAPI.Services
 
         #region CLASS_METHODS
         public AuthService(IConfiguration configuration, IUsersUnitOfWork usersUnitOfWork,
-            IMapperService mapperService, IHttpContextAccessor httpContextAccessor)
+            IMapperService mapperService, IHttpContextAccessor httpContextAccessor,
+            IBCryptService bcryptService)
         {
             var token = configuration.GetValue<string>("JwtSettings:Secret") ??
                 throw new ArgumentException("JwtSettings:Secret is null");
@@ -37,6 +39,7 @@ namespace PsicoAppAPI.Services
             _usersUnitOfWork = usersUnitOfWork ?? throw new ArgumentNullException(nameof(usersUnitOfWork));
             _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            _bcryptService = bcryptService ?? throw new ArgumentNullException(nameof(bcryptService));
         }
 
         /// <summary>
@@ -66,12 +69,27 @@ namespace PsicoAppAPI.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+        #endregion
 
-        /// <summary>
-        /// Get the role of the user based on their Id
-        /// </summary>
-        /// <returns>Role of the user, null if the user doesn't exists</returns>
-        private async Task<string?> GetUserRole(string userId)
+        #region INTERFACE_METHODS
+        public async Task<User?> GetUserUsingToken()
+        {
+            var userId = GetUserIdInToken();
+            if (userId is null) return null;
+            var user = await _usersUnitOfWork.UserRepository.GetUserById(userId);
+            return user is not null ? user : null;
+        }
+        public async Task<string?> GenerateToken(string? id)
+        {
+            if (id == null)
+            {
+                throw new ArgumentNullException(nameof(id), "User identifier cannot be null");
+            }
+            var token = await GenerateJwtToken(id);
+            return token;
+        }
+
+        public async Task<string?> GetUserRole(string userId)
         {
             var client = await _usersUnitOfWork.ClientRepository.GetClientById(userId);
             if (client != null) return client.IsAdministrator ? ADMIN_ROLE : CLIENT_ROLE;
@@ -79,11 +97,7 @@ namespace PsicoAppAPI.Services
             return specialist != null ? SPECIALIST_ROLE : null;
         }
 
-        /// <summary>
-        /// Get the user id from the token using HttpContext
-        /// </summary>
-        /// <returns>string with the Id. null if something gone wrong</returns>
-        private string? GetUserIdInToken()
+        public string? GetUserIdInToken()
         {
             //Check if the HttpContext is available to work with
             var httpUser = _httpContextAccessor.HttpContext?.User;
@@ -94,11 +108,7 @@ namespace PsicoAppAPI.Services
             return string.IsNullOrEmpty(userId) ? null : userId;
         }
 
-        /// <summary>
-        /// Get the user role from the token using HttpContext
-        /// </summary>
-        /// <returns>string with the Role. null if something gone wrong</returns>
-        private string? GetUserRoleInToken()
+        public string? GetUserRoleInToken()
         {
             //Check if the HttpContext is available to work with
             var httpUser = _httpContextAccessor.HttpContext?.User;
@@ -109,30 +119,13 @@ namespace PsicoAppAPI.Services
             return string.IsNullOrEmpty(userRole) ? null : userRole;
         }
 
-        /// <summary>
-        /// Get the userId from the token, found a user in Repository and return it
-        /// </summary>
-        /// <returns>
-        /// User found. If the userId or Token are invalid 
-        /// or simply user doesn't exists on repository return null
-        ///</returns>
-        private async Task<User?> GetUserUsingToken()
+        public async Task<bool> CheckUsersPasswordUsingToken(string? password)
         {
-            var userId = GetUserIdInToken();
-            if (userId is null) return null;
-            var user = await _usersUnitOfWork.UserRepository.GetUserById(userId);
-            return user is not null ? user : null;
+            if (string.IsNullOrEmpty(password)) return false;
+            var user = await GetUserUsingToken();
+            if (user is null) return false;
+            return _bcryptService.VerifyPassword(password, user.Password);
         }
         #endregion
-
-        public async Task<string?> GenerateToken(string? id)
-        {
-            if (id == null)
-            {
-                throw new ArgumentNullException(nameof(id), "User identifier cannot be null");
-            }
-            var token = await GenerateJwtToken(id);
-            return token;
-        }
     }
 }

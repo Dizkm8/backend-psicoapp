@@ -2,17 +2,18 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
+using PsicoAppAPI.ServiceMediators.Interfaces;
 using PsicoAppAPI.Services.Interfaces;
 
 namespace PsicoAppAPI.Controllers
 {
     public class UsersController : BaseApiController
     {
-        private readonly IUserService _userService;
+        private readonly IUserManagementService _userManagementService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserManagementService userManagementService)
         {
-            _userService = userService;
+            _userManagementService = userManagementService;
         }
 
         /// <summary>
@@ -28,7 +29,7 @@ namespace PsicoAppAPI.Controllers
         [HttpGet("profile-information")]
         public async Task<ActionResult> GetProfileInformation()
         {
-            var profileInformationDto = await _userService.GetUserProfileInformation();
+            var profileInformationDto = await _userManagementService.GetUserProfileInformation();
             if (profileInformationDto == null) return Unauthorized("JWT not provided or invalid");
             return Ok(profileInformationDto);
         }
@@ -61,54 +62,13 @@ namespace PsicoAppAPI.Controllers
             }
             // Needs to validate if exists In Different users to avoid
             // rejecting the update if the user doesn't change the email
-            var existsEmail = await _userService.ExistsEmailInOtherUser(updateProfileInformationDto.Email);
+            var existsEmail = await _userManagementService.ExistsEmailInOtherUser(updateProfileInformationDto.Email);
             if (existsEmail) return BadRequest(new { error = "Email already exists" });
 
-            var result = await _userService.UpdateProfileInformation(updateProfileInformationDto);
+            var result = await _userManagementService.UpdateProfileInformation(updateProfileInformationDto);
             if (result is null) return StatusCode(StatusCodes.Status500InternalServerError,
                 new { error = "Internal error updating User" });
             return Ok(result);
-        }
-
-        /// <summary>
-        /// Update the user's password extracting Claims included on the JWT token.
-        /// </summary>
-        /// <param name="updatePasswordDto">
-        /// CurrentPassword: User's current password, must be not null or empty
-        /// NewPassword: User's new password, must be not null or empty and have a length between 10 and 15 characters
-        /// ConfirmNewPassword: User's new password confirmation, 
-        /// must be not null or empty, have a length between 10 and 15 characters
-        /// and match with the NewPassword param
-        /// </param>
-        /// <returns>
-        /// If the ModelState have errors based on params requeriments, return a Status 400 with the errors.
-        /// If the user is not found based on JWT, return a Status 400 with the error.
-        /// If the currentPassword provided is incorrect, return a Status 400 with the error.
-        /// If something went wrong updating the password, return a Status 500 with generic error.
-        /// If the password is updated successfully, return a Status 200 with no info.«
-        /// </returns>
-        [Authorize]
-        [HttpPut("update-password")]
-        public async Task<ActionResult> UpdatePassword([FromBody] UpdatePasswordDto updatePasswordDto)
-        {
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                return BadRequest(new { errors });
-            }
-            // Check if user exists based on the JWT provided
-            var existUser = await _userService.ExistsUserByToken();
-            if (!existUser) return BadRequest(new { error = "User not found" });
-            // Check if the old password is correct
-            var isPasswordCorrect = await _userService.CheckUsersPasswordUsingToken(updatePasswordDto.CurrentPassword);
-            if (!isPasswordCorrect) return BadRequest(new { error = "Current password is incorrect" });
-            // Tries to update the password
-            var result = await _userService.UpdateUserPassword(updatePasswordDto.NewPassword);
-            if (!result) return StatusCode(StatusCodes.Status500InternalServerError,
-                new { error = "Internal error updating User" });
-            // No info is returned if the password was updated successfully
-            // because the user is logged out after the password is updated
-            return Ok();
         }
     }
 

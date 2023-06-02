@@ -54,13 +54,14 @@ namespace PsicoAppAPI.Extensions
 
         private static IServiceCollection AddRepositories(IServiceCollection services)
         {
+            services.AddScoped<IBCryptService, BCryptService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<ISpecialistRepository, SpecialistRepository>();
             services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
-            services.AddScoped<IBCryptService, BCryptService>();
             return services;
         }
+
 
         private static IServiceCollection AddSwaggerGen(IServiceCollection services)
         {
