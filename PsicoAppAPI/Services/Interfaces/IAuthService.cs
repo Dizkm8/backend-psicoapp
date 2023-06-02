@@ -35,10 +35,12 @@ namespace PsicoAppAPI.Services.Interfaces
         public Task<User?> GetUserUsingToken();
         /// <summary>
         /// Asynchronously check if the provided password matches with the current user's password 
+        /// using bCryptService.
         /// The user is found using the userID extracted from the JWT
         /// </summary>
         /// <param name="password">User's password</param>
+        /// <param name="bCryptService">IBcryptService instance</param>
         /// <returns>true if the password match. Otherwise false</returns>
-        public Task<bool> CheckUsersPasswordUsingToken(string? password);
+        public Task<bool> CheckUsersPasswordUsingToken(string? password, IBCryptService bCryptService);
     }
 }

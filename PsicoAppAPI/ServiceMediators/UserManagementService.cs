@@ -22,6 +22,20 @@ namespace PsicoAppAPI.ServiceMediators
 
         public IAuthService AuthService => _authService;
 
+        public async Task<RegisterClientDto?> AddClient(RegisterClientDto registerClientDto)
+        {
+            if (registerClientDto.Password is null) return null;
+            var hashedPassword = _bcryptService.HashPassword(registerClientDto.Password);
+            var userDto = await _userService.AddClient(registerClientDto, hashedPassword);
+            return userDto;
+        }
+
+        public async Task<bool> CheckUsersPasswordUsingToken(string? password)
+        {
+            var result = await _authService.CheckUsersPasswordUsingToken(password, _bcryptService);
+            return result;
+        }
+
         public async Task<bool> ExistsEmailInOtherUser(string? email)
         {
             var userId = _authService.GetUserIdInToken();
@@ -54,8 +68,7 @@ namespace PsicoAppAPI.ServiceMediators
         public async Task<bool> UpdateUserPassword(string? newPassword)
         {
             var userId = _authService.GetUserIdInToken();
-            var hashedPassword = _bcryptService.HashPassword(newPassword);
-            var result = await _userService.UpdateUserPassword(userId, hashedPassword);
+            var result = await _userService.UpdateUserPassword(userId, newPassword, _bcryptService);
             return result;
         }
     }

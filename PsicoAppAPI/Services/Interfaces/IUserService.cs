@@ -14,10 +14,12 @@ namespace PsicoAppAPI.Services.Interfaces
         public Task<User?> GetUser(LoginUserDto loginUserDto);
         /// <summary>
         /// Async add a new client to the database based on RegisterClientDto shape
+        /// and using the password previously hashed
         /// </summary>
         /// <param name="registerClientDto">Client to add</param>
+        /// /// <param name="hashedPassword">User's password hash</param>
         /// <returns>Added user, null it was not added</returns>
-        public Task<RegisterClientDto?> AddClient(RegisterClientDto registerClientDto);
+        public Task<RegisterClientDto?> AddClient(RegisterClientDto registerClientDto, string? hashedPassword);
         /// <summary>
         /// Asynchronously get a user by email
         /// </summary>
@@ -81,9 +83,10 @@ namespace PsicoAppAPI.Services.Interfaces
         /// Asynchronously update user password by their Id
         /// </summary>
         /// <param name="userId">User's Id</param>
-        /// <param name="hashedPassword">User's hashed password</param>
+        /// <param name="newPassword">User's new Password</param>
+        /// <param name="bCryptService">IBcryptService instance</param>
         /// <returns>True if password could be changed. Otherwise false</returns>
-        public Task<bool> UpdateUserPassword(string? userId, string? hashedPassword);
+        public Task<bool> UpdateUserPassword(string? userId, string? newPassword, IBCryptService bCryptService);
         
     }
 }

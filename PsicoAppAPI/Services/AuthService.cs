@@ -16,7 +16,6 @@ namespace PsicoAppAPI.Services
         private readonly string _jwtSecret;
         private readonly IUsersUnitOfWork _usersUnitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IBCryptService _bcryptService;
         #endregion
 
         #region CONSTANTS
@@ -29,14 +28,13 @@ namespace PsicoAppAPI.Services
 
         #region CLASS_METHODS
         public AuthService(IConfiguration configuration, IUsersUnitOfWork usersUnitOfWork,
-            IHttpContextAccessor httpContextAccessor, IBCryptService bcryptService)
+            IHttpContextAccessor httpContextAccessor)
         {
             var token = configuration.GetValue<string>("JwtSettings:Secret") ??
                 throw new ArgumentException("JwtSettings:Secret is null");
             _jwtSecret = token;
             _usersUnitOfWork = usersUnitOfWork ?? throw new ArgumentNullException(nameof(usersUnitOfWork));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
-            _bcryptService = bcryptService ?? throw new ArgumentNullException(nameof(bcryptService));
         }
 
         /// <summary>
@@ -116,12 +114,12 @@ namespace PsicoAppAPI.Services
             return string.IsNullOrEmpty(userRole) ? null : userRole;
         }
 
-        public async Task<bool> CheckUsersPasswordUsingToken(string? password)
+        public async Task<bool> CheckUsersPasswordUsingToken(string? password, IBCryptService bCryptService)
         {
             if (string.IsNullOrEmpty(password)) return false;
             var user = await GetUserUsingToken();
             if (user is null) return false;
-            return _bcryptService.VerifyPassword(password, user.Password);
+            return bCryptService.VerifyPassword(password, user.Password);
         }
         #endregion
     }

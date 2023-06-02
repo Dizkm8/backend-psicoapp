@@ -44,5 +44,20 @@ namespace PsicoAppAPI.ServiceMediators.Interfaces
         /// <param name="newUser">Dto shape with params to update</param>
         /// <returns>Dto with updated user, null if user cannot be found or updated</returns>
         public Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser);
+        /// <summary>
+        /// Async add a new client to the database based on RegisterClientDto shape
+        /// </summary>
+        /// <param name="registerClientDto">Client to add</param>
+        /// <returns>Added user, null it was not added</returns>
+        public Task<RegisterClientDto?> AddClient(RegisterClientDto registerClientDto);
+        /// <summary>
+        /// Asynchronously check if the provided password matches with the current user's password.
+        /// The user is found using the userId extracted from the JWT
+        /// </summary>
+        /// <param name="password">User's password</param>
+        /// <returns>true if the password match. Otherwise false</returns>
+        public Task<bool> CheckUsersPasswordUsingToken(string? password);
+
+        
     }
 }

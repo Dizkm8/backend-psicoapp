@@ -81,7 +81,7 @@ namespace PsicoAppAPI.Controllers
             // Return Id or Email duplicated error if exists
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var clientAdded = await _userManagementService.UserService.AddClient(registerClientDto);
+            var clientAdded = await _userManagementService.AddClient(registerClientDto);
             if (clientAdded is null) return StatusCode(StatusCodes.Status500InternalServerError,
                 new ErrorModel { ErrorCode = 500, Message = "Internal error adding User" });
 
@@ -118,8 +118,8 @@ namespace PsicoAppAPI.Controllers
             var existUser = await _userManagementService.ExistsUserByToken();
             if (!existUser) return BadRequest(new { error = "User not found" });
             // Check if the old password is correct
-            var aS = _userManagementService.AuthService;
-            var isPasswordCorrect = await aS.CheckUsersPasswordUsingToken(updatePasswordDto.CurrentPassword);
+            var password = updatePasswordDto.CurrentPassword;
+            var isPasswordCorrect = await _userManagementService.CheckUsersPasswordUsingToken(password);
             if (!isPasswordCorrect) return BadRequest(new { error = "Current password is incorrect" });
             // Tries to update the password
             var result = await _userManagementService.UpdateUserPassword(updatePasswordDto.NewPassword);

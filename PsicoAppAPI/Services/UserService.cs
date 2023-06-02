@@ -16,17 +16,14 @@ namespace PsicoAppAPI.Services
         #region CLASS_ATTRIBUTES
         private readonly IMapper _mapper;
         private readonly IUsersUnitOfWork _usersUnitOfWork;
-        private readonly IBCryptService _bCryptService;
         private readonly IMapperService _mapperService;
         #endregion
 
 
         #region CLASS_METHODS
-        public UserService(IUsersUnitOfWork usersUnitOfWork, IMapper mapper,
-            IBCryptService bCryptService, IMapperService mapperService)
+        public UserService(IUsersUnitOfWork usersUnitOfWork, IMapper mapper, IMapperService mapperService)
         {
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _bCryptService = bCryptService ?? throw new ArgumentNullException(nameof(bCryptService));
             _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
             _usersUnitOfWork = usersUnitOfWork ?? throw new ArgumentNullException(nameof(usersUnitOfWork));
         }
@@ -42,16 +39,15 @@ namespace PsicoAppAPI.Services
             return BCrypt.Net.BCrypt.Verify(loginUserDto.Password, user.Password) ? user : null;
         }
 
-        public async Task<RegisterClientDto?> AddClient(RegisterClientDto registerClientDto)
+        public async Task<RegisterClientDto?> AddClient(RegisterClientDto registerClientDto, string? hashedPassword)
         {
             var user = _mapperService.MapToUser(registerClientDto);
             if (user == null) return null;
             user.IsEnabled = true;
             // Hashes the password and check if it was successful
-            var passwordHash = _bCryptService.HashPassword(registerClientDto.Password);
-            if (passwordHash is null) return null;
+            if (hashedPassword is null) return null;
             // asigns to user
-            user.Password = passwordHash;
+            user.Password = hashedPassword;
             _ = await _usersUnitOfWork.UserRepository.AddUserAndSaveChanges(user);
             // If user.Id is null its summons an empty string, RegisterClientDto it cannot be null
             // because of class itself with the controller validations,
@@ -133,9 +129,11 @@ namespace PsicoAppAPI.Services
             return user;
         }
 
-        public async Task<bool> UpdateUserPassword(string? userId, string? hashedPassword)
+        public async Task<bool> UpdateUserPassword(string? userId, string? newPassword, IBCryptService bCryptService)
         {
-            if (string.IsNullOrEmpty(hashedPassword) || string.IsNullOrEmpty(userId)) return false;
+            if(string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(userId)) return false;
+            var hashedPassword = bCryptService.HashPassword(newPassword);
+            if (string.IsNullOrEmpty(hashedPassword)) return false;
             var user = await GetUserById(userId);
             if (user is null) return false;
             // Assign hashed password to user before save it
