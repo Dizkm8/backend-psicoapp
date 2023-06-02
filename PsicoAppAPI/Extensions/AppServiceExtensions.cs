@@ -6,6 +6,8 @@ using Microsoft.OpenApi.Models;
 using PsicoAppAPI.Data;
 using PsicoAppAPI.Repositories;
 using PsicoAppAPI.Repositories.Interfaces;
+using PsicoAppAPI.ServiceMediators;
+using PsicoAppAPI.ServiceMediators.Interfaces;
 using PsicoAppAPI.Services;
 using PsicoAppAPI.Services.Interfaces;
 using Swashbuckle.AspNetCore.Filters;
@@ -22,9 +24,16 @@ namespace PsicoAppAPI.Extensions
             services = AddAutoMapper(services);
             services = AddRepositories(services);
             services = AddServices(services);
+            services = AddServiceMediators(services);
             services = AddData(services, config);
             services = AddAuthentication(services, config);
             services = AddHttpContextAccesor(services);
+            return services;
+        }
+
+        private static IServiceCollection AddServiceMediators(IServiceCollection services)
+        {
+            services.AddScoped<IUserManagementService, UserManagementService>();
             return services;
         }
 
@@ -45,11 +54,14 @@ namespace PsicoAppAPI.Extensions
 
         private static IServiceCollection AddRepositories(IServiceCollection services)
         {
+            services.AddScoped<IBCryptService, BCryptService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<ISpecialistRepository, SpecialistRepository>();
+            services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
             return services;
         }
+
 
         private static IServiceCollection AddSwaggerGen(IServiceCollection services)
         {
@@ -75,6 +87,8 @@ namespace PsicoAppAPI.Extensions
         private static IServiceCollection AddServices(IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IMapperService, MapperService>();
             return services;
         }
 
@@ -94,11 +108,5 @@ namespace PsicoAppAPI.Extensions
             });
             return services;
         }
-
-
-
-
-
-
     }
 }
