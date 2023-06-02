@@ -1,5 +1,4 @@
 using PsicoAppAPI.DTOs;
-using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.Services.Interfaces
@@ -13,13 +12,13 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <returns>User if it was found, null if not</returns>
         public Task<User?> GetUser(LoginUserDto loginUserDto);
         /// <summary>
-        /// Async add a new client to the database based on RegisterClientDto shape
+        /// Async add a new client to the database based on User entity
         /// and using the password previously hashed
         /// </summary>
-        /// <param name="registerClientDto">Client to add</param>
-        /// /// <param name="hashedPassword">User's password hash</param>
-        /// <returns>Added user, null it was not added</returns>
-        public Task<RegisterClientDto?> AddClient(RegisterClientDto registerClientDto, string? hashedPassword);
+        /// <param name="user">Client to add</param>
+        /// <param name="bCryptService">IBcryptService instance</param>
+        /// <returns>True if could be added, false if not</returns>
+        public Task<bool> AddClient(User? user, IBCryptService bCryptService);
         /// <summary>
         /// Asynchronously get a user by email
         /// </summary>
@@ -57,15 +56,17 @@ namespace PsicoAppAPI.Services.Interfaces
         /// </summary>
         /// <param name="newUser">Dto shape with params to update</param>
         /// <param name="userId">user's Id</param>
+        /// <param name="mapperService">IMapperService instance</param>
         /// <returns>Dto with updated user, null if user cannot be found or updated</returns>
-        public Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser, string? userId);
+        public Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser, string? userId, IMapperService mapperService);
         /// <summary>
         /// Asynchronously get user profile information by their Id and role
         /// </summary>
         /// <param name="userId">User's Id</param>
         /// <param name="userRole">User's Role</param>
+        /// <param name="mapperService">IMapperService instance</param>
         /// <returns>Profile information Dto shape, null if user cannot be found</returns>
-        public Task<ProfileInformationDto?> GetUserProfileInformation(string? userId, string? userRole);
+        public Task<ProfileInformationDto?> GetUserProfileInformation(string? userId, string? userRole, IMapperService mapperService);
         /// <summary>
         /// Asynchronously check if an email exists in other user than the one with the id
         /// </summary>

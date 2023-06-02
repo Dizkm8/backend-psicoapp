@@ -9,13 +9,15 @@ namespace PsicoAppAPI.ServiceMediators
         private readonly IUserService _userService;
         private readonly IAuthService _authService;
         private readonly IBCryptService _bcryptService;
+        private readonly IMapperService _mapperService;
 
         public UserManagementService(IUserService userService, IAuthService authService,
-            IBCryptService bcryptService)
+            IBCryptService bcryptService, IMapperService mapperService)
         {
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
             _bcryptService = bcryptService ?? throw new ArgumentNullException(nameof(bcryptService));
+            _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
         }
 
         public IUserService UserService => _userService;
@@ -25,9 +27,10 @@ namespace PsicoAppAPI.ServiceMediators
         public async Task<RegisterClientDto?> AddClient(RegisterClientDto registerClientDto)
         {
             if (registerClientDto.Password is null) return null;
-            var hashedPassword = _bcryptService.HashPassword(registerClientDto.Password);
-            var userDto = await _userService.AddClient(registerClientDto, hashedPassword);
-            return userDto;
+            var user = _mapperService.MapToUser(registerClientDto);
+            if (user is null) return null;
+            var result = await _userService.AddClient(user, _bcryptService);
+            return result ? registerClientDto : null;
         }
 
         public async Task<bool> CheckUsersPasswordUsingToken(string? password)
@@ -54,14 +57,14 @@ namespace PsicoAppAPI.ServiceMediators
         {
             var userId = _authService.GetUserIdInToken();
             var userRole = _authService.GetUserRoleInToken();
-            var profileInfo = await _userService.GetUserProfileInformation(userId, userRole);
+            var profileInfo = await _userService.GetUserProfileInformation(userId, userRole, _mapperService);
             return profileInfo;
         }
 
         public async Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser)
         {
             var userId = _authService.GetUserIdInToken();
-            var userProfile = await _userService.UpdateProfileInformation(newUser, userId);
+            var userProfile = await _userService.UpdateProfileInformation(newUser, userId, _mapperService);
             return userProfile;
         }
 

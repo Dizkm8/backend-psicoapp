@@ -21,5 +21,19 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="user">User destination</param>
         /// <returns>User mapped</returns>
         public User MapAttributesToUser(UpdateProfileInformationDto profileInformationDto, User user);
+        /// <summary>
+        /// Maps the user attributes to a ProfileInformationDto
+        /// None attribute of Dto returned is null
+        /// </summary>
+        /// <param name="user">User soure</param>
+        /// <returns>Dto mapped</returns>
+        public UpdateProfileInformationDto? MapToUpdatedProfileInformationDto(User? user);
+        /// <summary>
+        /// Maps the user attributes to a ProfileInformationDto
+        /// Role attribute of Dto returned is null
+        /// </summary>
+        /// <param name="user">User source</param>
+        /// <returns>Dto mapped</returns>
+        public ProfileInformationDto? MapToProfileInformationDto(User? user);
     }
 }

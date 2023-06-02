@@ -1,10 +1,5 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using AutoMapper;
-using Microsoft.IdentityModel.Tokens;
 using PsicoAppAPI.DTOs;
-using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Repositories.Interfaces;
 using PsicoAppAPI.Services.Interfaces;
@@ -14,17 +9,13 @@ namespace PsicoAppAPI.Services
     public class UserService : IUserService
     {
         #region CLASS_ATTRIBUTES
-        private readonly IMapper _mapper;
         private readonly IUsersUnitOfWork _usersUnitOfWork;
-        private readonly IMapperService _mapperService;
         #endregion
 
 
         #region CLASS_METHODS
-        public UserService(IUsersUnitOfWork usersUnitOfWork, IMapper mapper, IMapperService mapperService)
+        public UserService(IUsersUnitOfWork usersUnitOfWork)
         {
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
             _usersUnitOfWork = usersUnitOfWork ?? throw new ArgumentNullException(nameof(usersUnitOfWork));
         }
         #endregion
@@ -39,13 +30,14 @@ namespace PsicoAppAPI.Services
             return BCrypt.Net.BCrypt.Verify(loginUserDto.Password, user.Password) ? user : null;
         }
 
-        public async Task<RegisterClientDto?> AddClient(RegisterClientDto registerClientDto, string? hashedPassword)
+        public async Task<bool> AddClient(User? user, IBCryptService bCryptService)
         {
-            var user = _mapperService.MapToUser(registerClientDto);
-            if (user == null) return null;
+            if(user is null || bCryptService is null) return false;
+            var password = user.Password;
+            if(string.IsNullOrEmpty(password)) return false;
             user.IsEnabled = true;
             // Hashes the password and check if it was successful
-            if (hashedPassword is null) return null;
+            var hashedPassword = bCryptService.HashPassword(password);
             // asigns to user
             user.Password = hashedPassword;
             _ = await _usersUnitOfWork.UserRepository.AddUserAndSaveChanges(user);
@@ -54,7 +46,7 @@ namespace PsicoAppAPI.Services
             /// anyways, I made this to avoid warning message
             var client = _usersUnitOfWork.ClientRepository.CreateClient(false, user.Id ?? "");
             _ = await _usersUnitOfWork.ClientRepository.AddClientAndSaveChanges(client);
-            return registerClientDto;
+            return true;
         }
 
         public async Task<User?> GetUserByEmail(string? email)
@@ -92,25 +84,25 @@ namespace PsicoAppAPI.Services
             return result;
         }
 
-        public async Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser, string? userId)
+        public async Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser, string? userId, IMapperService mapperService)
         {
             if (userId == null) return null;
             var user = await _usersUnitOfWork.UserRepository.GetUserById(userId);
             if (user == null) return null;
-            var updateUser = _mapperService.MapAttributesToUser(newUser, user);
+            var updateUser = mapperService.MapAttributesToUser(newUser, user);
             var savedUser = _usersUnitOfWork.UserRepository.UpdateUserAndSaveChanges(updateUser);
-            var mappedDto = _mapper.Map<UpdateProfileInformationDto>(savedUser);
+            var mappedDto = mapperService.MapToUpdatedProfileInformationDto(savedUser);
             return mappedDto;
         }
 
-        public async Task<ProfileInformationDto?> GetUserProfileInformation(string? userId, string? userRole)
+        public async Task<ProfileInformationDto?> GetUserProfileInformation(string? userId, string? userRole, IMapperService mapperService)
         {
             if (userId == null || userRole == null) return null;
             var user = await _usersUnitOfWork.UserRepository.GetUserById(userId);
-            var profileInformationDto = _mapper.Map<ProfileInformationDto>(user);
+            var profileInformationDto = mapperService.MapToProfileInformationDto(user);
+            if(profileInformationDto is null) return null;
             // Asign manually attribute cannot be mapped
             profileInformationDto.Role = userRole;
-
             return profileInformationDto;
         }
 

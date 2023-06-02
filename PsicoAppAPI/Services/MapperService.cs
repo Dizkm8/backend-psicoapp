@@ -25,6 +25,18 @@ namespace PsicoAppAPI.Services
             return user;
         }
 
+        public ProfileInformationDto? MapToProfileInformationDto(User? user)
+        {
+            if(user is null) return null;
+            return _mapper.Map<ProfileInformationDto>(user);
+        }
+
+        public UpdateProfileInformationDto? MapToUpdatedProfileInformationDto(User? user)
+        {
+            if(user is null) return null;
+            return _mapper.Map<ProfileInformationDto>(user);
+        }
+
         public User? MapToUser(RegisterClientDto? registerClientDto)
         {
             if (registerClientDto is null) return null;
