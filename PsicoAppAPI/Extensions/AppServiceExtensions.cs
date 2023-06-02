@@ -57,6 +57,7 @@ namespace PsicoAppAPI.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<ISpecialistRepository, SpecialistRepository>();
+            services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
             return services;
         }
 
