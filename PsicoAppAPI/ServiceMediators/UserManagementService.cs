@@ -10,8 +10,12 @@ namespace PsicoAppAPI.ServiceMediators
 
         public UserManagementService(IUserService userService, IAuthService authService)
         {
-            _userService = userService;
-            _authService = authService;
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
         }
+
+        public IUserService UserService => _userService;
+
+        public IAuthService AuthService => _authService;
     }
 }
