@@ -58,6 +58,7 @@ namespace PsicoAppAPI.Extensions
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<ISpecialistRepository, SpecialistRepository>();
             services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
+            services.AddScoped<IBCryptService, BCryptService>();
             return services;
         }
 

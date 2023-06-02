@@ -17,10 +17,12 @@ namespace PsicoAppAPI.Services
         #region INJECTIONS
         readonly string _jwtSecret;
         private readonly IMapper _mapper;
-        readonly IUserRepository _userRepository;
-        readonly IClientRepository _clientRepository;
-        readonly ISpecialistRepository _specialistRepository;
-        readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUserRepository _userRepository;
+        private readonly IClientRepository _clientRepository;
+        private readonly ISpecialistRepository _specialistRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IBCryptService _bCryptService;
+        private readonly IMapperService _mapperService;
         #endregion
 
         #region CONSTANTS
@@ -34,7 +36,8 @@ namespace PsicoAppAPI.Services
         #region CLASS_METHODS
         public UserService(IConfiguration configuration, IUserRepository userRepository,
             IClientRepository clientRepository, ISpecialistRepository specialistRepository,
-            IMapper mapper, IHttpContextAccessor httpContextAccessor)
+            IMapper mapper, IHttpContextAccessor httpContextAccessor, IBCryptService bCryptService
+            , IMapperService mapperService)
         {
             _specialistRepository = specialistRepository ?? throw new ArgumentNullException(nameof(specialistRepository));
             _clientRepository = clientRepository ?? throw new ArgumentNullException(nameof(clientRepository));
@@ -44,6 +47,8 @@ namespace PsicoAppAPI.Services
             _jwtSecret = token;
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+            _bCryptService = bCryptService ?? throw new ArgumentNullException(nameof(bCryptService));
+            _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
         }
 
         /// <summary>
@@ -164,11 +169,13 @@ namespace PsicoAppAPI.Services
 
         public async Task<RegisterClientDto?> AddClient(RegisterClientDto registerClientDto)
         {
-            var user = _mapper.Map<User>(registerClientDto);
+            var user = _mapperService.MapToUser(registerClientDto);
             if (user == null) return null;
             user.IsEnabled = true;
-            // Hashes the password and then assign to user.Password before save it
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            // Hashes the password and check if it was successful
+            var passwordHash = _bCryptService.HashPassword(registerClientDto.Password);
+            if(passwordHash is null) return null;
+            // asigns to user
             user.Password = passwordHash;
             _ = await _userRepository.AddUserAndSaveChanges(user);
             // If user.Id is null its summons an empty string, RegisterClientDto it cannot be null
