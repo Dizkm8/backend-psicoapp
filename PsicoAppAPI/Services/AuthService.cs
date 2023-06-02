@@ -15,7 +15,6 @@ namespace PsicoAppAPI.Services
         #region INJECTIONS
         private readonly string _jwtSecret;
         private readonly IUsersUnitOfWork _usersUnitOfWork;
-        private readonly IMapperService _mapperService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IBCryptService _bcryptService;
         #endregion
@@ -30,14 +29,12 @@ namespace PsicoAppAPI.Services
 
         #region CLASS_METHODS
         public AuthService(IConfiguration configuration, IUsersUnitOfWork usersUnitOfWork,
-            IMapperService mapperService, IHttpContextAccessor httpContextAccessor,
-            IBCryptService bcryptService)
+            IHttpContextAccessor httpContextAccessor, IBCryptService bcryptService)
         {
             var token = configuration.GetValue<string>("JwtSettings:Secret") ??
                 throw new ArgumentException("JwtSettings:Secret is null");
             _jwtSecret = token;
             _usersUnitOfWork = usersUnitOfWork ?? throw new ArgumentNullException(nameof(usersUnitOfWork));
-            _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             _bcryptService = bcryptService ?? throw new ArgumentNullException(nameof(bcryptService));
         }
