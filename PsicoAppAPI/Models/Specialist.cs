@@ -1,44 +1,29 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PsicoAppAPI.Models
 {
-     public class Specialist : User
+    public class Specialist
     {
-        //relationships
-
-        //N:1 Speciality
-        public int SpecialityId{ get; set; }
-
-        public int SpecialityName { get; set; }
-        public Speciality Speciality{get;} = null!;
-
-        //1:N FeedPost
-
-        public List<FeedPost> FeedPosts { get; set; } = new();
-
-        //1:N FeedPost
-
-        public List<Appointment> Appointment { get; set; } = new();
-
-        //1:N FeedPost
-
-        public List<Comment> Comments { get; set; } = new();
-
+        #region CLASS_ATTRIBUTES
+        [Key]
+        public int Id { get; set; }
+        #endregion
         
 
-        
-
-        
+        #region MODEL_RELATIONSHIPS
 
 
+        #region ONE_TO_ONE_RELATIONSHIP
+        public string? UserId { get; set; }
+        public User User { get; set; } = null!;
+        #endregion
 
-       
 
+        #region MANY_TO_ONE_RELATIONSHIP
+        public int SpecialityId { get; set; }
+        public Speciality Speciality { get; set; } = null!;
+        #endregion
+
+        #endregion
     }
-
-    
 }

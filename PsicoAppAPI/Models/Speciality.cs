@@ -1,30 +1,19 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
 
 namespace PsicoAppAPI.Models
 {
-
-
     public class Speciality
     {
+        #region CLASS_ATTRIBUTES
+        [Key]
         public int Id { get; set; }
         public string? Name { get; set; }
+        #endregion
 
-        //Relationships
-        //1:N Specialist
-         
-        public List<Specialist> Specialists { get; set; } = new(); 
 
-        
+        #region ONE_TO_MANY_RELATIONSHIPS
+        public List<Specialist> Specialists { get; set; } = new();
+        #endregion
+
     }
-
-    
-   
-
-
-    
 }

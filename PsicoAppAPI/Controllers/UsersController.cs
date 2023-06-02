@@ -1,106 +1,91 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using PsicoAppAPI.Data;
-using PsicoAppAPI.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.Services.Interfaces;
 
 namespace PsicoAppAPI.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseApiController
     {
-        private readonly DataContext _context;
-        private readonly string _jwtSecret;
+        private readonly IUserService _userService;
 
-        public UsersController(DataContext context, IConfiguration configuration)
+        public UsersController(IUserService userService)
         {
-            _context = context;
-            _jwtSecret = configuration.GetValue<string>("JwtSettings:Secret");
+            _userService = userService;
         }
 
         /// <summary>
-        /// Get all users in database context
+        /// Login the user if the credentials match and return a JWT token with the user's id and role.
         /// </summary>
-        /// <returns>All users collected</returns>
-        [HttpGet]
-        public IActionResult GetUsers()
-        {
-            var users = _context.Users.ToList();
-            return Ok(users);
-        }
-
-        /// <summary>
-        /// Checks if the user exists in the database and if the entered password matches the one registered in the database
-        /// </summary>
-        /// <returns>user whose login credentials match</returns>
+        /// <param name="loginUserDto">
+        /// Id: User's identifier
+        /// Password: User's password
+        /// </param>
+        /// <returns>
+        /// JWT Token with id and role if credentials match
+        /// if not, return a Status 400.
+        /// In case of token generation failed return Status 500.
+        /// All error returns includes a message.
+        /// </returns>
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginModelDto loginModelDto)
+        public async Task<IActionResult> Login([FromBody] LoginUserDto loginUserDto)
         {
-            var user = _context.Users?.FirstOrDefault(x =>
-            x.Id == loginModelDto.Id &&
-            x.Password == loginModelDto.Password);
-            
-            if (user == null) return Unauthorized(); // Maybe we could change Unauthorized to NotFound here?
-            if(user.Id == null) return NotFound();
+            var user = await _userService.GetUser(loginUserDto);
 
-            var token = GenerateJwtToken(user.Id);
-
-            return Ok(new { Token = token }); // Return the JWT token in the response
+            if (user is null) return BadRequest("Invalid credentials");
+            var token = await _userService.GenerateToken(user.Id);
+            if (string.IsNullOrEmpty(token))
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { error = "Token generation failed" });
+            }
+            return Ok(new { Token = token });
         }
 
         /// <summary>
-        /// Add a user in database context if user's id is not registered in the database
+        /// Register a new client user.
         /// </summary>
-        /// <param name="user">User to add</param>
-        /// <returns>User saved</returns>
-        [HttpPost("sign-up")]
-        public IActionResult AddUser(User user)
+        /// <param name="registerClientDto">
+        /// Id: User's identifier, must be unique and not null or empty
+        /// Name: User's name, must be not null and have at least 2 characters
+        /// FirstLastName: User's first last name, must be not null and have at least 2 characters
+        /// SecondLastName: User's second last name, must be not null and have at least 2 characters
+        /// Email: User's email, must be not null, have a valid email format and be unique
+        /// Gender: User's gender, must be not null or empty
+        /// Phone: User's phone, must be not null and have 8 digits
+        /// Password: User's password, mut be not null and have a length between 10 and 15 characters
+        /// </param>
+        /// <returns>
+        /// If the ModelState have errors based on params requeriments, return a Status 400 with the errors.
+        /// If the Email or Id already exists, return a Status 400 with the errors (can return both at the same time).
+        /// If the user cannot be added to the database, return a Status 500 with a generic error.
+        /// If the user is added to the database, return a Status 200 with the user's data.
+        /// </returns>
+        [AllowAnonymous]
+        [HttpPost("register-client")]
+        public async Task<ActionResult> RegisterClient([FromBody] RegisterClientDto registerClientDto)
         {
-            if (!UserExists(user.Id))
+            if (!ModelState.IsValid)
             {
-                _context.Users.Add(user);
-                _context.SaveChanges();
-                return Ok(user);
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(new { errors });
             }
-            else
-            {
-                return Conflict();
-            }
-        }
 
-        // more code...
+            var existsEmail = await _userService.ExistsUserWithEmail(registerClientDto.Email);
+            if (existsEmail) ModelState.AddModelError("Email", "Email already exists");
 
-        private bool UserExists(string id)
-        {
-            return _context.Users.Any(e => e.Id == id);
-        }
+            var existsId = await _userService.ExistsUserById(registerClientDto.Id);
+            if (existsId) ModelState.AddModelError("Id", "Id already exists");
+            // Return Id or Email duplicated error if exists
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        private string GenerateJwtToken(string userId)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSecret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, userId)
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+
+            var clientAdded = await _userService.AddClient(registerClientDto);
+            if (clientAdded is null) return StatusCode(StatusCodes.Status500InternalServerError,
+                new { error = "Internal error adding User" });
+
+            return Ok(clientAdded);
         }
     }
 }
