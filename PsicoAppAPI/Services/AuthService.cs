@@ -108,6 +108,7 @@ namespace PsicoAppAPI.Services
             var userRole = httpUser.FindFirstValue(ClaimTypes.Role);
             return string.IsNullOrEmpty(userRole) ? null : userRole;
         }
+
         /// <summary>
         /// Get the userId from the token, found a user in Repository and return it
         /// </summary>
@@ -123,5 +124,15 @@ namespace PsicoAppAPI.Services
             return user is not null ? user : null;
         }
         #endregion
+
+        public async Task<string?> GenerateToken(string? id)
+        {
+            if (id == null)
+            {
+                throw new ArgumentNullException(nameof(id), "User identifier cannot be null");
+            }
+            var token = await GenerateJwtToken(id);
+            return token;
+        }
     }
 }
