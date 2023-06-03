@@ -15,7 +15,7 @@ namespace PsicoAppAPI.Models
         #region MODEL_RELATIONSHIPS
         
         #region ONE_TO_MANY_RELATIONSHIPS
-        public int UserId { get; set; }
+        public string UserId { get; set; } = null!;
         public User User { get; set; } = null!;
         #endregion
 
