@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PsicoAppAPI.Models
 {
-    public class Speciality
+    public class Role
     {
         #region CLASS_ATTRIBUTES
         [Key]
@@ -10,9 +10,12 @@ namespace PsicoAppAPI.Models
         public string Name { get; set; } = null!;
         #endregion
 
+        #region MODEL_RELATIONSHIPS
+
         #region ONE_TO_MANY_RELATIONSHIPS
-        public List<Specialist> Specialists { get; set; } = new();
+        public List<User> Users { get;} = new();
         #endregion
 
+        #endregion
     }
 }
