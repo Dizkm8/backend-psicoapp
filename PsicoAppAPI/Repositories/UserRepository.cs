@@ -75,6 +75,13 @@ namespace PsicoAppAPI.Repositories
             return result;
         }
 
+        public User UpdateUserAndSaveChanges(User user)
+        {
+            var result = _context.Update(user).Entity;
+            _context.SaveChanges();
+            return result;
+        }
+
         public async Task<bool> UserExists(string id)
         {
             var user = await _context.FindAsync<User>(id);
