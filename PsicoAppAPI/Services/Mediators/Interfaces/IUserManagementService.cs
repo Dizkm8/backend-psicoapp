@@ -1,4 +1,5 @@
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.Services.Mediators.Interfaces
@@ -35,5 +36,23 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// <param name="registerClientDto">Client to add</param>
         /// <returns>Added user, null it was not added</returns>
         public Task<RegisterClientDto?> AddClient(RegisterClientDto registerClientDto);
+        /// <summary>
+        /// Check if exists a user with the UserId in the token and if it is enabled
+        /// </summary>
+        /// <returns>True if is complete valid. Otherwise false</returns>
+        public Task<bool> CheckUserInToken();
+        /// <summary>
+        /// Asynchronously get the user id in the token and check if the current password
+        /// match with the password provided
+        /// </summary>
+        /// <param name="updatePasswordDto">Dto with the current password</param>
+        /// <returns>True if its match. otherwise false</returns>
+        public Task<bool> CheckUserCurrentPassword(UpdatePasswordDto updatePasswordDto);
+        /// <summary>
+        /// Asynchronously get the user id in the token and update the password
+        /// </summary>
+        /// <param name="updatePasswordDto">Dto with the new password</param>
+        /// <returns>True if the password could be updated. Otherwise false</returns>
+        public Task<bool> UpdateUserPassword(UpdatePasswordDto updatePasswordDto);
     }
 }

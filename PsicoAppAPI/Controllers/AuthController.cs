@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Services.Mediators.Interfaces;
 
 namespace PsicoAppAPI.Controllers
@@ -88,6 +89,48 @@ namespace PsicoAppAPI.Controllers
                 new ErrorModel { ErrorCode = 500, Message = "Internal error adding User" });
 
             return Ok(clientAdded);
+        }
+
+        /// <summary>
+        /// Update the user's password extracting Claims included on the JWT token.
+        /// </summary>
+        /// <param name="updatePasswordDto">
+        /// CurrentPassword: User's current password, must be not null or empty
+        /// NewPassword: User's new password, must be not null or empty and have a length between 10 and 15 characters
+        /// ConfirmNewPassword: User's new password confirmation, 
+        /// must be not null or empty, have a length between 10 and 15 characters
+        /// and match with the NewPassword param
+        /// </param>
+        /// <returns>
+        /// If the ModelState have errors based on params requeriments, return a Status 400 with the errors.
+        /// If the user is not found based on JWT, return a Status 400 with the error.
+        /// If the currentPassword provided is incorrect, return a Status 400 with the error.
+        /// If something went wrong updating the password, return a Status 500 with generic error.
+        /// If the password is updated successfully, return a Status 200 with no info.«
+        /// </returns>
+        [Authorize]
+        [HttpPut("update-password")]
+        public async Task<ActionResult> UpdatePassword([FromBody] UpdatePasswordDto updatePasswordDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                return BadRequest(new { errors });
+            }
+            // Check if user exists based on the JWT provided
+            var existUser = await _userManagementService.CheckUserInToken();
+            if (!existUser) return BadRequest(new { error = "User not found" });
+            // Check if the old password is correct
+            var password = updatePasswordDto.CurrentPassword;
+            var isPasswordCorrect = await _userManagementService.CheckUserCurrentPassword(updatePasswordDto);
+            if (!isPasswordCorrect) return BadRequest(new { error = "Current password is incorrect" });
+            // Tries to update the password
+            var result = await _userManagementService.UpdateUserPassword(updatePasswordDto);
+            if (!result) return StatusCode(StatusCodes.Status500InternalServerError,
+                new { error = "Internal error updating User" });
+            // No info is returned if the password was updated successfully
+            // because the user is logged out after the password is updated
+            return Ok();
         }
     }
 }

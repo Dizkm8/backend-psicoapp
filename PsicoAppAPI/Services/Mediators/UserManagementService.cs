@@ -1,4 +1,5 @@
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Services.Interfaces;
 using PsicoAppAPI.Services.Mediators.Interfaces;
@@ -59,6 +60,33 @@ namespace PsicoAppAPI.Services.Mediators
             var user = await _userService.GetUserByCredentials(loginUserDto.Id, loginUserDto.Password);
             // User need to be enable!
             return user is not null && user.IsEnabled;
+        }
+
+        public async Task<bool> CheckUserInToken()
+        {
+            var userId = _authService.GetUserIdInToken();
+            if (string.IsNullOrEmpty(userId)) return false;
+            var user = await _userService.GetUserById(userId);
+            return user is not null && user.IsEnabled;
+        }
+
+        public async Task<bool> CheckUserCurrentPassword(UpdatePasswordDto updatePasswordDto)
+        {
+            var currentPassword = updatePasswordDto.CurrentPassword;
+            if(string.IsNullOrEmpty(currentPassword)) return false;
+            var userId = _authService.GetUserIdInToken();
+            if (string.IsNullOrEmpty(userId)) return false;
+            var user = await _userService.GetUserByCredentials(userId, currentPassword);
+            return user is not null;
+        }
+
+        public async Task<bool> UpdateUserPassword(UpdatePasswordDto updatePasswordDto)
+        {
+            var userId = _authService.GetUserIdInToken();
+            var password = updatePasswordDto.NewPassword;
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(password)) return false;
+            var result = await _userService.UpdateUserPassword(userId, password);
+            return result;
         }
     }
 }
