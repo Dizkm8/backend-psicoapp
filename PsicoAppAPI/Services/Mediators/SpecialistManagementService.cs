@@ -1,6 +1,7 @@
 using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.Services.Interfaces;
 using PsicoAppAPI.Services.Mediators.Interfaces;
+using PsicoAppAPI.Util;
 
 namespace PsicoAppAPI.Services.Mediators
 {
@@ -18,8 +19,11 @@ namespace PsicoAppAPI.Services.Mediators
             _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
         }
 
-        public async Task<List<AvailabilitySlotDto>?> GetAvailabilitySlots()
+        public async Task<List<AvailabilitySlotDto>?> GetAvailabilitySlots(DateOnly date)
         {
+            // Validate if the date is in the current week or greater && equals or less than 2 weeks
+            if(!DateHelper.DateIsOnWeekRange(date, 2)) return null;
+            
             var userId = _authService.GetUserIdInToken();
             if (userId is null) return null;
             var availabilitySlots = await _specialistService.GetSpecialistAvailability(userId);

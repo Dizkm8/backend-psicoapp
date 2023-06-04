@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
@@ -15,12 +16,18 @@ namespace PsicoAppAPI.Controllers
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
+
         [Authorize(Roles = "3")]
-        [HttpGet("availability")]
-        public async Task<ActionResult<List<AvailabilitySlotDto>?>> GetScheduleAvailability()
+        [HttpGet("availability/{dateTime}")]
+        public async Task<ActionResult<List<AvailabilitySlotDto>?>> GetScheduleAvailability([Required] DateOnly date)
         {
-            var slots = _service.GetAvailabilitySlots();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var slots = _service.GetAvailabilitySlots(date);
             return Ok(slots);
         }
+
     }
 }
