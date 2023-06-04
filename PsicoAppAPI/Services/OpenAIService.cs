@@ -33,6 +33,7 @@ namespace PsicoAppAPI.Services
             };
 
             var completions = await openAI.Completions.CreateCompletionAsync(request);
+            
             return completions.Completions[0].Text;
         }
 
@@ -40,10 +41,13 @@ namespace PsicoAppAPI.Services
         {
             if (string.IsNullOrEmpty(RULES) || string.IsNullOrEmpty(postContent)) return false;
             var query = RULES + "\n\n" + postContent;
-            var result = await GetRequest(query);
-            if (result is null) return false;
-            Console.WriteLine(result);
-            return result.ToLower() == "true";
+            var response = await GetRequest(query);
+            if (response is null) return false;
+            // Davinci sometimes give to us more words than we expected, so
+            // to avoid awkward responses we check if in somewhere the
+            // text the word true or false exists
+            var result = response.ToLower().Contains("true");
+            return result;
         }
     }
 }
