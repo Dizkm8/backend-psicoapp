@@ -1,6 +1,7 @@
 using AutoMapper;
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.FeedPost;
+using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Services.Interfaces;
@@ -27,6 +28,12 @@ namespace PsicoAppAPI.Services
             return user;
         }
 
+        public AvailabilitySlotDto? MapToAvailabilitySlotDto(AvailabilitySlot? availabilitySlot)
+        {
+            if (availabilitySlot is null) return null;
+            return _mapper.Map<AvailabilitySlotDto>(availabilitySlot);
+        }
+
         public FeedPost? MapToFeedPost(AddFeedPostDto? addFeedPostDto)
         {
             if (addFeedPostDto is null) return null;
@@ -35,8 +42,15 @@ namespace PsicoAppAPI.Services
 
         public FeedPostDto? MapToFeedPostDto(FeedPost? feedPost)
         {
-            if(feedPost is null) return null;
+            if (feedPost is null) return null;
             return _mapper.Map<FeedPostDto>(feedPost);
+        }
+
+        public List<AvailabilitySlotDto>? MapToListOfAvailabilitySlotDto(List<AvailabilitySlot>? availabilitySlots)
+        {
+            if (availabilitySlots is null) return null;
+            var mappedDto = availabilitySlots.Select(x => _mapper.Map<AvailabilitySlotDto>(x)).ToList();
+            return mappedDto;
         }
 
         public ProfileInformationDto? MapToProfileInformationDto(User? user)
