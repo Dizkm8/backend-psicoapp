@@ -17,6 +17,16 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// </summary>
         /// <value>IRolesRepository</value>
         public IRolesRepository RolesRepository { get; }
+        /// <summary>
+        /// Get the IFeedPostRepository
+        /// </summary>
+        /// <value>IFeedPostRepository</value>
+        public IFeedPostRepository FeedPostRepository { get; }
+        /// <summary>
+        /// Get the ITagRepository
+        /// </summary>
+        /// <value>ITagRepository</value>
+        public ITagRepository TagRepository { get; }
 
 
     }

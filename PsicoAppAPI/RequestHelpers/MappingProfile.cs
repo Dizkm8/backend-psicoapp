@@ -1,4 +1,5 @@
 using AutoMapper;
+using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 
@@ -11,6 +12,8 @@ namespace PsicoAppAPI.RequestHelpers
             CreateMap<DTOs.RegisterClientDto, User>();
             CreateMap<User, ProfileInformationDto>();
             CreateMap<User, UpdateProfileInformationDto>();
+            CreateMap<AddFeedPostDto, FeedPost>();
+            CreateMap<FeedPost, FeedPostDto>();
         }
     }
 }

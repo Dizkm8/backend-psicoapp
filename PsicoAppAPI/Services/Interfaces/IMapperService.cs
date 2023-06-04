@@ -1,4 +1,5 @@
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 
@@ -31,10 +32,25 @@ namespace PsicoAppAPI.Services.Interfaces
         public UpdateProfileInformationDto? MapToUpdatedProfileInformationDto(User? user);
         /// <summary>
         /// Maps the user attributes to a ProfileInformationDto
-        /// Role attribute of Dto returned is null
+        /// None attribute of Dto returned is null
         /// </summary>
         /// <param name="user">User source</param>
         /// <returns>Dto mapped</returns>
         public ProfileInformationDto? MapToProfileInformationDto(User? user);
+        /// <summary>
+        /// Maps the attributes of a AddFeedPostDto to a FeedPost
+        /// Feedpost will have:
+        /// PublishedOn attribute not mapped
+        /// UserId attribute not mapped
+        /// </summary>
+        /// <param name="addFeedPostDto">Dto source</param>
+        /// <returns>FeedPost mapped or null</returns>
+        public FeedPost? MapToFeedPost(AddFeedPostDto? addFeedPostDto);
+        /// <summary>
+        /// Maps the attributes of a FeedPost to a FeedPostDto
+        /// </summary>
+        /// <param name="feedPost">Feedpost to map</param>
+        /// <returns>FeedPost mapped. Null if cannot be mapped</returns>
+        public FeedPostDto? MapToFeedPostDto(FeedPost? feedPost);
     }
 }

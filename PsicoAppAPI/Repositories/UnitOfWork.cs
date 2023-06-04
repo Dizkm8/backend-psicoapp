@@ -9,7 +9,8 @@ namespace PsicoAppAPI.Repositories
         private IUserRepository userRepository = null!;
         private ISpecialistRepository specialistRepository = null!;
         private IRolesRepository rolesRepository = null!;
-
+        private IFeedPostRepository feedPostRepository = null!;
+        private ITagRepository tagRepository = null!;
 
         public UnitOfWork(DataContext context)
         {
@@ -40,6 +41,24 @@ namespace PsicoAppAPI.Repositories
             {
                 rolesRepository ??= new RolesRepository(_context);
                 return rolesRepository ?? throw new NotImplementedException();
+            }
+        }
+
+        public IFeedPostRepository FeedPostRepository
+        {
+            get
+            {
+                feedPostRepository ??= new FeedPostRepository(_context);
+                return feedPostRepository ?? throw new NotImplementedException();
+            }
+        }
+
+        public ITagRepository TagRepository
+        {
+            get
+            {
+                tagRepository ??= new TagRepository(_context);
+                return tagRepository ?? throw new NotImplementedException();
             }
         }
     }

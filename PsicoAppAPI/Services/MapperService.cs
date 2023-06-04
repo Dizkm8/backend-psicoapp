@@ -1,5 +1,6 @@
 using AutoMapper;
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Services.Interfaces;
@@ -26,15 +27,27 @@ namespace PsicoAppAPI.Services
             return user;
         }
 
+        public FeedPost? MapToFeedPost(AddFeedPostDto? addFeedPostDto)
+        {
+            if (addFeedPostDto is null) return null;
+            return _mapper.Map<FeedPost>(addFeedPostDto);
+        }
+
+        public FeedPostDto? MapToFeedPostDto(FeedPost? feedPost)
+        {
+            if(feedPost is null) return null;
+            return _mapper.Map<FeedPostDto>(feedPost);
+        }
+
         public ProfileInformationDto? MapToProfileInformationDto(User? user)
         {
-            if(user is null) return null;
+            if (user is null) return null;
             return _mapper.Map<ProfileInformationDto>(user);
         }
 
         public UpdateProfileInformationDto? MapToUpdatedProfileInformationDto(User? user)
         {
-            if(user is null) return null;
+            if (user is null) return null;
             return _mapper.Map<UpdateProfileInformationDto>(user);
         }
 
