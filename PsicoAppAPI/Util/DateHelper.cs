@@ -30,11 +30,39 @@ namespace PsicoAppAPI.Util
             return date >= mondayCurrentWeek;
         }
 
+        /// <summary>
+        /// Get the monday date of the current week based on system date
+        /// </summary>
+        /// <returns>Monday date</returns>
         public static DateOnly GetMondayCurrentWeek()
         {
             var currentDate = DateOnly.FromDateTime(DateTime.Now.Date);
             var index = GetDayIndex(currentDate);
             var displacedDate = currentDate.AddDays(-index);
+            return displacedDate;
+        }
+
+        /// <summary>
+        /// Get the monday date of the week based on the date provided
+        /// </summary>
+        /// <param name="date">Date of the week</param>
+        /// <returns>Monday date</returns>
+        public static DateOnly GetMondayOfTheWeek(DateOnly date)
+        {
+            var index = GetDayIndex(date);
+            var displacedDate = date.AddDays(-index);
+            return displacedDate;
+        }
+
+        /// <summary>
+        /// Get the sunday date of the week based on the date provided
+        /// </summary>
+        /// <param name="date">Date of the week</param>
+        /// <returns>Sunday date</returns>
+        public static DateOnly GetSundayOfTheWeek(DateOnly date)
+        {
+            var index = GetDayIndex(date);
+            var displacedDate = date.AddDays(6 - index);
             return displacedDate;
         }
 

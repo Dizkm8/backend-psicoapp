@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
+using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.Services.Mediators.Interfaces;
 
@@ -9,7 +10,7 @@ namespace PsicoAppAPI.Controllers
 {
     public class SpecialistsController : BaseApiController
     {
-        private ISpecialistManagementService _service;
+        private readonly ISpecialistManagementService _service;
 
         public SpecialistsController(ISpecialistManagementService service)
         {
@@ -21,13 +22,13 @@ namespace PsicoAppAPI.Controllers
         [HttpGet("availability/{date}")]
         public async Task<ActionResult<List<AvailabilitySlotDto>?>> GetScheduleAvailability([Required] DateOnly date)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            if (!_service.ValidateDate(date)) return NotFound(
+                new ErrorModel { ErrorCode = 404, Message = "The date provided are not in the allowed range" });
+
             var slots = await _service.GetAvailabilitySlots(date);
-            if (slots is null)
-                return NotFound();
+            if (slots is null) return BadRequest();
             return Ok(slots);
         }
 

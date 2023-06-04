@@ -14,11 +14,20 @@ namespace PsicoAppAPI.Services
                 throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public async Task<List<AvailabilitySlot>?> GetSpecialistAvailability(string? userId)
+        public async Task<List<AvailabilitySlot>?> GetAllAvailability(string? userId)
         {
             if (userId is null) return null;
             var availabilitySlots = await _unitOfWork.AvailabilitySlotRepository.GetAvailabilitySlotsByUserId(userId);
             return availabilitySlots;
+        }
+
+        public async Task<List<AvailabilitySlot>?> GetAvailabilityByDate(string? userId, DateOnly StartDate, DateOnly EndDate)
+        {
+            if (userId is null) return null;
+            if (StartDate > EndDate) return null;
+            var repository = _unitOfWork.AvailabilitySlotRepository;
+            var availability = await repository.GetAvailabiliySlotByUserIdAndDateRange(userId, StartDate, EndDate);
+            return availability;
         }
     }
 }

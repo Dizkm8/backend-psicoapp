@@ -11,5 +11,11 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// <param name="date">Initialdate to get the availability slots</param>
         /// <returns>List with the availabilities and if they're taken (IsAvailable bool)</returns>
         public Task<List<AvailabilitySlotDto>?> GetAvailabilitySlots(DateOnly date);
+        /// <summary>
+        /// Validates if the date is in 8 weeks range from the current week
+        /// </summary>
+        /// <param name="date">Date to check</param>
+        /// <returns>True if its valid, otherwise false</returns>
+        public bool ValidateDate(DateOnly date);
     }
 }

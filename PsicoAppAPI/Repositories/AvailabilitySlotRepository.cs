@@ -21,5 +21,16 @@ namespace PsicoAppAPI.Repositories
                 .ToListAsync();
             return availabilitySlots;
         }
+
+        public async Task<List<AvailabilitySlot>?> GetAvailabiliySlotByUserIdAndDateRange(string userId, DateOnly startDate, DateOnly endDate)
+        {
+            var availability = await _context.AvailabilitySlots
+                .Where(x => x.UserId == userId)
+                .ToListAsync();
+
+            return availability
+                .Where(x => DateOnly.FromDateTime(x.StartTime) >= startDate && DateOnly.FromDateTime(x.StartTime) <= endDate)
+                .ToList();
+        }
     }
 }

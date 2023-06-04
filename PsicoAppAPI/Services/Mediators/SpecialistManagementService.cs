@@ -21,15 +21,23 @@ namespace PsicoAppAPI.Services.Mediators
 
         public async Task<List<AvailabilitySlotDto>?> GetAvailabilitySlots(DateOnly date)
         {
-            // Validate if the date is in the current week or greater && equals or less than 2 months (8 weeks)
-            if (!DateHelper.DateIsOnWeekRange(date, 8)) return null;
-
             var userId = _authService.GetUserIdInToken();
             if (userId is null) return null;
-            var availabilitySlots = await _specialistService.GetSpecialistAvailability(userId);
+            // Get the initial date of the week to use as initial value of the range
+            var startDate = DateHelper.GetMondayOfTheWeek(date);
+            // Get the final date of the week to use as final value of the range
+            var endDate = DateHelper.GetSundayOfTheWeek(date);
+
+            var availabilitySlots = await _specialistService.GetAvailabilityByDate(userId, startDate, endDate);
             if (availabilitySlots is null) return null;
             var mappedSlots = _mapperService.MapToListOfAvailabilitySlotDto(availabilitySlots);
             return mappedSlots;
+        }
+
+        public bool ValidateDate(DateOnly date)
+        {
+            // Validate if the date is in the current week or greater && equals or less than 2 months (8 weeks)
+            return DateHelper.DateIsOnWeekRange(date, 8);
         }
     }
 }
