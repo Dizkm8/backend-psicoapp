@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PsicoAppAPI.Controllers.Base;
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
-using PsicoAppAPI.ServiceMediators.Interfaces;
+using PsicoAppAPI.Services.Mediators.Interfaces;
 
 namespace PsicoAppAPI.Controllers
 {
@@ -12,8 +13,8 @@ namespace PsicoAppAPI.Controllers
 
         public AuthController(IUserManagementService userManagementService)
         {
-            _userManagementService = userManagementService ??
-                throw new ArgumentNullException(nameof(userManagementService));
+            _userManagementService = userManagementService ?? 
+                throw new System.ArgumentNullException(nameof(userManagementService));
         }
 
         /// <summary>
@@ -25,7 +26,9 @@ namespace PsicoAppAPI.Controllers
         /// </param>
         /// <returns>
         /// JWT Token with id and role if credentials match
-        /// if not, return a Status 400.
+        /// The JWT Contains the UserId and the Role Number of the user
+        /// The Role Id currently go from 1 to 3, where 1 is Admin 2 is Client and 3 is Specialist.
+        /// if the credentials do not match, return a Status 400.
         /// In case of token generation failed return Status 500.
         /// All error returns includes a message.
         /// </returns>
@@ -33,10 +36,10 @@ namespace PsicoAppAPI.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] LoginUserDto loginUserDto)
         {
-            var user = await _userManagementService.UserService.GetUser(loginUserDto);
+            var result = await _userManagementService.CheckCredentials(loginUserDto);
 
-            if (user is null) return BadRequest("Invalid credentials");
-            var token = await _userManagementService.AuthService.GenerateToken(user.Id);
+            if (!result) return BadRequest("Invalid credentials");
+            var token = await _userManagementService.GenerateToken(loginUserDto);
             if (string.IsNullOrEmpty(token))
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
@@ -66,17 +69,17 @@ namespace PsicoAppAPI.Controllers
         /// </returns>
         [AllowAnonymous]
         [HttpPost("register-client")]
-        public async Task<ActionResult> RegisterClient([FromBody] RegisterClientDto registerClientDto)
+        public async Task<ActionResult<RegisterClientDto>> RegisterClient([FromBody] RegisterClientDto registerClientDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var existsEmail = await _userManagementService.UserService.ExistsUserWithEmail(registerClientDto.Email);
+            var existsEmail = await _userManagementService.CheckEmailAvailability(registerClientDto);
             if (existsEmail) ModelState.AddModelError("Email", "Email already exists");
 
-            var existsId = await _userManagementService.UserService.ExistsUserById(registerClientDto.Id);
+            var existsId = await _userManagementService.CheckUserIdAvailability(registerClientDto);
             if (existsId) ModelState.AddModelError("Id", "Id already exists");
             // Return Id or Email duplicated error if exists
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -115,14 +118,14 @@ namespace PsicoAppAPI.Controllers
                 return BadRequest(new { errors });
             }
             // Check if user exists based on the JWT provided
-            var existUser = await _userManagementService.ExistsUserByToken();
+            var existUser = await _userManagementService.CheckUserInToken();
             if (!existUser) return BadRequest(new { error = "User not found" });
             // Check if the old password is correct
             var password = updatePasswordDto.CurrentPassword;
-            var isPasswordCorrect = await _userManagementService.CheckUsersPasswordUsingToken(password);
+            var isPasswordCorrect = await _userManagementService.CheckUserCurrentPassword(updatePasswordDto);
             if (!isPasswordCorrect) return BadRequest(new { error = "Current password is incorrect" });
             // Tries to update the password
-            var result = await _userManagementService.UpdateUserPassword(updatePasswordDto.NewPassword);
+            var result = await _userManagementService.UpdateUserPassword(updatePasswordDto);
             if (!result) return StatusCode(StatusCodes.Status500InternalServerError,
                 new { error = "Internal error updating User" });
             // No info is returned if the password was updated successfully

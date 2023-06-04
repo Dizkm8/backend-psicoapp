@@ -1,5 +1,6 @@
 using AutoMapper;
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Services.Interfaces;
 
@@ -11,7 +12,7 @@ namespace PsicoAppAPI.Services
 
         public MapperService(IMapper mapper)
         {
-            _mapper = mapper;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public User MapAttributesToUser(UpdateProfileInformationDto profileInformationDto, User user)
@@ -34,7 +35,7 @@ namespace PsicoAppAPI.Services
         public UpdateProfileInformationDto? MapToUpdatedProfileInformationDto(User? user)
         {
             if(user is null) return null;
-            return _mapper.Map<ProfileInformationDto>(user);
+            return _mapper.Map<UpdateProfileInformationDto>(user);
         }
 
         public User? MapToUser(RegisterClientDto? registerClientDto)

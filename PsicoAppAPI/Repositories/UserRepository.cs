@@ -37,13 +37,6 @@ namespace PsicoAppAPI.Repositories
             return result;
         }
 
-        public async Task<User?> GetUserByCredentials(string id, string password)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(user =>
-                user.Id == id && user.Password == password);
-            return user;
-        }
-
         public async Task<User?> GetUserByEmail(string email)
         {
             var user = await _context.Users.FirstOrDefaultAsync(user =>

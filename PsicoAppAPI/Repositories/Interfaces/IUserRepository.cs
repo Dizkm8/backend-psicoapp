@@ -11,13 +11,6 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// <returns>The user if it's found, null if not</returns>
         public Task<User?> GetUserById(string id);
         /// <summary>
-        /// Asynchronously get a user by their Id and password
-        /// </summary>
-        /// <param name="id">userId</param>
-        /// <param name="password">user password</param>
-        /// <returns>User if it's found, null if not</returns>
-        public Task<User?> GetUserByCredentials(string id, string password);
-        /// <summary>
         ///  Add a User to database
         /// </summary>
         /// <param name="User">user to add</param>

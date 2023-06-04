@@ -6,12 +6,15 @@ namespace PsicoAppAPI.Models
         #region CLASS_ATTRIBUTES    
         [Key]
         public int Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; } = null!;
         #endregion
 
+        #region MODEL_RELATIONSHIPS
 
         #region ONE_TO_MANY_RELATIONSHIPS
-        public List<Appointment> Appointment { get; set; } = new();
+        public List<Appointment> Appointment { get; } = new();
+        #endregion
+        
         #endregion
     }
 }

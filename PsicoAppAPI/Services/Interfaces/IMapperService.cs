@@ -1,11 +1,12 @@
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.Services.Interfaces
 {
     public interface IMapperService
     {
-        /// <summary>
+         /// <summary>
         /// Maps a RegisterClientDto to a User
         /// </summary>
         /// <param name="registerClientDto">Dto to map</param>

@@ -2,23 +2,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PsicoAppAPI.Models
 {
-    public class Specialist
+    public class AvailabilitySlot
     {
         #region CLASS_ATTRIBUTES
         [Key]
         public int Id { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public bool IsAvailable { get; set; }
         #endregion
-
+        
         #region MODEL_RELATIONSHIPS
-
-        #region ONE_TO_ONE_RELATIONSHIP
+        
+        #region ONE_TO_MANY_RELATIONSHIPS
         public string UserId { get; set; } = null!;
         public User User { get; set; } = null!;
-        #endregion
-
-        #region MANY_TO_ONE_RELATIONSHIP
-        public int SpecialityId { get; set; }
-        public Speciality Speciality { get; set; } = null!;
         #endregion
 
         #endregion
