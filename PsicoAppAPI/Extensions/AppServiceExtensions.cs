@@ -17,7 +17,7 @@ namespace PsicoAppAPI.Extensions
         {
             services = AddSwaggerGen(services);
             services = AddAutoMapper(services);
-            services = AddRepositories(services);
+            services = AddUnitOfWork(services);
             services = AddData(services, config);
             services = AddAuthentication(services, config);
             services = AddHttpContextAccesor(services);
@@ -45,9 +45,9 @@ namespace PsicoAppAPI.Extensions
             return services;
         }
 
-        private static IServiceCollection AddRepositories(IServiceCollection services)
+        private static IServiceCollection AddUnitOfWork(IServiceCollection services)
         {
-            // services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUnitOfWork,UnitOfWork>();
             return services;
         }
 
