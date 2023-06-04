@@ -23,6 +23,7 @@ namespace PsicoAppAPI.Extensions
             services = AddAutoMapper(services);
             services = AddUnitOfWork(services);
             services = AddServices(services);
+            services = AddMediatorServices(services);
             services = AddData(services, config);
             services = AddAuthentication(services, config);
             services = AddHttpContextAccesor(services);
@@ -60,8 +61,15 @@ namespace PsicoAppAPI.Extensions
         {
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IUserManagementService, UserManagementService>();
             services.AddScoped<IMapperService, MapperService>();
+            services.AddScoped<IFeedPostService, FeedPostService>();
+            return services;
+        }
+
+        private static IServiceCollection AddMediatorServices(IServiceCollection services)
+        {
+            services.AddScoped<IUserManagementService, UserManagementService>();
+            services.AddScoped<IFeedPostManagementService, FeedPostManagementService>();
             return services;
         }
 
