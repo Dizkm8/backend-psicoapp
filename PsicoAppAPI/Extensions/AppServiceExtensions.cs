@@ -61,6 +61,7 @@ namespace PsicoAppAPI.Extensions
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserManagementService, UserManagementService>();
+            services.AddScoped<IMapperService, MapperService>();
             return services;
         }
 

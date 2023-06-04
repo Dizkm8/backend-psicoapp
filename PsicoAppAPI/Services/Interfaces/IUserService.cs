@@ -7,11 +7,12 @@ namespace PsicoAppAPI.Services.Interfaces
     public interface IUserService
     {
         /// <summary>
-        /// Get user by credentials
+        /// Asynchronously get a user by credentials
         /// </summary>
-        /// <param name="loginUserDto">Entity shape with credentials</param>
+        /// <param name="userId">User Id</param>
+        /// <param name="password">User Password</param>
         /// <returns>User if it was found, null if not</returns>
-        public Task<User?> GetUser(LoginUserDto loginUserDto);
+        public Task<User?> GetUserByCredentials(string userId, string password);
         /// <summary>
         /// Async add a new user to the database based on User entity
         /// and using the password previously hashed
@@ -19,6 +20,12 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="user">User to add</param>
         /// <returns>True if could be added, false if not</returns>
         public Task<bool> AddUser(User? user);
+        /// <summary>
+        /// Async add a new user with role of client
+        /// </summary>
+        /// <param name="user">User to add</param>
+        /// <returns>True if could be added, false if not</returns>
+        public Task<bool> AddClient(User? user);
         /// <summary>
         /// Asynchronously get a user by email
         /// </summary>

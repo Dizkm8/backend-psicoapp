@@ -1,4 +1,3 @@
-using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Repositories.Interfaces;
@@ -17,13 +16,12 @@ namespace PsicoAppAPI.Services
         }
 
         #region IUSERSERVICE_METHODS
-        public async Task<User?> GetUser(LoginUserDto loginUserDto)
+        public async Task<User?> GetUserByCredentials(string userId, string password)
         {
-            if (string.IsNullOrWhiteSpace(loginUserDto.Id) || 
-            string.IsNullOrWhiteSpace(loginUserDto.Password)) return null;
-            var user = await _unitOfWork.UserRepository.GetUserById(loginUserDto.Id);
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(password)) return null;
+            var user = await _unitOfWork.UserRepository.GetUserById(userId);
             if (user is null) return null;
-            return BCryptHelper.VerifyPassword(loginUserDto.Password, user.Password) ? user : null;
+            return BCryptHelper.VerifyPassword(password, user.Password) ? user : null;
         }
 
         public async Task<bool> AddUser(User? user)
@@ -147,6 +145,14 @@ namespace PsicoAppAPI.Services
             var user = await GetUserById(userId);
             if (user is null) return -1;
             return user.RoleId;
+        }
+
+        public async Task<bool> AddClient(User? user)
+        {
+            if(user is null) return false;
+            user.RoleId = await GetIdOfClientRole();
+            var result = await AddUser(user);
+            return result;
         }
         #endregion
     }
