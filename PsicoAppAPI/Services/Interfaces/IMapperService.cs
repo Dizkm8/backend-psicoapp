@@ -46,5 +46,11 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="addFeedPostDto">Dto source</param>
         /// <returns>FeedPost mapped or null</returns>
         public FeedPost? MapToFeedPost(AddFeedPostDto? addFeedPostDto);
+        /// <summary>
+        /// Maps the attributes of a FeedPost to a FeedPostDto
+        /// </summary>
+        /// <param name="feedPost">Feedpost to map</param>
+        /// <returns>FeedPost mapped. Null if cannot be mapped</returns>
+        public FeedPostDto? MapToFeedPostDto(FeedPost? feedPost);
     }
 }

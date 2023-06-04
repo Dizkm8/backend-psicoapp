@@ -13,6 +13,7 @@ namespace PsicoAppAPI.RequestHelpers
             CreateMap<User, ProfileInformationDto>();
             CreateMap<User, UpdateProfileInformationDto>();
             CreateMap<AddFeedPostDto, FeedPost>();
+            CreateMap<FeedPost, FeedPostDto>();
         }
     }
 }

@@ -33,6 +33,12 @@ namespace PsicoAppAPI.Services
             return _mapper.Map<FeedPost>(addFeedPostDto);
         }
 
+        public FeedPostDto? MapToFeedPostDto(FeedPost? feedPost)
+        {
+            if(feedPost is null) return null;
+            return _mapper.Map<FeedPostDto>(feedPost);
+        }
+
         public ProfileInformationDto? MapToProfileInformationDto(User? user)
         {
             if (user is null) return null;

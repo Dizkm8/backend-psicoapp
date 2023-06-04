@@ -22,20 +22,24 @@ namespace PsicoAppAPI.Services.Mediators
             _tagService = tagService;
         }
 
-        public async Task<bool> AddFeedPost(AddFeedPostDto feedPostDto)
+        public async Task<FeedPostDto?> AddFeedPost(AddFeedPostDto feedPostDto)
         {
             var userId = _authService.GetUserIdInToken();
-            if (userId is null) return false;
+            if (userId is null) return null;
             var isSpecialist = await ValidateSpecialist(userId);
-            if (!isSpecialist) return false;
+            if (!isSpecialist) return null;
 
-            var mappedPost = _mapperService.MapToFeedPost(feedPostDto);
-            if (mappedPost is null) return false;
-            mappedPost.UserId = userId;
-            mappedPost.PublishedOn = DateOnly.FromDateTime(DateTime.Now);
+            var feedPost = _mapperService.MapToFeedPost(feedPostDto);
+            if (feedPost is null) return null;
+            // Update properties not mapped
+            feedPost.UserId = userId;
+            feedPost.PublishedOn = DateOnly.FromDateTime(DateTime.Now);
 
-            var result = await _feedPostService.AddFeedPost(mappedPost);
-            return result;
+            var result = await _feedPostService.AddFeedPost(feedPost);
+            if(!result) return null;
+
+            var postDto = _mapperService.MapToFeedPostDto(feedPost);
+            return postDto;
         }
 
         public async Task<bool> CheckPostTag(AddFeedPostDto feedPostDto)

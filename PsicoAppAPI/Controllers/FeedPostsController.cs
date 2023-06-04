@@ -22,10 +22,10 @@ namespace PsicoAppAPI.Controllers
         {
             var existsTag = await _service.CheckPostTag(addFeedPost);
             if (!existsTag) return NotFound($"Tag with ID {addFeedPost.TagId} does not exist");
-            var result = await _service.AddFeedPost(addFeedPost);
-            if (!result) return StatusCode(StatusCodes.Status500InternalServerError,
+            var postToReturn = await _service.AddFeedPost(addFeedPost);
+            if (postToReturn is null) return StatusCode(StatusCodes.Status500InternalServerError,
                 new ErrorModel { ErrorCode = 500, Message = "Internal error creating feedpost" });
-            return Ok(result);
+            return Ok(postToReturn);
         }
     }
 }
