@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PsicoAppAPI.Data;
+using PsicoAppAPI.Repositories;
+using PsicoAppAPI.Repositories.Interfaces;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace PsicoAppAPI.Extensions
@@ -15,6 +17,7 @@ namespace PsicoAppAPI.Extensions
         {
             services = AddSwaggerGen(services);
             services = AddAutoMapper(services);
+            services = AddRepositories(services);
             services = AddData(services, config);
             services = AddAuthentication(services, config);
             services = AddHttpContextAccesor(services);
@@ -39,6 +42,12 @@ namespace PsicoAppAPI.Extensions
         private static IServiceCollection AddAutoMapper(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Program).Assembly);
+            return services;
+        }
+
+        private static IServiceCollection AddRepositories(IServiceCollection services)
+        {
+            // services.AddScoped<IUserRepository, UserRepository>();
             return services;
         }
 
