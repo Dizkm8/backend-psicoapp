@@ -21,9 +21,9 @@ namespace PsicoAppAPI.Services.Mediators
 
         public async Task<List<AvailabilitySlotDto>?> GetAvailabilitySlots(DateOnly date)
         {
-            // Validate if the date is in the current week or greater && equals or less than 2 weeks
-            if(!DateHelper.DateIsOnWeekRange(date, 2)) return null;
-            
+            // Validate if the date is in the current week or greater && equals or less than 2 months (8 weeks)
+            if (!DateHelper.DateIsOnWeekRange(date, 8)) return null;
+
             var userId = _authService.GetUserIdInToken();
             if (userId is null) return null;
             var availabilitySlots = await _specialistService.GetSpecialistAvailability(userId);

@@ -18,14 +18,16 @@ namespace PsicoAppAPI.Controllers
 
 
         [Authorize(Roles = "3")]
-        [HttpGet("availability/{dateTime}")]
+        [HttpGet("availability/{date}")]
         public async Task<ActionResult<List<AvailabilitySlotDto>?>> GetScheduleAvailability([Required] DateOnly date)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var slots = _service.GetAvailabilitySlots(date);
+            var slots = await _service.GetAvailabilitySlots(date);
+            if (slots is null)
+                return NotFound();
             return Ok(slots);
         }
 
