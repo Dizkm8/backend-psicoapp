@@ -174,8 +174,8 @@ namespace PsicoAppAPI.Data
             // and the BCrypt will crash trying to use it as hash
             userList.ForEach(user =>
             {
-                var passwordHash = BCrypt.Net.BCrypt.HashPassword(user.HashedPassword);
-                user.HashedPassword = passwordHash;
+                var passwordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
+                user.Password = passwordHash;
             });
             if (context.Users == null) throw new Exception("Users table is null");
             context.Users.AddRange(userList);

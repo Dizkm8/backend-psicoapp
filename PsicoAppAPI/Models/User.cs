@@ -14,7 +14,7 @@ namespace PsicoAppAPI.Models
         public string Gender { get; set; } = null!;
         public bool IsEnabled { get; set; }
         public int Phone { get; set; }
-        public string HashedPassword { get; set; } = null!;
+        public string Password { get; set; } = null!;
         #endregion
 
         #region MODEL_RELATIONSHIPS

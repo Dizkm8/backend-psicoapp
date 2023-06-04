@@ -75,7 +75,7 @@ namespace PsicoAppAPI.Data.Migrations
                     Gender = table.Column<string>(type: "TEXT", nullable: false),
                     IsEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
                     Phone = table.Column<int>(type: "INTEGER", nullable: false),
-                    HashedPassword = table.Column<string>(type: "TEXT", nullable: false),
+                    Password = table.Column<string>(type: "TEXT", nullable: false),
                     RoleId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
