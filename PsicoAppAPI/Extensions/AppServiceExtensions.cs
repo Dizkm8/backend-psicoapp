@@ -64,6 +64,7 @@ namespace PsicoAppAPI.Extensions
             services.AddScoped<IMapperService, MapperService>();
             services.AddScoped<IFeedPostService, FeedPostService>();
             services.AddScoped<ITagService, TagService>();
+            services.AddScoped<IOpenAIService, OpenAIService>();
             return services;
         }
 
