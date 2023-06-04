@@ -15,8 +15,9 @@ namespace PsicoAppAPI.Repositories
 
         public async Task<bool> AddFeedPostAndSaveChanges(FeedPost feedPost)
         {
-            var result = (await _context.FeedPosts.AddAsync(feedPost)).Entity;
-            return result is not null;
+            await _context.FeedPosts.AddAsync(feedPost);
+            var result = await _context.SaveChangesAsync() > 0;
+            return result;
         }
     }
 }

@@ -22,23 +22,27 @@ namespace PsicoAppAPI.Services.Mediators
 
         public async Task<bool> AddFeedPost(AddFeedPostDto? feedPostDto)
         {
+            var userId = _authService.GetUserIdInToken();
+            if(userId is null) return false;
+            var isSpecialist = await ValidateSpecialist(userId);
+            if(!isSpecialist) return false;
 
-            // var mappedPost = _mapperService.MapToFeedPost(feedPostDto);
-            // if (mappedPost is null) return false;
-            // mappedPost.UserId = userId;
-            // mappedPost.PublishedOn = DateOnly.FromDateTime(DateTime.Now);
-            return false;
+            var mappedPost = _mapperService.MapToFeedPost(feedPostDto);
+            if (mappedPost is null) return false;
+            mappedPost.UserId = userId;
+            mappedPost.PublishedOn = DateOnly.FromDateTime(DateTime.Now);
+            mappedPost.TagId = 1; //CURRENTLY HARDCODED!!
+            // Add to database
+            var result = await _feedPostService.AddFeedPost(mappedPost);
+            return result;
         }
 
-        private async Task<bool> ValidateSpecialist()
+        private async Task<bool> ValidateSpecialist(string userId)
         {
-            var userId = _authService.GetUserIdInToken();
-            if (userId is null) return false;
             var user = await _userService.GetUserById(userId);
             if (user is null) return false;
-            // Currently hardcoded, need to check in database 
-            // using the Id of the role
-            return user.RoleId == 2;
+            var specialistRoleId = await _userService.GetIdOfSpecialistRole();
+            return user.RoleId == specialistRoleId;
         }
     }
 }

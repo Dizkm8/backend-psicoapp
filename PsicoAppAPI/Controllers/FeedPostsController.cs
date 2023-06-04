@@ -20,6 +20,7 @@ namespace PsicoAppAPI.Controllers
         public async Task<ActionResult> AddFeedPost(AddFeedPostDto addFeedPost)
         {
             var result = await _service.AddFeedPost(addFeedPost);
+            if(!result) return BadRequest("Error creating post");
             return Ok(result);
         }
     }
