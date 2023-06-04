@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
+using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.Services.Mediators.Interfaces;
 
@@ -19,8 +20,11 @@ namespace PsicoAppAPI.Controllers
         [HttpPost("create-post")]
         public async Task<ActionResult> AddFeedPost(AddFeedPostDto addFeedPost)
         {
+            var existsTag = await _service.CheckPostTag(addFeedPost);
+            if (!existsTag) return NotFound($"Tag with ID {addFeedPost.TagId} does not exist");
             var result = await _service.AddFeedPost(addFeedPost);
-            if(!result) return BadRequest("Error creating post");
+            if (!result) return StatusCode(StatusCodes.Status500InternalServerError,
+                new ErrorModel { ErrorCode = 500, Message = "Internal error creating feedpost" });
             return Ok(result);
         }
     }

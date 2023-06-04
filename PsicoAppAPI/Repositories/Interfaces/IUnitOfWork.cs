@@ -22,6 +22,11 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// </summary>
         /// <value>IFeedPostRepository</value>
         public IFeedPostRepository FeedPostRepository { get; }
+        /// <summary>
+        /// Get the ITagRepository
+        /// </summary>
+        /// <value>ITagRepository</value>
+        public ITagRepository TagRepository { get; }
 
 
     }

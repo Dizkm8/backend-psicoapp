@@ -10,22 +10,24 @@ namespace PsicoAppAPI.Services.Mediators
         private readonly IAuthService _authService;
         private readonly IMapperService _mapperService;
         private readonly IUserService _userService;
+        private readonly ITagService _tagService;
 
         public FeedPostManagementService(IFeedPostService feedPostService, IAuthService authService,
-            IMapperService mapperService, IUserService userService)
+            IMapperService mapperService, IUserService userService, ITagService tagService)
         {
             _feedPostService = feedPostService;
             _authService = authService;
             _mapperService = mapperService;
             _userService = userService;
+            _tagService = tagService;
         }
 
-        public async Task<bool> AddFeedPost(AddFeedPostDto? feedPostDto)
+        public async Task<bool> AddFeedPost(AddFeedPostDto feedPostDto)
         {
             var userId = _authService.GetUserIdInToken();
-            if(userId is null) return false;
+            if (userId is null) return false;
             var isSpecialist = await ValidateSpecialist(userId);
-            if(!isSpecialist) return false;
+            if (!isSpecialist) return false;
 
             var mappedPost = _mapperService.MapToFeedPost(feedPostDto);
             if (mappedPost is null) return false;
@@ -34,6 +36,12 @@ namespace PsicoAppAPI.Services.Mediators
             mappedPost.TagId = 1; //CURRENTLY HARDCODED!!
 
             var result = await _feedPostService.AddFeedPost(mappedPost);
+            return result;
+        }
+
+        public async Task<bool> CheckPostTag(AddFeedPostDto feedPostDto)
+        {
+            var result = await _tagService.ExistsTagById(feedPostDto.TagId);
             return result;
         }
 
