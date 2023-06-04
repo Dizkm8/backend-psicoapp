@@ -2,15 +2,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
 using PsicoAppAPI.DTOs.FeedPost;
-using PsicoAppAPI.Services.Interfaces;
+using PsicoAppAPI.Services.Mediators.Interfaces;
 
 namespace PsicoAppAPI.Controllers
 {
     public class FeedPostsController : BaseApiController
     {
-        private readonly IFeedPostService _service;
+        private readonly IFeedPostManagementService _service;
 
-        public FeedPostsController(IFeedPostService service)
+        public FeedPostsController(IFeedPostManagementService service)
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
@@ -19,8 +19,8 @@ namespace PsicoAppAPI.Controllers
         [HttpPost("create-post")]
         public async Task<ActionResult> AddFeedPost(AddFeedPostDto addFeedPost)
         {
-
-            return Ok();
+            var result = await _service.AddFeedPost(addFeedPost);
+            return Ok(result);
         }
     }
 }

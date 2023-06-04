@@ -1,4 +1,3 @@
-using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Repositories.Interfaces;
 using PsicoAppAPI.Services.Interfaces;
@@ -13,10 +12,11 @@ namespace PsicoAppAPI.Services
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
-        
-        public Task<bool> AddFeedPost(FeedPost? feedPost)
+
+        public async Task<bool> AddFeedPost(FeedPost? feedPost)
         {
-            throw new NotImplementedException();
+            if (feedPost is null) return false;
+            return await _unitOfWork.FeedPostRepository.AddFeedPostAndSaveChanges(feedPost);
         }
     }
 }
