@@ -5,11 +5,11 @@ namespace PsicoAppAPI.Data
 {
     public class DataContext : DbContext
     {
-        #region CLASS_METHODS
-        public DataContext(DbContextOptions options) : base(options)
-        {
-        }
-
+        
+        #region CLASS_ATTRIBUTES
+        /// <summary>
+        /// Tables that don't depend on other tables
+        /// </summary>
         #region INDEPENDENT_TABLES
         public DbSet<Speciality> Specialities { get; set; } = null!;
         public DbSet<Role> Roles { get; set; } = null!;
@@ -45,6 +45,13 @@ namespace PsicoAppAPI.Data
         public DbSet<Comment> Comments { get; set; } = null!;
         #endregion
 
+        #endregion
+
+        #region CLASS_METHODS
+        public DataContext(DbContextOptions options) : base(options)
+        {
+        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Appointment>()

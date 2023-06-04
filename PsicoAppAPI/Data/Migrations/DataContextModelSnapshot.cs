@@ -26,7 +26,7 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Property<int>("AppointmentStatusId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<DateTime>("BookedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RequestedUserId")

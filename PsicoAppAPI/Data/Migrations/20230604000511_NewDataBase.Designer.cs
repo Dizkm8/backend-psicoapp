@@ -11,7 +11,7 @@ using PsicoAppAPI.Data;
 namespace PsicoAppAPI.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230603214047_NewDataBase")]
+    [Migration("20230604000511_NewDataBase")]
     partial class NewDataBase
     {
         /// <inheritdoc />
@@ -29,7 +29,7 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Property<int>("AppointmentStatusId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<DateTime>("BookedDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RequestedUserId")

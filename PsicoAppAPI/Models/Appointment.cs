@@ -6,7 +6,7 @@ public class Appointment
     #region CLASS_ATTRIBUTES
     [Key]
     public int Id { get; set; }
-    public DateTime DateTime { get; set; }
+    public DateTime BookedDate { get; set; }
     #endregion
 
     #region MODEL_RELATIONSHIPS

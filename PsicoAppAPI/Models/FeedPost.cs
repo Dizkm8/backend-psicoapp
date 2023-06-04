@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace PsicoAppAPI.Models
 {
     public class FeedPost
     {
         #region CLASS_ATTRIBUTES
+        [Key]
         public int Id { get; set; }
         public string Title { get; set; } = null!;
         public string Content { get; set; } = null!;
