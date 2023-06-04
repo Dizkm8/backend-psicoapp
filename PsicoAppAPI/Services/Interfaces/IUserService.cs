@@ -87,5 +87,26 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="newPassword">User's new Password</param>
         /// <returns>True if password could be changed. Otherwise false</returns>
         public Task<bool> UpdateUserPassword(string? userId, string? newPassword);
+        /// <summary>
+        /// Asynchronously get the id of the role name as client
+        /// </summary>
+        /// <returns>Role Id number</returns>
+        public Task<int> GetIdOfClientRole();
+        /// <summary>
+        /// Asynchronously get the id of the role name as Admin
+        /// </summary>
+        /// <returns>Role Id number</returns>
+        public Task<int> GetIdOfAdminRole();
+        /// <summary>
+        /// Asynchronously get the id of the role name as Specialist
+        /// </summary>
+        /// <returns>Role Id number</returns>
+        public Task<int> GetIdOfSpecialistRole();
+        /// <summary>
+        /// Asynchronously get the role name by its Id
+        /// </summary>
+        /// <param name="userId">User id</param>
+        /// <returns>RoleId number, -1 if user doesnt exists</returns>
+        public Task<int> GetRoleIdInUser(string? userId);
     }
 }

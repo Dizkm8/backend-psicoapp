@@ -12,7 +12,7 @@ namespace PsicoAppAPI.Services
 
         public MapperService(IMapper mapper)
         {
-            _mapper = mapper;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public User MapAttributesToUser(UpdateProfileInformationDto profileInformationDto, User user)

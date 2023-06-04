@@ -12,5 +12,12 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// </summary>
         /// <value>ISpecialistRepository</value>
         public ISpecialistRepository SpecialistRepository { get; }
+        /// <summary>
+        /// Get the IRolesRepository
+        /// </summary>
+        /// <value>IRolesRepository</value>
+        public IRolesRepository RolesRepository { get; }
+
+
     }
 }

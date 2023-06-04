@@ -19,9 +19,8 @@ namespace PsicoAppAPI.Services
             _httpContext = httpContext ?? throw new ArgumentNullException(nameof(httpContext));
         }
 
-        public string? GenerateToken(string? userId, string? userRole)
+        public string? GenerateToken(string userId, string userRole)
         {
-            if (userId is null || userRole is null) return null;
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSecret);
             var tokenDescriptor = new SecurityTokenDescriptor

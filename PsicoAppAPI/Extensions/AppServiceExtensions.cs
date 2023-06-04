@@ -6,6 +6,10 @@ using Microsoft.OpenApi.Models;
 using PsicoAppAPI.Data;
 using PsicoAppAPI.Repositories;
 using PsicoAppAPI.Repositories.Interfaces;
+using PsicoAppAPI.Services;
+using PsicoAppAPI.Services.Interfaces;
+using PsicoAppAPI.Services.Mediators;
+using PsicoAppAPI.Services.Mediators.Interfaces;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace PsicoAppAPI.Extensions
@@ -18,6 +22,7 @@ namespace PsicoAppAPI.Extensions
             services = AddSwaggerGen(services);
             services = AddAutoMapper(services);
             services = AddUnitOfWork(services);
+            services = AddServices(services);
             services = AddData(services, config);
             services = AddAuthentication(services, config);
             services = AddHttpContextAccesor(services);
@@ -48,6 +53,14 @@ namespace PsicoAppAPI.Extensions
         private static IServiceCollection AddUnitOfWork(IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork,UnitOfWork>();
+            return services;
+        }
+
+        private static IServiceCollection AddServices(IServiceCollection services)
+        {
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserManagementService, UserManagementService>();
             return services;
         }
 

@@ -8,6 +8,7 @@ namespace PsicoAppAPI.Repositories
         private readonly DataContext _context;
         private IUserRepository userRepository = null!;
         private ISpecialistRepository specialistRepository = null!;
+        private IRolesRepository rolesRepository = null!;
 
 
         public UnitOfWork(DataContext context)
@@ -30,6 +31,15 @@ namespace PsicoAppAPI.Repositories
             {
                 specialistRepository ??= new SpecialistRepository(_context);
                 return specialistRepository ?? throw new NotImplementedException();
+            }
+        }
+
+        public IRolesRepository RolesRepository
+        {
+            get
+            {
+                rolesRepository ??= new RolesRepository(_context);
+                return rolesRepository ?? throw new NotImplementedException();
             }
         }
     }

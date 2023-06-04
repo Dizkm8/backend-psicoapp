@@ -5,10 +5,10 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <summary>
         /// Generate a JWT token for the user
         /// </summary>
-        /// <param name="id">User id to assign token</param>
+        /// <param name="userId">User id to assign token</param>
         /// <param name="userRole">User role to assign inside token</param>
         /// <returns>string if the user id exists or wasn't null. Otherwise null</returns>
-        public string? GenerateToken(string? id, string? userRole);
+        public string? GenerateToken(string userId, string userRole);
         /// <summary>
         /// Get the user id from the token using HttpContext
         /// </summary>

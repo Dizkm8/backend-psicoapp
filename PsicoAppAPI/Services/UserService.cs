@@ -13,25 +13,26 @@ namespace PsicoAppAPI.Services
 
         public UserService(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
         #region IUSERSERVICE_METHODS
         public async Task<User?> GetUser(LoginUserDto loginUserDto)
         {
-            if (string.IsNullOrWhiteSpace(loginUserDto.Id) || string.IsNullOrWhiteSpace(loginUserDto.Password)) return null;
+            if (string.IsNullOrWhiteSpace(loginUserDto.Id) || 
+            string.IsNullOrWhiteSpace(loginUserDto.Password)) return null;
             var user = await _unitOfWork.UserRepository.GetUserById(loginUserDto.Id);
             if (user is null) return null;
-            return BCrypt.Net.BCrypt.Verify(loginUserDto.Password, user.Password) ? user : null;
+            return BCryptHelper.VerifyPassword(loginUserDto.Password, user.Password) ? user : null;
         }
 
         public async Task<bool> AddUser(User? user)
         {
-            if(user is null) return false;
+            if (user is null) return false;
             user.IsEnabled = true;
             // Hashes the password and check if it was successful
             var hashedPassword = BCryptHelper.HashPassword(user.Password);
-            if(string.IsNullOrEmpty(hashedPassword)) return false;
+            if (string.IsNullOrEmpty(hashedPassword)) return false;
             // asigns to user
             user.Password = hashedPassword;
             var result = await _unitOfWork.UserRepository.AddUserAndSaveChanges(user);
@@ -89,7 +90,7 @@ namespace PsicoAppAPI.Services
             if (userId is null || userRole is null) return null;
             var user = await _unitOfWork.UserRepository.GetUserById(userId);
             var profileInformationDto = mapperService.MapToProfileInformationDto(user);
-            if(profileInformationDto is null) return null;
+            if (profileInformationDto is null) return null;
             // Asign manually attribute cannot be mapped
             profileInformationDto.Role = userRole;
             return profileInformationDto;
@@ -112,7 +113,7 @@ namespace PsicoAppAPI.Services
 
         public async Task<bool> UpdateUserPassword(string? userId, string? newPassword)
         {
-            if(string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(userId)) return false;
+            if (string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(userId)) return false;
             var hashedPassword = BCryptHelper.HashPassword(newPassword);
             if (string.IsNullOrEmpty(hashedPassword)) return false;
             var user = await GetUserById(userId);
@@ -121,6 +122,31 @@ namespace PsicoAppAPI.Services
             user.Password = hashedPassword;
             var result = _unitOfWork.UserRepository.UpdateUserAndSaveChanges(user);
             return result is not null;
+        }
+
+        public async Task<int> GetIdOfClientRole()
+        {
+            var role = await _unitOfWork.RolesRepository.ClientRole();
+            return role.Item1;
+        }
+
+        public async Task<int> GetIdOfAdminRole()
+        {
+            var role = await _unitOfWork.RolesRepository.AdminRole();
+            return role.Item1;
+        }
+
+        public async Task<int> GetIdOfSpecialistRole()
+        {
+            var role = await _unitOfWork.RolesRepository.SpecialistRole();
+            return role.Item1;
+        }
+
+        public async Task<int> GetRoleIdInUser(string? userId)
+        {
+            var user = await GetUserById(userId);
+            if (user is null) return -1;
+            return user.RoleId;
         }
         #endregion
     }
