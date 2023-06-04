@@ -27,5 +27,10 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// </summary>
         /// <value>ITagRepository</value>
         public ITagRepository TagRepository { get; }
+        /// <summary>
+        /// Get the IAvailabilitySlotRepository
+        /// </summary>
+        /// <value>IAvailabilitySlotRepository</value>
+        public IAvailabilitySlotRepository AvailabilitySlotRepository { get; }
     }
 }

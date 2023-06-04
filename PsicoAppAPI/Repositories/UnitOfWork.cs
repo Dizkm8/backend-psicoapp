@@ -11,6 +11,7 @@ namespace PsicoAppAPI.Repositories
         private IRolesRepository rolesRepository = null!;
         private IFeedPostRepository feedPostRepository = null!;
         private ITagRepository tagRepository = null!;
+        private IAvailabilitySlotRepository availabilitySlotRepository = null!;
 
         public UnitOfWork(DataContext context)
         {
@@ -59,6 +60,15 @@ namespace PsicoAppAPI.Repositories
             {
                 tagRepository ??= new TagRepository(_context);
                 return tagRepository ?? throw new NotImplementedException();
+            }
+        }
+
+        public IAvailabilitySlotRepository AvailabilitySlotRepository
+        {
+            get
+            {
+                availabilitySlotRepository ??= new AvailabilitySlotRepository(_context);
+                return availabilitySlotRepository ?? throw new NotImplementedException();
             }
         }
     }
