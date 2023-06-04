@@ -33,7 +33,6 @@ namespace PsicoAppAPI.Services.Mediators
             if (mappedPost is null) return false;
             mappedPost.UserId = userId;
             mappedPost.PublishedOn = DateOnly.FromDateTime(DateTime.Now);
-            mappedPost.TagId = 1; //CURRENTLY HARDCODED!!
 
             var result = await _feedPostService.AddFeedPost(mappedPost);
             return result;
