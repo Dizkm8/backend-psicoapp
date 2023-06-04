@@ -27,7 +27,5 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// </summary>
         /// <value>ITagRepository</value>
         public ITagRepository TagRepository { get; }
-
-
     }
 }

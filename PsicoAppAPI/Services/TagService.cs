@@ -9,7 +9,7 @@ namespace PsicoAppAPI.Services
 
         public TagService(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
         public async Task<bool> ExistsTagById(int id)
@@ -20,7 +20,7 @@ namespace PsicoAppAPI.Services
 
         public async Task<bool> ExistsTagByName(string? name)
         {
-            if(string.IsNullOrEmpty(name)) return false;
+            if (string.IsNullOrEmpty(name)) return false;
             var tag = await _unitOfWork.TagRepository.GetTagByName(name);
             return tag is not null;
         }
