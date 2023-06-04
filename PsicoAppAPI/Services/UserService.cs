@@ -83,17 +83,6 @@ namespace PsicoAppAPI.Services
             return mappedDto;
         }
 
-        public async Task<ProfileInformationDto?> GetUserProfileInformation(string? userId, string? userRole, IMapperService mapperService)
-        {
-            if (userId is null || userRole is null) return null;
-            var user = await _unitOfWork.UserRepository.GetUserById(userId);
-            var profileInformationDto = mapperService.MapToProfileInformationDto(user);
-            if (profileInformationDto is null) return null;
-            // Asign manually attribute cannot be mapped
-            profileInformationDto.Role = userRole;
-            return profileInformationDto;
-        }
-
         public async Task<bool> ExistsEmailInOtherUser(string? email, string? id)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(id)) return false;
@@ -153,6 +142,13 @@ namespace PsicoAppAPI.Services
             user.RoleId = await GetIdOfClientRole();
             var result = await AddUser(user);
             return result;
+        }
+
+        public bool UpdateUser(User? user)
+        {
+            if(user is null) return false;
+            var updatedUser = _unitOfWork.UserRepository.UpdateUserAndSaveChanges(user);
+            return updatedUser is not null;
         }
         #endregion
     }

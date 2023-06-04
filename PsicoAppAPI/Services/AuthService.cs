@@ -49,15 +49,16 @@ namespace PsicoAppAPI.Services
             return string.IsNullOrEmpty(userId) ? null : userId;
         }
 
-        public string? GetUserRoleInToken()
+        public int GetUserRoleInToken()
         {
             //Check if the HttpContext is available to work with
             var httpUser = _httpContext.HttpContext?.User;
-            if (httpUser is null) return null;
+            if (httpUser is null) return -1;
 
             //Get Claims from JWT
             var userRole = httpUser.FindFirstValue(ClaimTypes.Role);
-            return string.IsNullOrEmpty(userRole) ? null : userRole;
+            if (!Int32.TryParse(userRole, out var roleId)) return -1;
+            return roleId;
         }
     }
 }

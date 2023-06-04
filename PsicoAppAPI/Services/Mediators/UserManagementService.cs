@@ -48,7 +48,7 @@ namespace PsicoAppAPI.Services.Mediators
         public async Task<string?> GenerateToken(LoginUserDto loginUserDto)
         {
             var userId = loginUserDto.Id;
-            if(string.IsNullOrEmpty(userId)) return null;
+            if (string.IsNullOrEmpty(userId)) return null;
             var roleId = await _userService.GetRoleIdInUser(userId);
             return _authService.GenerateToken(userId, roleId.ToString());
         }
@@ -73,7 +73,7 @@ namespace PsicoAppAPI.Services.Mediators
         public async Task<bool> CheckUserCurrentPassword(UpdatePasswordDto updatePasswordDto)
         {
             var currentPassword = updatePasswordDto.CurrentPassword;
-            if(string.IsNullOrEmpty(currentPassword)) return false;
+            if (string.IsNullOrEmpty(currentPassword)) return false;
             var userId = _authService.GetUserIdInToken();
             if (string.IsNullOrEmpty(userId)) return false;
             var user = await _userService.GetUserByCredentials(userId, currentPassword);
@@ -87,6 +87,37 @@ namespace PsicoAppAPI.Services.Mediators
             if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(password)) return false;
             var result = await _userService.UpdateUserPassword(userId, password);
             return result;
+        }
+
+        public async Task<ProfileInformationDto?> GetUserProfileInformation()
+        {
+            var userId = _authService.GetUserIdInToken();
+            var roleId = _authService.GetUserRoleInToken();
+            if(string.IsNullOrEmpty(userId) || roleId == -1) return null;
+            var user = await _userService.GetUserById(userId);
+            var profileInfoDto = _mapperService.MapToProfileInformationDto(user);
+            return profileInfoDto;
+        }
+
+        public async Task<bool> CheckEmailUpdatingAvailability(UpdateProfileInformationDto dto)
+        {
+            var userId = _authService.GetUserIdInToken();
+            var email = dto.Email;
+            if(string.IsNullOrEmpty(email)) return false;
+            var result = await _userService.ExistsEmailInOtherUser(userId, email);
+            return result;
+        }
+
+        public async Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser)
+        {
+            var userId = _authService.GetUserIdInToken();
+            if(string.IsNullOrEmpty(userId)) return null;
+            var user = await _userService.GetUserById(userId);
+            if(user is null) return null;
+            var mappedUser = _mapperService.MapAttributesToUser(newUser, user);
+            var result = _userService.UpdateUser(mappedUser);
+            if(!result) return null;
+            return _mapperService.MapToUpdatedProfileInformationDto(mappedUser);
         }
     }
 }

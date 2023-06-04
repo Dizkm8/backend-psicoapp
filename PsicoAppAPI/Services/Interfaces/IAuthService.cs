@@ -18,6 +18,6 @@ namespace PsicoAppAPI.Services.Interfaces
         /// Get the user role from the token using HttpContext
         /// </summary>
         /// <returns>string with the Role. null if something gone wrong</returns>
-        public string? GetUserRoleInToken();
+        public int GetUserRoleInToken();
     }
 }

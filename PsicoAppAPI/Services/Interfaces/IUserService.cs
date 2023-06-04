@@ -59,22 +59,6 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <returns>User if was found, null otherwise</returns>
         public Task<User?> GetUserByIdOrEmail(string? id, string? email);
         /// <summary>
-        /// Asynchronously update users information contained on Dto shape by their Id
-        /// </summary>
-        /// <param name="newUser">Dto shape with params to update</param>
-        /// <param name="userId">user's Id</param>
-        /// <param name="mapperService">IMapperService instance</param>
-        /// <returns>Dto with updated user, null if user cannot be found or updated</returns>
-        public Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser, string? userId, IMapperService mapperService);
-        /// <summary>
-        /// Asynchronously get user profile information by their Id and role
-        /// </summary>
-        /// <param name="userId">User's Id</param>
-        /// <param name="userRole">User's Role</param>
-        /// <param name="mapperService">IMapperService instance</param>
-        /// <returns>Profile information Dto shape, null if user cannot be found</returns>
-        public Task<ProfileInformationDto?> GetUserProfileInformation(string? userId, string? userRole, IMapperService mapperService);
-        /// <summary>
         /// Asynchronously check if an email exists in other user than the one with the id
         /// </summary>
         /// <param name="email">User's email</param>
@@ -115,5 +99,11 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="userId">User id</param>
         /// <returns>RoleId number, -1 if user doesnt exists</returns>
         public Task<int> GetRoleIdInUser(string? userId);
+        /// <summary>
+        /// Update the user
+        /// </summary>
+        /// <param name="user">User to update</param>
+        /// <returns>True if could be updated. otherwise false</returns>
+        public bool UpdateUser(User? user);
     }
 }

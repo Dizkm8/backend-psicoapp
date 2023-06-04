@@ -69,7 +69,7 @@ namespace PsicoAppAPI.Controllers
         /// </returns>
         [AllowAnonymous]
         [HttpPost("register-client")]
-        public async Task<ActionResult> RegisterClient([FromBody] RegisterClientDto registerClientDto)
+        public async Task<ActionResult<RegisterClientDto>> RegisterClient([FromBody] RegisterClientDto registerClientDto)
         {
             if (!ModelState.IsValid)
             {

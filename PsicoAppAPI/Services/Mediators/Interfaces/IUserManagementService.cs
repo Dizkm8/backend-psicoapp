@@ -54,5 +54,23 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// <param name="updatePasswordDto">Dto with the new password</param>
         /// <returns>True if the password could be updated. Otherwise false</returns>
         public Task<bool> UpdateUserPassword(UpdatePasswordDto updatePasswordDto);
+        /// <summary>
+        /// Asynchronously get user profile information using the user's Id in the JWT
+        /// </summary>
+        /// <returns>Profile information Dto shape, null if user cannot be found</returns>
+        public Task<ProfileInformationDto?> GetUserProfileInformation();
+        /// <summary>
+        /// Asynchronously check if the email provided is available to use
+        /// not considering the current user's email
+        /// </summary>
+        /// <param name="dto">Shape of information</param>
+        /// <returns>True if it is available. othernise false</returns>
+        public Task<bool> CheckEmailUpdatingAvailability(UpdateProfileInformationDto dto);
+        /// <summary>
+        /// Asynchronously update users information contained on Dto shape using the user's Id in the JWT
+        /// </summary>
+        /// <param name="newUser">Dto shape with params to update</param>
+        /// <returns>Dto with updated user, null if user cannot be found or updated</returns>
+        public Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser);
     }
 }
