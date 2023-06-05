@@ -77,14 +77,6 @@ namespace PsicoAppAPI.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var validateDates = _service.ValidateDateOfAvailabities(availabilities);
-            if (!validateDates) return BadRequest(
-                new ErrorModel { ErrorCode = 400, Message = "The dates provided are not in the allowed range" });
-
-            var validateHours = _service.ValidateTimeOfAvailabities(availabilities);
-            if (!validateHours) return BadRequest(
-                new ErrorModel { ErrorCode = 400, Message = "The hours provided are not in the allowed range" });
-
             var result = await _service.AddSpecialistAvailability(availabilities);
             if (result is null) return StatusCode(StatusCodes.Status500InternalServerError,
                 new { error = "Could not add the availabilities" });

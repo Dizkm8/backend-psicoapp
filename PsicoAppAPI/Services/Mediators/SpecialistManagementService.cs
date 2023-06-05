@@ -52,27 +52,5 @@ namespace PsicoAppAPI.Services.Mediators
             // Validate if the date is in the current week or greater && equals or less than 2 months (8 weeks)
             return DateHelper.DateIsOnWeekRange(date, 8);
         }
-
-        public bool ValidateDateOfAvailabities(IEnumerable<AddAvailabilityDto> availabilities)
-        {
-            foreach (var availability in availabilities)
-            {
-                var date = DateOnly.FromDateTime(availability.StartTime);
-                if (!DateHelper.DateIsBetweenNowAndSpecificWeek(date, 8)) return false;
-            }
-            return true;
-        }
-
-        public bool ValidateTimeOfAvailabities(IEnumerable<AddAvailabilityDto> availabilities)
-        {
-            var maxTime = new TimeSpan(20, 0, 0);
-            var minTime = new TimeSpan(8, 0, 0);
-            foreach (var availability in availabilities)
-            {
-                var time = availability.StartTime;
-                if (time.TimeOfDay < minTime || time.TimeOfDay > maxTime) return false;
-            }
-            return true;
-        }
     }
 }
