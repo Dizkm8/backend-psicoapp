@@ -1,4 +1,5 @@
 using PsicoAppAPI.DTOs.FeedPost;
+using PsicoAppAPI.DTOs.Specialist;
 
 namespace PsicoAppAPI.Services.Mediators.Interfaces
 {
@@ -22,5 +23,11 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// <param name="feedPostDto">FeedpostDto shape with content to check</param>
         /// <returns>True if its adecuate to application. otherwise false</returns>
         public Task<bool> CheckPostContext(AddFeedPostDto feedPostDto);
+        /// <summary>
+        /// Add a new availabilities to an specialist in the database
+        /// </summary>
+        /// <param name="availabilities">Availabilities to add</param>
+        /// <returns>True if could be added, otherwise false</returns>
+        public Task<bool> AddSpecialistAvailability(IEnumerable<AddAvailabilityDto> availabilities);
     }
 }

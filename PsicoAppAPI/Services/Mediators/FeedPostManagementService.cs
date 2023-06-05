@@ -1,4 +1,5 @@
 using PsicoAppAPI.DTOs.FeedPost;
+using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.Services.Interfaces;
 using PsicoAppAPI.Services.Mediators.Interfaces;
 
@@ -43,6 +44,11 @@ namespace PsicoAppAPI.Services.Mediators
 
             var postDto = _mapperService.MapToFeedPostDto(feedPost);
             return postDto;
+        }
+
+        public Task<bool> AddSpecialistAvailability(IEnumerable<AddAvailabilityDto> availabilities)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<bool> CheckPostContext(AddFeedPostDto feedPostDto)
