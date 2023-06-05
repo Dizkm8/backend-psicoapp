@@ -19,6 +19,15 @@ namespace PsicoAppAPI.Services
             return result;
         }
 
+        public async Task<bool> ExistsAvailability(string userId, DateTime startTime)
+        {
+            var availabilities = await _unitOfWork.AvailabilitySlotRepository.GetAvailabilitySlotsByUserId(userId);
+            if (availabilities is null) return false;
+            
+            var availability = availabilities.FirstOrDefault(x => x.StartTime == startTime);
+            return availability is not null;
+        }
+
         public async Task<List<AvailabilitySlot>?> GetAllAvailability(string? userId)
         {
             if (userId is null) return null;

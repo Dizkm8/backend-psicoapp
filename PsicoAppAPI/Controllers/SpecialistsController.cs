@@ -64,6 +64,8 @@ namespace PsicoAppAPI.Controllers
         /// are not in the valid hour range within 8:00 and 20:00,
         /// then return erorr 400 BadRequest with modelState errors for each availitibity with error
         /// error 400 BadRequest with the ModelState errors.
+        /// If the availabilities provided already exists in the database, return error 400 BadRequest
+        /// with a message. The criteria to check if the availabilities exists is the StartTime.
         /// If something goes wrong adding the availabilities (UserId in token don't exists,
         /// error in availabilities in server, etc.) return error 500 internal server error
         /// with a message
@@ -74,6 +76,10 @@ namespace PsicoAppAPI.Controllers
         public async Task<ActionResult> AddScheduleAvailability(IEnumerable<AddAvailabilityDto> availabilities)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var CheckDuplicatedAvailabilities = await _service.CheckDuplicatedAvailabilities(availabilities);
+            if (CheckDuplicatedAvailabilities) return BadRequest(
+                new ErrorModel { ErrorCode = 400, Message = "One or more availabilities provided already exists duplicated" });
 
             var result = await _service.AddSpecialistAvailability(availabilities);
             if (result is null) return StatusCode(StatusCodes.Status500InternalServerError,

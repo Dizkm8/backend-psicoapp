@@ -32,6 +32,21 @@ namespace PsicoAppAPI.Services.Mediators
             return _mapperService.MapToListOfAvailabilitySlotDto(mappedAvailabilities.ToList());
         }
 
+        public async Task<bool> CheckDuplicatedAvailabilities(IEnumerable<AddAvailabilityDto> availabilities)
+        {
+            var userId = _authService.GetUserIdInToken();
+            if (userId is null) return false;
+
+            foreach (var availability in availabilities)
+            {
+                var startTime = availability.StartTime;
+                var result = await _specialistService.ExistsAvailability(userId, startTime);
+                if(result) return true;
+            }
+            // If none of the availabilities exists, return false
+            return false;
+        }
+
         public async Task<List<AvailabilitySlotDto>?> GetAvailabilitySlots(DateOnly date)
         {
             var userId = _authService.GetUserIdInToken();
