@@ -19,6 +19,11 @@ namespace PsicoAppAPI.Services.Mediators
             _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
         }
 
+        public Task<bool> AddSpecialistAvailability(IEnumerable<AddAvailabilityDto> availabilities)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<AvailabilitySlotDto>?> GetAvailabilitySlots(DateOnly date)
         {
             var userId = _authService.GetUserIdInToken();

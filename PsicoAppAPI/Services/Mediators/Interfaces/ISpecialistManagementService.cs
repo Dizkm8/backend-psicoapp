@@ -17,5 +17,11 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// <param name="date">Date to check</param>
         /// <returns>True if its valid, otherwise false</returns>
         public bool ValidateDate(DateOnly date);
+         /// <summary>
+        /// Add a new availabilities to an specialist in the database
+        /// </summary>
+        /// <param name="availabilities">Availabilities to add</param>
+        /// <returns>True if could be added, otherwise false</returns>
+        public Task<bool> AddSpecialistAvailability(IEnumerable<AddAvailabilityDto> availabilities);
     }
 }

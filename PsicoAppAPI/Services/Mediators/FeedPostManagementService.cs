@@ -46,11 +46,6 @@ namespace PsicoAppAPI.Services.Mediators
             return postDto;
         }
 
-        public Task<bool> AddSpecialistAvailability(IEnumerable<AddAvailabilityDto> availabilities)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<bool> CheckPostContext(AddFeedPostDto feedPostDto)
         {
             var content = feedPostDto.Content;
