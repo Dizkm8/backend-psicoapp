@@ -59,13 +59,11 @@ namespace PsicoAppAPI.Controllers
         /// </summary>
         /// <param name="availabilities">List of availabilities to add</param>
         /// <returns>
-        /// If the dates provided are not in the right format or are not summoned, return
+        /// If the dates provided are not in the right format, are not summoned,
+        /// are not in the valid date range within now and the next 8 weeks,
+        /// are not in the valid hour range within 8:00 and 20:00,
+        /// then return erorr 400 BadRequest with modelState errors for each availitibity with error
         /// error 400 BadRequest with the ModelState errors.
-        /// If the dates are not in the allowed range, return error 400 BadRequest with a message.
-        /// The range is between the current week and the next 8 weeks.
-        /// If the hours provided are not in the right format, return error 400 BadRequest with a message.
-        /// If the hours are not in the allowed range, return error 400 BadRequest with a message.
-        /// The range is between 8:00 and 20:00.
         /// If something goes wrong adding the availabilities (UserId in token don't exists,
         /// error in availabilities in server, etc.) return error 500 internal server error
         /// with a message
