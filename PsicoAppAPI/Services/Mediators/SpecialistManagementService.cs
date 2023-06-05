@@ -62,5 +62,17 @@ namespace PsicoAppAPI.Services.Mediators
             }
             return true;
         }
+
+        public bool ValidateTimeOfAvailabities(IEnumerable<AddAvailabilityDto> availabilities)
+        {
+            var maxTime = new TimeSpan(20, 0, 0);
+            var minTime = new TimeSpan(8, 0, 0);
+            foreach (var availability in availabilities)
+            {
+                var time = availability.StartTime;
+                if (time.TimeOfDay < minTime || time.TimeOfDay > maxTime) return false;
+            }
+            return true;
+        }
     }
 }

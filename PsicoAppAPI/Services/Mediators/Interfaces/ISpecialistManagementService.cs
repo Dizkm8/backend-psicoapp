@@ -27,7 +27,13 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// Check if the date of the availabilities are in the allowed range between now and the next 8 weeks
         /// </summary>
         /// <param name="availabilities">IEnumerable with addAvialabilitiesDto</param>
-        /// <returns>True if its valid, otherwise false</returns>
+        /// <returns>True if are valid, otherwise false</returns>
         public bool ValidateDateOfAvailabities(IEnumerable<AddAvailabilityDto> availabilities);
+        /// <summary>
+        /// Check if the time of the availabilities are in the allowed range between 8:00 and 20:00
+        /// </summary>
+        /// <param name="availabilities">IEnumerable with addAvialabilitiesDto</param>
+        /// <returns>True if are valid, otherwise false</returns>
+        public bool ValidateTimeOfAvailabities(IEnumerable<AddAvailabilityDto> availabilities);
     }
 }
