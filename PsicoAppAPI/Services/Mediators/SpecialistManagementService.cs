@@ -26,9 +26,9 @@ namespace PsicoAppAPI.Services.Mediators
 
             var mappedAvailabilities = _mapperService.MapToListOfAvailabilitySlot(availabilities, userId);
             if (mappedAvailabilities is null) return null;
-            
+
             var result = await _specialistService.AddAvailabilities(mappedAvailabilities, userId);
-            if(!result) return null;
+            if (!result) return null;
             return _mapperService.MapToListOfAvailabilitySlotDto(mappedAvailabilities.ToList());
         }
 
@@ -51,6 +51,16 @@ namespace PsicoAppAPI.Services.Mediators
         {
             // Validate if the date is in the current week or greater && equals or less than 2 months (8 weeks)
             return DateHelper.DateIsOnWeekRange(date, 8);
+        }
+
+        public bool ValidateDateOfAvailabities(IEnumerable<AddAvailabilityDto> availabilities)
+        {
+            foreach (var availability in availabilities)
+            {
+                var date = DateOnly.FromDateTime(availability.StartTime);
+                if (!DateHelper.DateIsBetweenNowAndSpecificWeek(date, 8)) return false;
+            }
+            return true;
         }
     }
 }

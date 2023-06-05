@@ -36,6 +36,11 @@ namespace PsicoAppAPI.Controllers
         [HttpPost("add-availability")]
         public async Task<ActionResult> AddScheduleAvailability(IEnumerable<AddAvailabilityDto> availabilities)
         {
+            var validateDates = _service.ValidateDateOfAvailabities(availabilities);
+            if (!validateDates) return BadRequest(
+                new ErrorModel { ErrorCode = 400, Message = "The dates provided are not in the allowed range" });
+    
+
             var result = await _service.AddSpecialistAvailability(availabilities);
             if (result is null) return BadRequest(
                 new ErrorModel { ErrorCode = 400, Message = "Could not add the availabilities" });

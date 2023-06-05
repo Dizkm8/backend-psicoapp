@@ -23,5 +23,11 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// <param name="availabilities">Availabilities to add</param>
         /// <returns>True if could be added, otherwise false</returns>
         public Task<IEnumerable<AvailabilitySlotDto>?> AddSpecialistAvailability(IEnumerable<AddAvailabilityDto> availabilities);
+        /// <summary>
+        /// Check if the date of the availabilities are in the allowed range between now and the next 8 weeks
+        /// </summary>
+        /// <param name="availabilities">IEnumerable with addAvialabilitiesDto</param>
+        /// <returns>True if its valid, otherwise false</returns>
+        public bool ValidateDateOfAvailabities(IEnumerable<AddAvailabilityDto> availabilities);
     }
 }
