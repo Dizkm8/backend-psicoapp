@@ -18,5 +18,12 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// <param name="endDate">End date to get</param>
         /// <returns></returns>
         public Task<List<AvailabilitySlot>?> GetAvailabiliySlotByUserIdAndDateRange(string userId , DateOnly startDate, DateOnly endDate);
+        /// <summary>
+        /// Add new availabilities to a specialist
+        /// </summary>
+        /// <param name="availabilities">IEnumerable for availabilities</param>
+        /// <param name="userId">User id</param>
+        /// <returns>True if could be added, otherwise false</returns>
+        public Task<bool> AddAvailabilitiesToUser(IEnumerable<AvailabilitySlot> availabilities, string userId);
     }
 }

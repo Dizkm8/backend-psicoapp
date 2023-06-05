@@ -22,6 +22,6 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// </summary>
         /// <param name="availabilities">Availabilities to add</param>
         /// <returns>True if could be added, otherwise false</returns>
-        public Task<bool> AddSpecialistAvailability(IEnumerable<AddAvailabilityDto> availabilities);
+        public Task<IEnumerable<AvailabilitySlotDto>?> AddSpecialistAvailability(IEnumerable<AddAvailabilityDto> availabilities);
     }
 }

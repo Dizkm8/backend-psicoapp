@@ -36,7 +36,10 @@ namespace PsicoAppAPI.Controllers
         [HttpPost("add-availability")]
         public async Task<ActionResult> AddScheduleAvailability(IEnumerable<AddAvailabilityDto> availabilities)
         {
-            return Ok();
+            var result = await _service.AddSpecialistAvailability(availabilities);
+            if (result is null) return BadRequest(
+                new ErrorModel { ErrorCode = 400, Message = "Could not add the availabilities" });
+            return Ok(result);
         }
 
     }

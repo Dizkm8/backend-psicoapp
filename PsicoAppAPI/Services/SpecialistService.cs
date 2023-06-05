@@ -10,8 +10,13 @@ namespace PsicoAppAPI.Services
 
         public SpecialistService(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork ??
-                throw new ArgumentNullException(nameof(unitOfWork));
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+        }
+
+        public async Task<bool> AddAvailabilities(IEnumerable<AvailabilitySlot> availabilities, string userId)
+        {
+            var result = await _unitOfWork.AvailabilitySlotRepository.AddAvailabilitiesToUser(availabilities, userId);
+            return result;
         }
 
         public async Task<List<AvailabilitySlot>?> GetAllAvailability(string? userId)
