@@ -28,7 +28,8 @@ namespace PsicoAppAPI.Controllers
                 new ErrorModel { ErrorCode = 404, Message = "The date provided are not in the allowed range" });
 
             var slots = await _service.GetAvailabilitySlots(date);
-            if (slots is null) return BadRequest();
+            if (slots is null) return StatusCode(StatusCodes.Status500InternalServerError,
+                new { error = "Internal error getting availability" });
             return Ok(slots);
         }
 
