@@ -1,11 +1,14 @@
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.FeedPost;
+using PsicoAppAPI.DTOs.Specialist;
+using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.Services.Interfaces
 {
     public interface IMapperService
     {
-        /// <summary>
+         /// <summary>
         /// Maps a RegisterClientDto to a User
         /// </summary>
         /// <param name="registerClientDto">Dto to map</param>
@@ -30,10 +33,37 @@ namespace PsicoAppAPI.Services.Interfaces
         public UpdateProfileInformationDto? MapToUpdatedProfileInformationDto(User? user);
         /// <summary>
         /// Maps the user attributes to a ProfileInformationDto
-        /// Role attribute of Dto returned is null
+        /// None attribute of Dto returned is null
         /// </summary>
         /// <param name="user">User source</param>
         /// <returns>Dto mapped</returns>
         public ProfileInformationDto? MapToProfileInformationDto(User? user);
+        /// <summary>
+        /// Maps the attributes of a AddFeedPostDto to a FeedPost
+        /// Feedpost will have:
+        /// PublishedOn attribute not mapped
+        /// UserId attribute not mapped
+        /// </summary>
+        /// <param name="addFeedPostDto">Dto source</param>
+        /// <returns>FeedPost mapped or null</returns>
+        public FeedPost? MapToFeedPost(AddFeedPostDto? addFeedPostDto);
+        /// <summary>
+        /// Maps the attributes of a FeedPost to a FeedPostDto
+        /// </summary>
+        /// <param name="feedPost">Feedpost to map</param>
+        /// <returns>FeedPost mapped. Null if cannot be mapped</returns>
+        public FeedPostDto? MapToFeedPostDto(FeedPost? feedPost);
+        /// <summary>
+        /// Maps the attributes of a AvailabilitySlot to a AvailabilitySlotDto
+        /// </summary>
+        /// <param name="availabilitySlot">AvailabilitySlot to map</param>
+        /// <returns>AvailabilitySlotDto mapped. Null if cannot be mapped</returns>
+        public AvailabilitySlotDto? MapToAvailabilitySlotDto(AvailabilitySlot? availabilitySlot);   
+        /// <summary>
+        /// Maps a list of AvailabilitySlot to a list of AvailabilitySlotDto
+        /// </summary>
+        /// <param name="availabilitySlots">List of availabilites to map</param>
+        /// <returns>List mapped. Null if cannot be mapped</returns>
+        public List< AvailabilitySlotDto>? MapToListOfAvailabilitySlotDto(List<AvailabilitySlot>? availabilitySlots);
     }
 }

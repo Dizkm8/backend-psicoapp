@@ -1,21 +1,26 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace PsicoAppAPI.Models
 {
     public class FeedPost
     {
         #region CLASS_ATTRIBUTES
-
+        [Key]
         public int Id { get; set; }
-        public string? Title { get; set; }
-        public string? Content { get; set; }
-        public DateOnly? PublishedOn { get; set; }
-        public string? Tag { get; set; }
-
+        public string Title { get; set; } = null!;
+        public string Content { get; set; } = null!;
+        public DateOnly PublishedOn { get; set; } = DateOnly.MinValue;
         #endregion
         
+        #region MODEL_RELATIONSHIPS
 
         #region MANY_TO_ONE_RELATIONSHIP
-        public string? UserId { get; set; }
+        public string UserId { get; set; } = null!;
         public User User { get; set; } = null!;
+
+        public int TagId { get; set; }
+        public Tag Tag { get; set; } = null!;
+        #endregion
 
         #endregion
     }

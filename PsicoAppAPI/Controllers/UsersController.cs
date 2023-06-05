@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PsicoAppAPI.DTOs;
+using PsicoAppAPI.Controllers.Base;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
-using PsicoAppAPI.ServiceMediators.Interfaces;
-using PsicoAppAPI.Services.Interfaces;
+using PsicoAppAPI.Services.Mediators.Interfaces;
 
 namespace PsicoAppAPI.Controllers
 {
@@ -13,7 +12,8 @@ namespace PsicoAppAPI.Controllers
 
         public UsersController(IUserManagementService userManagementService)
         {
-            _userManagementService = userManagementService;
+            _userManagementService = userManagementService ??
+                throw new ArgumentNullException(nameof(userManagementService));
         }
 
         /// <summary>
@@ -24,13 +24,15 @@ namespace PsicoAppAPI.Controllers
         /// If the JWT have error extracting the Claims, return a Status 404.
         /// If the user's profile information is not found, return a Status 404.
         /// If the user's profile information is found, return a Status 200 with the user's profile information.
+        /// The User Profile Information contains:
+        /// Id, roleId, name, firstLastName, secondLastName, email, gender and phone. (Check DTO)
         /// </returns>
         [Authorize]
         [HttpGet("profile-information")]
-        public async Task<ActionResult> GetProfileInformation()
+        public async Task<ActionResult<ProfileInformationDto>> GetProfileInformation()
         {
             var profileInformationDto = await _userManagementService.GetUserProfileInformation();
-            if (profileInformationDto == null) return Unauthorized("JWT not provided or invalid");
+            if (profileInformationDto is null) return Unauthorized("JWT not provided or invalid");
             return Ok(profileInformationDto);
         }
 
@@ -62,7 +64,7 @@ namespace PsicoAppAPI.Controllers
             }
             // Needs to validate if exists In Different users to avoid
             // rejecting the update if the user doesn't change the email
-            var existsEmail = await _userManagementService.ExistsEmailInOtherUser(updateProfileInformationDto.Email);
+            var existsEmail = await _userManagementService.CheckEmailUpdatingAvailability(updateProfileInformationDto);
             if (existsEmail) return BadRequest(new { error = "Email already exists" });
 
             var result = await _userManagementService.UpdateProfileInformation(updateProfileInformationDto);
@@ -71,5 +73,4 @@ namespace PsicoAppAPI.Controllers
             return Ok(result);
         }
     }
-
 }

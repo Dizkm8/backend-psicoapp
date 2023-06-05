@@ -1,4 +1,5 @@
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.Services.Interfaces
@@ -6,19 +7,25 @@ namespace PsicoAppAPI.Services.Interfaces
     public interface IUserService
     {
         /// <summary>
-        /// Get user by credentials
+        /// Asynchronously get a user by credentials
         /// </summary>
-        /// <param name="loginUserDto">Entity shape with credentials</param>
+        /// <param name="userId">User Id</param>
+        /// <param name="password">User Password</param>
         /// <returns>User if it was found, null if not</returns>
-        public Task<User?> GetUser(LoginUserDto loginUserDto);
+        public Task<User?> GetUserByCredentials(string userId, string password);
         /// <summary>
-        /// Async add a new client to the database based on User entity
+        /// Async add a new user to the database based on User entity
         /// and using the password previously hashed
         /// </summary>
-        /// <param name="user">Client to add</param>
-        /// <param name="bCryptService">IBcryptService instance</param>
+        /// <param name="user">User to add</param>
         /// <returns>True if could be added, false if not</returns>
-        public Task<bool> AddClient(User? user, IBCryptService bCryptService);
+        public Task<bool> AddUser(User? user);
+        /// <summary>
+        /// Async add a new user with role of client
+        /// </summary>
+        /// <param name="user">User to add</param>
+        /// <returns>True if could be added, false if not</returns>
+        public Task<bool> AddClient(User? user);
         /// <summary>
         /// Asynchronously get a user by email
         /// </summary>
@@ -52,22 +59,6 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <returns>User if was found, null otherwise</returns>
         public Task<User?> GetUserByIdOrEmail(string? id, string? email);
         /// <summary>
-        /// Asynchronously update users information contained on Dto shape by their Id
-        /// </summary>
-        /// <param name="newUser">Dto shape with params to update</param>
-        /// <param name="userId">user's Id</param>
-        /// <param name="mapperService">IMapperService instance</param>
-        /// <returns>Dto with updated user, null if user cannot be found or updated</returns>
-        public Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser, string? userId, IMapperService mapperService);
-        /// <summary>
-        /// Asynchronously get user profile information by their Id and role
-        /// </summary>
-        /// <param name="userId">User's Id</param>
-        /// <param name="userRole">User's Role</param>
-        /// <param name="mapperService">IMapperService instance</param>
-        /// <returns>Profile information Dto shape, null if user cannot be found</returns>
-        public Task<ProfileInformationDto?> GetUserProfileInformation(string? userId, string? userRole, IMapperService mapperService);
-        /// <summary>
         /// Asynchronously check if an email exists in other user than the one with the id
         /// </summary>
         /// <param name="email">User's email</param>
@@ -85,9 +76,34 @@ namespace PsicoAppAPI.Services.Interfaces
         /// </summary>
         /// <param name="userId">User's Id</param>
         /// <param name="newPassword">User's new Password</param>
-        /// <param name="bCryptService">IBcryptService instance</param>
         /// <returns>True if password could be changed. Otherwise false</returns>
-        public Task<bool> UpdateUserPassword(string? userId, string? newPassword, IBCryptService bCryptService);
-        
+        public Task<bool> UpdateUserPassword(string? userId, string? newPassword);
+        /// <summary>
+        /// Asynchronously get the id of the role name as client
+        /// </summary>
+        /// <returns>Role Id number</returns>
+        public Task<int> GetIdOfClientRole();
+        /// <summary>
+        /// Asynchronously get the id of the role name as Admin
+        /// </summary>
+        /// <returns>Role Id number</returns>
+        public Task<int> GetIdOfAdminRole();
+        /// <summary>
+        /// Asynchronously get the id of the role name as Specialist
+        /// </summary>
+        /// <returns>Role Id number</returns>
+        public Task<int> GetIdOfSpecialistRole();
+        /// <summary>
+        /// Asynchronously get the role name by its Id
+        /// </summary>
+        /// <param name="userId">User id</param>
+        /// <returns>RoleId number, -1 if user doesnt exists</returns>
+        public Task<int> GetRoleIdInUser(string? userId);
+        /// <summary>
+        /// Update the user
+        /// </summary>
+        /// <param name="user">User to update</param>
+        /// <returns>True if could be updated. otherwise false</returns>
+        public bool UpdateUser(User? user);
     }
 }
