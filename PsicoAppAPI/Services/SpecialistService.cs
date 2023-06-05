@@ -24,7 +24,7 @@ namespace PsicoAppAPI.Services
             var availabilities = await _unitOfWork.AvailabilitySlotRepository.GetAvailabilitySlotsByUserId(userId);
             if (availabilities is null) return false;
             
-            var availability = availabilities.FirstOrDefault(x => x.StartTime == startTime);
+            var availability = availabilities.FirstOrDefault(x => x.StartTime.Hour == startTime.Hour);
             return availability is not null;
         }
 

@@ -28,7 +28,7 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <returns>True if could be added, otherwise false</returns>
         public Task<bool> AddAvailabilities(IEnumerable<AvailabilitySlot> availabilities, string userId);
         /// <summary>
-        /// Check if exists an availability of a specialist based on their userId and the start time
+        /// Check if exists an availability of a specialist based on their userId and the Hour field of startTime
         /// </summary>
         /// <param name="userId">Specialist user Id</param>
         /// <param name="startTime">Starttime of the availability</param>
