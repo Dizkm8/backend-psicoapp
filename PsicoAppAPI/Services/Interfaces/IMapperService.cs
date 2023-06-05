@@ -1,5 +1,6 @@
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.FeedPost;
+using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 
@@ -52,5 +53,17 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="feedPost">Feedpost to map</param>
         /// <returns>FeedPost mapped. Null if cannot be mapped</returns>
         public FeedPostDto? MapToFeedPostDto(FeedPost? feedPost);
+        /// <summary>
+        /// Maps the attributes of a AvailabilitySlot to a AvailabilitySlotDto
+        /// </summary>
+        /// <param name="availabilitySlot">AvailabilitySlot to map</param>
+        /// <returns>AvailabilitySlotDto mapped. Null if cannot be mapped</returns>
+        public AvailabilitySlotDto? MapToAvailabilitySlotDto(AvailabilitySlot? availabilitySlot);   
+        /// <summary>
+        /// Maps a list of AvailabilitySlot to a list of AvailabilitySlotDto
+        /// </summary>
+        /// <param name="availabilitySlots">List of availabilites to map</param>
+        /// <returns>List mapped. Null if cannot be mapped</returns>
+        public List< AvailabilitySlotDto>? MapToListOfAvailabilitySlotDto(List<AvailabilitySlot>? availabilitySlots);
     }
 }

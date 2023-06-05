@@ -22,7 +22,8 @@ namespace PsicoAppAPI.Extensions
             services = AddSwaggerGen(services);
             services = AddAutoMapper(services);
             services = AddUnitOfWork(services);
-            services = AddServices(services);
+            services = AddEntitiesServices(services);
+            services = AddHelperServices(services);
             services = AddMediatorServices(services);
             services = AddData(services, config);
             services = AddAuthentication(services, config);
@@ -53,18 +54,24 @@ namespace PsicoAppAPI.Extensions
 
         private static IServiceCollection AddUnitOfWork(IServiceCollection services)
         {
-            services.AddScoped<IUnitOfWork,UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }
 
-        private static IServiceCollection AddServices(IServiceCollection services)
+        private static IServiceCollection AddEntitiesServices(IServiceCollection services)
         {
-            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IMapperService, MapperService>();
             services.AddScoped<IFeedPostService, FeedPostService>();
             services.AddScoped<ITagService, TagService>();
+            services.AddScoped<ISpecialistService, SpecialistService>();
+            return services;
+        }
+
+        private static IServiceCollection AddHelperServices(IServiceCollection services)
+        {
             services.AddScoped<IOpenAIService, OpenAIService>();
+            services.AddScoped<IMapperService, MapperService>();
+            services.AddScoped<IAuthService, AuthService>();
             return services;
         }
 
@@ -72,6 +79,7 @@ namespace PsicoAppAPI.Extensions
         {
             services.AddScoped<IUserManagementService, UserManagementService>();
             services.AddScoped<IFeedPostManagementService, FeedPostManagementService>();
+            services.AddScoped<ISpecialistManagementService, SpecialistManagementService>();
             return services;
         }
 
