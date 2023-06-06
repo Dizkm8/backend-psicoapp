@@ -16,6 +16,7 @@ namespace PsicoAppAPI.RequestHelpers
             CreateMap<AddFeedPostDto, FeedPost>();
             CreateMap<FeedPost, FeedPostDto>();
             CreateMap<AvailabilitySlot, AvailabilitySlotDto>();
+            CreateMap<AddAvailabilityDto, AvailabilitySlot>();
         }
     }
 }

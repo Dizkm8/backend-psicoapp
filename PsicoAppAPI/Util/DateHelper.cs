@@ -97,5 +97,19 @@ namespace PsicoAppAPI.Util
             if (!DateIsOnThisWeekOrGreater(date)) return false;
             return DateIsNotGreaterThanWeek(date, weeksAmount);
         }
+
+        /// <summary>
+        /// Check if a date provided is current of later today
+        /// and is not greater than the last day of the week number provided
+        /// based on the current week
+        /// </summary>
+        /// <param name="date">Date to check</param>
+        /// <param name="weeksAmount">Maximum weeks amount limit</param>
+        /// <returns></returns>
+        public static bool DateIsBetweenNowAndSpecificWeek(DateOnly date, int weeksAmount)
+        {
+            if(date < DateOnly.FromDateTime(DateTime.Now.Date)) return false;
+            return DateIsNotGreaterThanWeek(date, weeksAmount);
+        }
     }
 }

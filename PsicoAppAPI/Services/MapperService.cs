@@ -46,6 +46,21 @@ namespace PsicoAppAPI.Services
             return _mapper.Map<FeedPostDto>(feedPost);
         }
 
+        public IEnumerable<AvailabilitySlot>? MapToListOfAvailabilitySlot(IEnumerable<AddAvailabilityDto>? availabilities,
+            string userId)
+        {
+            if (availabilities is null) return null;
+            var mappedAvailabilities = availabilities.Select(x =>
+                {
+                    var availabilitySlot = _mapper.Map<AvailabilitySlot>(x);
+                    availabilitySlot.UserId = userId;
+                    availabilitySlot.EndTime = availabilitySlot.StartTime.AddHours(1);
+                    availabilitySlot.IsAvailable = true;
+                    return availabilitySlot;
+                });
+            return mappedAvailabilities;
+        }
+
         public List<AvailabilitySlotDto>? MapToListOfAvailabilitySlotDto(List<AvailabilitySlot>? availabilitySlots)
         {
             if (availabilitySlots is null) return null;
