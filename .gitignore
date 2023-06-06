@@ -80,3 +80,4 @@ PsicoAppAPI/appsettings.json
 PsicoAppAPI/database.db-wal
 PsicoAppAPI/database.db-shm
 PsicoAppAPI/.env
+PsicoAppAPI/.env
