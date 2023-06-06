@@ -1,4 +1,5 @@
 using PsicoAppAPI.DTOs.FeedPost;
+using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.Services.Interfaces;
 using PsicoAppAPI.Services.Mediators.Interfaces;
 

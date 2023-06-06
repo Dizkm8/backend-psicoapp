@@ -22,5 +22,6 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// <param name="feedPostDto">FeedpostDto shape with content to check</param>
         /// <returns>True if its adecuate to application. otherwise false</returns>
         public Task<bool> CheckPostContext(AddFeedPostDto feedPostDto);
+
     }
 }

@@ -1,6 +1,5 @@
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
-using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.Services.Mediators.Interfaces
 {

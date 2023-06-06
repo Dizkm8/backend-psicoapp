@@ -14,6 +14,13 @@ namespace PsicoAppAPI.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+        public async Task<bool> AddAvailabilitiesToUser(IEnumerable<AvailabilitySlot> availabilities, string userId)
+        {
+            await _context.AvailabilitySlots.AddRangeAsync(availabilities);
+            var result = await _context.SaveChangesAsync() > 0;
+            return result;
+        }
+
         public async Task<List<AvailabilitySlot>?> GetAvailabilitySlotsByUserId(string userId)
         {
             var availabilitySlots = await _context.AvailabilitySlots

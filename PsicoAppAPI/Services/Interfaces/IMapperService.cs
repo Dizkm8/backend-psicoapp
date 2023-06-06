@@ -8,12 +8,12 @@ namespace PsicoAppAPI.Services.Interfaces
 {
     public interface IMapperService
     {
-         /// <summary>
+        /// <summary>
         /// Maps a RegisterClientDto to a User
         /// </summary>
         /// <param name="registerClientDto">Dto to map</param>
         /// <returns>User mapped. null if cannot be mapped</returns>
-        public User? MapToUser(RegisterClientDto? registerClientDto);   
+        public User? MapToUser(RegisterClientDto? registerClientDto);
         /// <summary>
         /// Maps the attributes of a UpdateProfileInformationDto to a User
         /// The Dto dont have all the attributes of the User,
@@ -58,12 +58,23 @@ namespace PsicoAppAPI.Services.Interfaces
         /// </summary>
         /// <param name="availabilitySlot">AvailabilitySlot to map</param>
         /// <returns>AvailabilitySlotDto mapped. Null if cannot be mapped</returns>
-        public AvailabilitySlotDto? MapToAvailabilitySlotDto(AvailabilitySlot? availabilitySlot);   
+        public AvailabilitySlotDto? MapToAvailabilitySlotDto(AvailabilitySlot? availabilitySlot);
         /// <summary>
         /// Maps a list of AvailabilitySlot to a list of AvailabilitySlotDto
         /// </summary>
         /// <param name="availabilitySlots">List of availabilites to map</param>
         /// <returns>List mapped. Null if cannot be mapped</returns>
-        public List< AvailabilitySlotDto>? MapToListOfAvailabilitySlotDto(List<AvailabilitySlot>? availabilitySlots);
+        public List<AvailabilitySlotDto>? MapToListOfAvailabilitySlotDto(List<AvailabilitySlot>? availabilitySlots);
+        /// <summary>
+        /// Maps a list of AddAvailabilityDto to a list of AvailabilitySlot
+        /// The Endtime are the StartTime + 1 hour
+        /// All the instances of AvailabilitySlot will have the same UserId
+        /// also all the instance will base IsAvailable in true
+        /// </summary>
+        /// <param name="availabilities">IEnumerable with Availabilities</param>
+        /// <param name="userId">UserId to set in all the instances</param>
+        /// <returns>IEnumerable of availabilities mapped, null if cannot be mapped</returns>
+        public IEnumerable<AvailabilitySlot>? MapToListOfAvailabilitySlot(IEnumerable<AddAvailabilityDto>? availabilities
+            , string userId);   
     }
 }
