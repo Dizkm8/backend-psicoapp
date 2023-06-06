@@ -24,6 +24,10 @@ namespace PsicoAppAPI.Controllers
             if (!validateContent) return BadRequest(
                 new ErrorModel { ErrorCode = 400, Message = "The Content don't follow the rules to post" });
 
+            var validateTitle = await _service.CheckPostContext(addFeedPost);
+            if (!validateTitle) return BadRequest(
+                new ErrorModel { ErrorCode = 400, Message = "The Title don't follow the rules to post" });
+
             var existsTag = await _service.CheckPostTag(addFeedPost);
             if (!existsTag) return NotFound($"Tag with ID {addFeedPost.TagId} does not exist");
 
