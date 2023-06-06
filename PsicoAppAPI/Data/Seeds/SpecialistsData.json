@@ -38,5 +38,9 @@
     {
         "UserId" : "77101173",
         "SpecialityId" : 8
+    },
+    {
+        "UserId" : "207676918",
+        "SpecialityId" : 4
     }
 ]
