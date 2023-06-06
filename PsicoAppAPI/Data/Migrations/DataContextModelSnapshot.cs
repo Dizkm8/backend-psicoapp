@@ -23,11 +23,11 @@ namespace PsicoAppAPI.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("AppointmentDate")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("AppointmentStatusId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("BookedDate")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("RequestedUserId")
                         .IsRequired()
@@ -55,6 +55,7 @@ namespace PsicoAppAPI.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -62,23 +63,30 @@ namespace PsicoAppAPI.Data.Migrations
                     b.ToTable("AppointmentStatuses");
                 });
 
-            modelBuilder.Entity("PsicoAppAPI.Models.Client", b =>
+            modelBuilder.Entity("PsicoAppAPI.Models.AvailabilitySlot", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("IsAdministrator")
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsAvailableOverride")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Clients");
+                    b.ToTable("AvailabilitySlots");
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.Comment", b =>
@@ -88,12 +96,14 @@ namespace PsicoAppAPI.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Content")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("ForumPostId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -112,21 +122,26 @@ namespace PsicoAppAPI.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Content")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateOnly?>("PublishedOn")
+                    b.Property<DateOnly>("PublishedOn")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Tag")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("TagId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TagId");
 
                     b.HasIndex("UserId");
 
@@ -140,25 +155,45 @@ namespace PsicoAppAPI.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Content")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateOnly?>("PublishedOn")
+                    b.Property<DateOnly>("PublishedOn")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Tag")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("TagId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TagId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("ForumPosts");
+                });
+
+            modelBuilder.Entity("PsicoAppAPI.Models.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.Specialist", b =>
@@ -171,6 +206,7 @@ namespace PsicoAppAPI.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -189,11 +225,27 @@ namespace PsicoAppAPI.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.ToTable("Specialities");
+                });
+
+            modelBuilder.Entity("PsicoAppAPI.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.User", b =>
@@ -202,30 +254,41 @@ namespace PsicoAppAPI.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FirstLastName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Gender")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Phone")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("RoleId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("SecondLastName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -245,9 +308,9 @@ namespace PsicoAppAPI.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("PsicoAppAPI.Models.User", "RequestingUser")
-                        .WithMany("Appointment")
+                        .WithMany()
                         .HasForeignKey("RequestingUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AppointmentStatus");
@@ -257,11 +320,13 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Navigation("RequestingUser");
                 });
 
-            modelBuilder.Entity("PsicoAppAPI.Models.Client", b =>
+            modelBuilder.Entity("PsicoAppAPI.Models.AvailabilitySlot", b =>
                 {
                     b.HasOne("PsicoAppAPI.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -276,7 +341,9 @@ namespace PsicoAppAPI.Data.Migrations
 
                     b.HasOne("PsicoAppAPI.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ForumPost");
 
@@ -285,18 +352,38 @@ namespace PsicoAppAPI.Data.Migrations
 
             modelBuilder.Entity("PsicoAppAPI.Models.FeedPost", b =>
                 {
+                    b.HasOne("PsicoAppAPI.Models.Tag", "Tag")
+                        .WithMany("FeedPosts")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("PsicoAppAPI.Models.User", "User")
                         .WithMany("FeedPosts")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tag");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.ForumPost", b =>
                 {
+                    b.HasOne("PsicoAppAPI.Models.Tag", "Tag")
+                        .WithMany("ForumPosts")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("PsicoAppAPI.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                        .WithMany("ForumPosts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tag");
 
                     b.Navigation("User");
                 });
@@ -311,11 +398,24 @@ namespace PsicoAppAPI.Data.Migrations
 
                     b.HasOne("PsicoAppAPI.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Speciality");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PsicoAppAPI.Models.User", b =>
+                {
+                    b.HasOne("PsicoAppAPI.Models.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.AppointmentStatus", b =>
@@ -328,16 +428,28 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Navigation("Comments");
                 });
 
+            modelBuilder.Entity("PsicoAppAPI.Models.Role", b =>
+                {
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("PsicoAppAPI.Models.Speciality", b =>
                 {
                     b.Navigation("Specialists");
                 });
 
+            modelBuilder.Entity("PsicoAppAPI.Models.Tag", b =>
+                {
+                    b.Navigation("FeedPosts");
+
+                    b.Navigation("ForumPosts");
+                });
+
             modelBuilder.Entity("PsicoAppAPI.Models.User", b =>
                 {
-                    b.Navigation("Appointment");
-
                     b.Navigation("FeedPosts");
+
+                    b.Navigation("ForumPosts");
                 });
 #pragma warning restore 612, 618
         }

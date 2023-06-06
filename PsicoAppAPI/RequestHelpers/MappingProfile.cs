@@ -1,16 +1,22 @@
 using AutoMapper;
-using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.FeedPost;
+using PsicoAppAPI.DTOs.Specialist;
+using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.RequestHelpers
 {
-    public class MappingProfiles : Profile
+    public class MappingProfile : Profile
     {
-        public MappingProfiles()
+        public MappingProfile()
         {
-            CreateMap<RegisterClientDto, User>();
+            CreateMap<DTOs.RegisterClientDto, User>();
             CreateMap<User, ProfileInformationDto>();
             CreateMap<User, UpdateProfileInformationDto>();
+            CreateMap<AddFeedPostDto, FeedPost>();
+            CreateMap<FeedPost, FeedPostDto>();
+            CreateMap<AvailabilitySlot, AvailabilitySlotDto>();
+            CreateMap<AddAvailabilityDto, AvailabilitySlot>();
         }
     }
 }

@@ -6,10 +6,10 @@ using Microsoft.OpenApi.Models;
 using PsicoAppAPI.Data;
 using PsicoAppAPI.Repositories;
 using PsicoAppAPI.Repositories.Interfaces;
-using PsicoAppAPI.ServiceMediators;
-using PsicoAppAPI.ServiceMediators.Interfaces;
 using PsicoAppAPI.Services;
 using PsicoAppAPI.Services.Interfaces;
+using PsicoAppAPI.Services.Mediators;
+using PsicoAppAPI.Services.Mediators.Interfaces;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace PsicoAppAPI.Extensions
@@ -19,49 +19,17 @@ namespace PsicoAppAPI.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services,
         IConfiguration config)
         {
-
             services = AddSwaggerGen(services);
             services = AddAutoMapper(services);
-            services = AddRepositories(services);
-            services = AddServices(services);
-            services = AddServiceMediators(services);
+            services = AddUnitOfWork(services);
+            services = AddEntitiesServices(services);
+            services = AddHelperServices(services);
+            services = AddMediatorServices(services);
             services = AddData(services, config);
             services = AddAuthentication(services, config);
             services = AddHttpContextAccesor(services);
             return services;
         }
-
-        private static IServiceCollection AddServiceMediators(IServiceCollection services)
-        {
-            services.AddScoped<IUserManagementService, UserManagementService>();
-            return services;
-        }
-
-        private static IServiceCollection AddHttpContextAccesor(IServiceCollection services)
-        {
-            services.AddHttpContextAccessor();
-            return services;
-        }
-
-        private static IServiceCollection AddData(IServiceCollection services, IConfiguration config)
-        {
-            services.AddDbContext<DataContext>(opt =>
-            {
-                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
-            });
-            return services;
-        }
-
-        private static IServiceCollection AddRepositories(IServiceCollection services)
-        {
-            services.AddScoped<IBCryptService, BCryptService>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IClientRepository, ClientRepository>();
-            services.AddScoped<ISpecialistRepository, SpecialistRepository>();
-            services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
-            return services;
-        }
-
 
         private static IServiceCollection AddSwaggerGen(IServiceCollection services)
         {
@@ -84,11 +52,43 @@ namespace PsicoAppAPI.Extensions
             return services;
         }
 
-        private static IServiceCollection AddServices(IServiceCollection services)
+        private static IServiceCollection AddUnitOfWork(IServiceCollection services)
+        {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            return services;
+        }
+
+        private static IServiceCollection AddEntitiesServices(IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IFeedPostService, FeedPostService>();
+            services.AddScoped<ITagService, TagService>();
+            services.AddScoped<ISpecialistService, SpecialistService>();
+            return services;
+        }
+
+        private static IServiceCollection AddHelperServices(IServiceCollection services)
+        {
+            services.AddScoped<IOpenAIService, OpenAIService>();
             services.AddScoped<IMapperService, MapperService>();
+            services.AddScoped<IAuthService, AuthService>();
+            return services;
+        }
+
+        private static IServiceCollection AddMediatorServices(IServiceCollection services)
+        {
+            services.AddScoped<IUserManagementService, UserManagementService>();
+            services.AddScoped<IFeedPostManagementService, FeedPostManagementService>();
+            services.AddScoped<ISpecialistManagementService, SpecialistManagementService>();
+            return services;
+        }
+
+        private static IServiceCollection AddData(IServiceCollection services, IConfiguration config)
+        {
+            services.AddDbContext<DataContext>(opt =>
+            {
+                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+            });
             return services;
         }
 
@@ -108,5 +108,14 @@ namespace PsicoAppAPI.Extensions
             });
             return services;
         }
+
+        private static IServiceCollection AddHttpContextAccesor(IServiceCollection services)
+        {
+            services.AddHttpContextAccessor();
+            return services;
+        }
+
+
+
     }
 }
