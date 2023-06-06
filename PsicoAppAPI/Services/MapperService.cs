@@ -55,7 +55,7 @@ namespace PsicoAppAPI.Services
                     var availabilitySlot = _mapper.Map<AvailabilitySlot>(x);
                     availabilitySlot.UserId = userId;
                     availabilitySlot.EndTime = availabilitySlot.StartTime.AddHours(1);
-                    availabilitySlot.IsAvailable = true;
+                    availabilitySlot.IsAvailableOverride = true;
                     return availabilitySlot;
                 });
             return mappedAvailabilities;
