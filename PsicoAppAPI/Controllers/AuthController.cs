@@ -13,12 +13,13 @@ namespace PsicoAppAPI.Controllers
 
         public AuthController(IUserManagementService userManagementService)
         {
-            _userManagementService = userManagementService ?? 
-                throw new System.ArgumentNullException(nameof(userManagementService));
+            _userManagementService = userManagementService ??
+                throw new ArgumentNullException(nameof(userManagementService));
         }
 
         /// <summary>
-        /// Login the user if the credentials match and return a JWT token with the user's id and role.
+        /// Login the user if the credentials match and the user are enabled.
+        /// Return a JWT token with the user's id and role.
         /// </summary>
         /// <param name="loginUserDto">
         /// Id: User's identifier
@@ -28,17 +29,21 @@ namespace PsicoAppAPI.Controllers
         /// JWT Token with id and role if credentials match
         /// The JWT Contains the UserId and the Role Number of the user
         /// The Role Id currently go from 1 to 3, where 1 is Admin 2 is Client and 3 is Specialist.
-        /// if the credentials do not match, return a Status 400.
-        /// In case of token generation failed return Status 500.
-        /// All error returns includes a message.
+        /// If the credentials do not match, return a BadRequest status 400 with custom nessage.
+        /// If the credentials match but the user is disabled return BadRequest status 400 with custom nessage.
+        /// In case of token generation failed return Status 500 shaped on ErrorModel Class.
+        /// ErrorModel class consists of: ErrorCode (int) and Message (string).
         /// </returns>
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] LoginUserDto loginUserDto)
         {
-            var result = await _userManagementService.CheckCredentials(loginUserDto);
+            var CheckCredentials = await _userManagementService.CheckCredentials(loginUserDto);
+            if (!CheckCredentials) return BadRequest("Invalid credentials");
 
-            if (!result) return BadRequest("Invalid credentials");
+            var checkEnabled = await _userManagementService.CheckUserEnabled(loginUserDto);
+            if (!checkEnabled) return BadRequest("User is not enabled, please contact support");
+
             var token = await _userManagementService.GenerateToken(loginUserDto);
             if (string.IsNullOrEmpty(token))
             {
