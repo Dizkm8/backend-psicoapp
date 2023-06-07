@@ -17,11 +17,11 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// <returns>True if exists. otherwise false</returns>
         public Task<bool> CheckPostTag(AddFeedPostDto feedPostDto);
         /// <summary>
-        /// Using OpenAI API to check if the context of the post is valid
+        /// Using OpenAI API to check if the post is valid
         /// </summary>
         /// <param name="feedPostDto">FeedpostDto shape with content to check</param>
         /// <returns>True if its adecuate to application. otherwise false</returns>
-        public Task<bool> CheckPostContext(AddFeedPostDto feedPostDto);
+        public Task<bool> CheckPost(AddFeedPostDto feedPostDto);
 
     }
 }

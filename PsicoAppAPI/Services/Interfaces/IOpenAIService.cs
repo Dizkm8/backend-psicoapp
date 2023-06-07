@@ -4,8 +4,8 @@ namespace PsicoAppAPI.Services.Interfaces
     {
         /// <summary>
         /// Get a request from OpenAI API
-        /// This provides a DavinciText model response
-        /// with max 150 tokens.
+        /// This provides a GPT-3.5-Turbo model response
+        /// with max 5 tokens.
         /// The APIKey is stored in the environment variable
         /// If its null the program will throw an exception
         /// </summary>
@@ -16,11 +16,11 @@ namespace PsicoAppAPI.Services.Interfaces
         public Task<string?> GetRequest(string? query);
 
         /// <summary>
-        /// Check if the content of the post is valid
-        /// using OpenAI API
+        /// Check if the content provided is valid in psychology context
+        /// This is powered using GPT-3.5-Turbo model
         /// </summary>
-        /// <param name="postContent">Post content body to check</param>
+        /// <param name="args">array with content to check</param>
         /// <returns>True if it's valid. otherwise false</returns>
-        public Task<bool> CheckPostContent(string? postContent);
+        public Task<bool> CheckPsychologyContent(IEnumerable<string> args);
     }
 }

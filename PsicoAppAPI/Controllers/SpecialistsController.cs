@@ -59,10 +59,12 @@ namespace PsicoAppAPI.Controllers
         /// </summary>
         /// <param name="availabilities">List of availabilities to add</param>
         /// <returns>
+        /// If the dates provided cannot be converted into UTC of Chile (API Dependency transaction)
+        /// , return error 500 InternalServerError
         /// If the dates provided are not in the right format, are not summoned,
         /// are not in the valid date range within now and the next 8 weeks,
         /// are not in the valid hour range within 8:00 and 20:00,
-        /// then return erorr 400 BadRequest with modelState errors for each availitibity with error
+        /// then return error 400 BadRequest with modelState errors for each availitibity with error
         /// error 400 BadRequest with the ModelState errors.
         /// If the availabilities provided already exists in the database, return error 400 BadRequest
         /// with a message. The criteria to check if the availabilities exists is the StartTime.
@@ -77,13 +79,20 @@ namespace PsicoAppAPI.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var CheckDuplicatedAvailabilities = await _service.CheckDuplicatedAvailabilities(availabilities);
+            var convertedAvailabilities = await _service.TransformToChileUTC(availabilities);
+            if (convertedAvailabilities is null) return StatusCode(StatusCodes.Status500InternalServerError,
+                new { error = "Internal error adding availabilities" });
+
+            var checkHours = _service.CheckHourRange(convertedAvailabilities);
+            if (!checkHours) return BadRequest("One or more availabilities provided are not in the valid hour range");
+
+            var CheckDuplicatedAvailabilities = await _service.CheckDuplicatedAvailabilities(convertedAvailabilities);
             if (CheckDuplicatedAvailabilities) return BadRequest(
                 new ErrorModel { ErrorCode = 400, Message = "One or more availabilities provided already exists duplicated" });
 
-            var result = await _service.AddSpecialistAvailability(availabilities);
+            var result = await _service.AddSpecialistAvailability(convertedAvailabilities);
             if (result is null) return StatusCode(StatusCodes.Status500InternalServerError,
-                new { error = "Could not add the availabilities" });
+                new { error = "Internal error adding availabilities" });
             return Ok(result);
         }
 
