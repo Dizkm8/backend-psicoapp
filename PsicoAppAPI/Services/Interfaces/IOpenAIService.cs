@@ -22,5 +22,7 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="postContent">Post content body to check</param>
         /// <returns>True if it's valid. otherwise false</returns>
         public Task<bool> CheckPostContent(string? postContent);
+
+        public Task<string?> GetRequestGptTurbo(string? query);
     }
 }
