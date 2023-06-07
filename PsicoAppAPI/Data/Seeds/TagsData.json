@@ -1,26 +1,32 @@
 [
     {
-        "Name": "Tag 1"
+        "Name": "Clínico"
     },
     {
-        "Name": "Tag 2"
+        "Name": "Educacional"
     },
     {
-        "Name": "Tag 3"
+        "Name": "Social"
     },
     {
-        "Name": "Tag 4"
+        "Name": "Laboral"
     },
     {
-        "Name": "Tag 5"
+        "Name": "Judicial"
     },
     {
-        "Name": "Tag 6"
+        "Name": "Sistémico"
     },
     {
-        "Name": "Tag 7"
+        "Name": "Cognitivo-Conductual"
     },
     {
-        "Name": "Tag 8"
+        "Name": "Cognitivo-Constructivista"
+    },
+    {
+        "Name": "Transpersonal"
+    },
+    {
+        "Name": "Mixto"
     }
 ]
