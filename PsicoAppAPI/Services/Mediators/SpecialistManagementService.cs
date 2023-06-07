@@ -10,13 +10,15 @@ namespace PsicoAppAPI.Services.Mediators
         private readonly ISpecialistService _specialistService;
         private readonly IAuthService _authService;
         private readonly IMapperService _mapperService;
+        private readonly ITimeZoneService _timeZoneService;
 
         public SpecialistManagementService(ISpecialistService specialistService, IAuthService authService,
-            IMapperService mapperService)
+            IMapperService mapperService, ITimeZoneService timeZoneService)
         {
             _specialistService = specialistService ?? throw new ArgumentNullException(nameof(specialistService));
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
             _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
+            _timeZoneService = timeZoneService ?? throw new ArgumentNullException(nameof(timeZoneService));
         }
 
         public async Task<IEnumerable<AvailabilitySlotDto>?> AddSpecialistAvailability(IEnumerable<AddAvailabilityDto> availabilities)
@@ -62,9 +64,23 @@ namespace PsicoAppAPI.Services.Mediators
             return mappedSlots;
         }
 
-        public Task<IEnumerable<AvailabilitySlotDto>> TransformToChileUTC(IEnumerable<AvailabilitySlotDto> availabilities)
+        public async Task<IEnumerable<AddAvailabilityDto>?> TransformToChileUTC(IEnumerable<AddAvailabilityDto> availabilities)
         {
-            throw new NotImplementedException();
+            try
+            {
+                availabilities = await Task.WhenAll(availabilities.Select(async x =>
+                {
+                    var dateTime = await _timeZoneService.ConvertToChileUTC(x.StartTime) ??
+                        throw new Exception("Error converting to Chile UTC");
+                    x.StartTime = dateTime;
+                    return x;
+                }));
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            return availabilities;
         }
 
         public bool ValidateDate(DateOnly date)

@@ -33,7 +33,7 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// Transform the availabilities Startime to Chilean UTC
         /// </summary>
         /// <param name="availabilities">Availabilities to update</param>
-        /// <returns>IEnumerable with availabilities updates</returns>
-        public Task<IEnumerable<AvailabilitySlotDto>> TransformToChileUTC(IEnumerable<AvailabilitySlotDto> availabilities);
+        /// <returns>IEnumerable with availabilities updates, null if cannot be converted</returns>
+        public Task<IEnumerable<AddAvailabilityDto>?> TransformToChileUTC(IEnumerable<AddAvailabilityDto> availabilities);
     }
 }
