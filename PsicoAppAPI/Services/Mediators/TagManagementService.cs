@@ -7,16 +7,19 @@ namespace PsicoAppAPI.Services.Mediators
     public class TagManagementService : ITagManagementService
     {
         private readonly ITagService _tagService;
+        private readonly IMapperService _mapperService;
 
-        public TagManagementService(ITagService tagService)
+        public TagManagementService(ITagService tagService, IMapperService mapperService)
         {
-            _tagService = tagService;
+            _tagService = tagService ?? throw new ArgumentNullException(nameof(tagService));
+            _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
         }
 
-        public Task<IEnumerable<TagDto>> GetTags()
+        public async Task<IEnumerable<TagDto>> GetTags()
         {
-            // var result = await _tagService.GetTags();
-            throw new NotImplementedException();
+            var tags = await _tagService.GetAllTags();
+            var mappedTags = _mapperService.MapToTagDto(tags);
+            return mappedTags;
         }
     }
 }

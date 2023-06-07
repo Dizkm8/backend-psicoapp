@@ -1,3 +1,4 @@
+using PsicoAppAPI.Models;
 using PsicoAppAPI.Repositories.Interfaces;
 using PsicoAppAPI.Services.Interfaces;
 
@@ -23,6 +24,13 @@ namespace PsicoAppAPI.Services
             if (string.IsNullOrEmpty(name)) return false;
             var tag = await _unitOfWork.TagRepository.GetTagByName(name);
             return tag is not null;
+        }
+
+        public async Task<IEnumerable<Tag>> GetAllTags()
+        {
+            var tags = await _unitOfWork.TagRepository.GetTags();
+            // If tags is null, return an empty list to avoid validations in the mediator
+            return tags is null ? new List<Tag>() : tags;
         }
     }
 }

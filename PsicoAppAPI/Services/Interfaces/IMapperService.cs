@@ -1,4 +1,5 @@
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.BasePosts;
 using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
@@ -75,6 +76,12 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="userId">UserId to set in all the instances</param>
         /// <returns>IEnumerable of availabilities mapped, null if cannot be mapped</returns>
         public IEnumerable<AvailabilitySlot>? MapToListOfAvailabilitySlot(IEnumerable<AddAvailabilityDto>? availabilities
-            , string userId);   
+            , string userId);
+        /// <summary>
+        /// Maps a IEnumerable of Tag to a IEnumerable of TagDto
+        /// </summary>
+        /// <param name="tags">IEnumerable with tags</param>
+        /// <returns>IEnumerable of tags, null if cannot be mapped</returns>
+        public IEnumerable<TagDto> MapToTagDto(IEnumerable<Tag>? tags);
     }
 }

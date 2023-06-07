@@ -1,5 +1,6 @@
 using AutoMapper;
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.BasePosts;
 using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
@@ -72,6 +73,13 @@ namespace PsicoAppAPI.Services
         {
             if (user is null) return null;
             return _mapper.Map<ProfileInformationDto>(user);
+        }
+
+        public IEnumerable<TagDto> MapToTagDto(IEnumerable<Tag>? tags)
+        {
+            if (tags is null) return new List<TagDto>();
+            var mappedTags = tags.Select(x => _mapper.Map<TagDto>(x));
+            return mappedTags ?? new List<TagDto>();
         }
 
         public UpdateProfileInformationDto? MapToUpdatedProfileInformationDto(User? user)
