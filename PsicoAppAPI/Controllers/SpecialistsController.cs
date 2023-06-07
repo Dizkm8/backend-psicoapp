@@ -76,7 +76,7 @@ namespace PsicoAppAPI.Controllers
         public async Task<ActionResult> AddScheduleAvailability(IEnumerable<AddAvailabilityDto> availabilities)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-
+        
             var CheckDuplicatedAvailabilities = await _service.CheckDuplicatedAvailabilities(availabilities);
             if (CheckDuplicatedAvailabilities) return BadRequest(
                 new ErrorModel { ErrorCode = 400, Message = "One or more availabilities provided already exists duplicated" });

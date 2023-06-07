@@ -41,7 +41,7 @@ namespace PsicoAppAPI.Services.Mediators
             {
                 var startTime = availability.StartTime;
                 var result = await _specialistService.ExistsAvailability(userId, startTime);
-                if(result) return true;
+                if (result) return true;
             }
             // If none of the availabilities exists, return false
             return false;
@@ -60,6 +60,11 @@ namespace PsicoAppAPI.Services.Mediators
             if (availabilitySlots is null) return null;
             var mappedSlots = _mapperService.MapToListOfAvailabilitySlotDto(availabilitySlots);
             return mappedSlots;
+        }
+
+        public Task<IEnumerable<AvailabilitySlotDto>> TransformToChileUTC(IEnumerable<AvailabilitySlotDto> availabilities)
+        {
+            throw new NotImplementedException();
         }
 
         public bool ValidateDate(DateOnly date)
