@@ -35,5 +35,11 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// <param name="availabilities">Availabilities to update</param>
         /// <returns>IEnumerable with availabilities updates, null if cannot be converted</returns>
         public Task<IEnumerable<AddAvailabilityDto>?> TransformToChileUTC(IEnumerable<AddAvailabilityDto> availabilities);
+        /// <summary>
+        /// Check if the hour range of the availabilities are valid
+        /// </summary>
+        /// <param name="availabilities">Availabilities to check</param>
+        /// <returns>True if they're valid. null otherwise</returns>
+        public bool CheckHourRange(IEnumerable<AddAvailabilityDto> availabilities);
     }
 }

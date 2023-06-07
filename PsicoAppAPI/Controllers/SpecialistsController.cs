@@ -83,6 +83,9 @@ namespace PsicoAppAPI.Controllers
             if (convertedAvailabilities is null) return StatusCode(StatusCodes.Status500InternalServerError,
                 new { error = "Internal error adding availabilities" });
 
+            var checkHours = _service.CheckHourRange(convertedAvailabilities);
+            if (!checkHours) return BadRequest("One or more availabilities provided are not in the valid hour range");
+
             var CheckDuplicatedAvailabilities = await _service.CheckDuplicatedAvailabilities(convertedAvailabilities);
             if (CheckDuplicatedAvailabilities) return BadRequest(
                 new ErrorModel { ErrorCode = 400, Message = "One or more availabilities provided already exists duplicated" });

@@ -49,6 +49,13 @@ namespace PsicoAppAPI.Services.Mediators
             return false;
         }
 
+        public bool CheckHourRange(IEnumerable<AddAvailabilityDto> availabilities)
+        {
+            var result = availabilities.FirstOrDefault(x => x.StartTime.Hour < 8 || x.StartTime.Hour > 20);
+            // if result is null means that all the availabilities are in the range
+            return result is null;
+        }
+
         public async Task<List<AvailabilitySlotDto>?> GetAvailabilitySlots(DateOnly date)
         {
             var userId = _authService.GetUserIdInToken();
