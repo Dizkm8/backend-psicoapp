@@ -16,5 +16,10 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// <param name="name">Tag name</param>
         /// <returns>Tag if its found. otherwise null</returns>
         public Task<Tag?> GetTagByName(string name);
+        /// <summary>
+        /// Get all tags in the database
+        /// </summary>
+        /// <returns>IEnumerable with the tags</returns>
+        public Task<IEnumerable<Tag>?> GetTags();
     }
 }
