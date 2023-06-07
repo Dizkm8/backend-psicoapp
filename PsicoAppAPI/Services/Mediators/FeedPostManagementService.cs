@@ -46,11 +46,12 @@ namespace PsicoAppAPI.Services.Mediators
             return postDto;
         }
 
-        public async Task<bool> CheckPostContext(AddFeedPostDto feedPostDto)
+        public async Task<bool> CheckPost(AddFeedPostDto feedPostDto)
         {
             var content = feedPostDto.Content;
-            if (content is null) return false;
-            var result = await _openAIService.CheckPostContent(content);
+            var title = feedPostDto.Title;
+            if (content is null || title is null) return false;
+            var result = await _openAIService.CheckPsychologyContent(new List<string> { content, title });
             return result;
         }
 
