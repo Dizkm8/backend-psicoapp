@@ -7,8 +7,9 @@ namespace PsicoAppAPI.Services.Interfaces
         /// </summary>
         /// <param name="userId">User id to assign token</param>
         /// <param name="userRole">User role to assign inside token</param>
+        /// <param name="userName">User name to assign inside token</param>
         /// <returns>string if the user id exists or wasn't null. Otherwise null</returns>
-        public string? GenerateToken(string userId, string userRole);
+        public string? GenerateToken(string userId, string userRole, string userName);
         /// <summary>
         /// Get the user id from the token using HttpContext
         /// </summary>
