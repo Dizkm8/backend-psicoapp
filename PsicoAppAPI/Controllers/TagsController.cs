@@ -17,7 +17,6 @@ namespace PsicoAppAPI.Controllers
 
         /// <summary>
         /// Get all tags in the system shaped as TagDto
-        /// Needs to be logged in to avoid spam, all users can access this endpoint
         /// </summary>
         /// <returns>
         /// Returns a list of TagDto, each tagDto have the following properties:
@@ -26,7 +25,7 @@ namespace PsicoAppAPI.Controllers
         /// If the system have no tags, returns an empty list
         /// If the user is not logged in, returns a 401 status: Unauthorized
         /// </returns>
-        [Authorize(Roles = "1, 2, 3")]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IEnumerable<TagDto>> GetTags()
         {
