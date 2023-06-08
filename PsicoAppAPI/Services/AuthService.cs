@@ -19,7 +19,7 @@ namespace PsicoAppAPI.Services
             _httpContext = httpContext ?? throw new ArgumentNullException(nameof(httpContext));
         }
 
-        public string? GenerateToken(string userId, string userRole)
+        public string? GenerateToken(string userId, string userRole, string userName)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSecret);
@@ -28,7 +28,8 @@ namespace PsicoAppAPI.Services
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.Name, userId),
-                    new Claim(ClaimTypes.Role, userRole)
+                    new Claim(ClaimTypes.Role, userRole),
+                    new Claim("user_name", userName)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
