@@ -50,7 +50,10 @@ namespace PsicoAppAPI.Services.Mediators
             var userId = loginUserDto.Id;
             if (string.IsNullOrEmpty(userId)) return null;
             var roleId = await _userService.GetRoleIdInUser(userId);
-            return _authService.GenerateToken(userId, roleId.ToString());
+            var user = await _userService.GetUserById(userId);
+            if(user is null) return null;
+            var userFullName = $"{user.Name} {user.FirstLastName} {user.SecondLastName}";
+            return _authService.GenerateToken(userId, roleId.ToString(), userFullName);
         }
 
         public async Task<bool> CheckCredentials(LoginUserDto loginUserDto)
