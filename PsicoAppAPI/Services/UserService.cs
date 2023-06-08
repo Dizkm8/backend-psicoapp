@@ -88,7 +88,7 @@ namespace PsicoAppAPI.Services
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(id)) return false;
             var user = await GetUserByEmail(email);
             if (user is null) return false;
-            return user.Email != email;
+            return user.Id != id;
         }
 
         public async Task<User?> GetUserById(string? id)
