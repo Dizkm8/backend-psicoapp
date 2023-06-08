@@ -1,33 +1,34 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PsicoAppAPI.Models
 {
-    public enum UserType {
-        Admin,
-        Client,
-        Psychologist
-    }
-
     public class User
     {
-        public string? Name { get; set; }
-        public string? FirstLastName { get; set; }
-        public string? SecondLastName { get; set; }
+        #region CLASS_ATTRIBUTES
         [Key]
-        public string? Rut { get; set; }
-        public string? Email { get; set; }
-        public string? Gender { get; set; }
+        public string Id { get; set; } = null!;
+        public string Name { get; set; } = null!;
+        public string FirstLastName { get; set; } = null!;
+        public string SecondLastName { get; set; } = null!;
+        public string Email { get; set; } = null!;
+        public string Gender { get; set; } = null!;
         public bool IsEnabled { get; set; }
         public int Phone { get; set; }
-        public string? Password { get; set; }
-        public UserType Type { get; set; }
+        public string Password { get; set; } = null!;
+        #endregion
 
-        // public List<FeedPost> FeedPosts { get; set; } = new();
+        #region MODEL_RELATIONSHIPS
 
+        #region MANY_TO_ONE_RELATIONSHIPS
+        public int RoleId { get; set; }
+        public Role Role { get; set; } = null!;
+        #endregion
+
+        #region ONE_TO_MANY_RELATIONSHIPS
+        public List<FeedPost> FeedPosts { get; } = new();
+        public List<ForumPost> ForumPosts { get; } = new();
+        #endregion
+
+        #endregion
     }
 }
-//test

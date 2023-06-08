@@ -4,10 +4,21 @@ namespace PsicoAppAPI.Models;
 
 public class Comment
 {
-     [Key]
-     public int Id { get; set; }
-     public string? Body { get; set; }
-     public int PostId { get; set; }
-     public int SpecialistId { get; set; }
-     public string? SpecialistName { get; set; }
+    #region CLASS_ATTRIBUTES
+    [Key]
+    public int Id { get; set; }
+    public string Content { get; set; } = null!;
+    #endregion
+
+    #region MODEL_RELATIONSHIPS
+
+    #region  MANY_TO_ONE_RELATIONSHIP
+    public string UserId { get; set; } = null!;
+    public User User { get; set; } = null!;
+
+    public int ForumPostId { get; set; }
+    public ForumPost ForumPost { get; set; } = null!;
+    #endregion
+
+    #endregion
 }
