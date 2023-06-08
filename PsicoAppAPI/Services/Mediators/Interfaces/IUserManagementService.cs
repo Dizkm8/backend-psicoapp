@@ -6,7 +6,7 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
     public interface IUserManagementService
     {
         /// <summary>
-        /// Get user by credentials
+        /// Get user by credentials, this implementation DON'T check if the user is enabled
         /// </summary>
         /// <param name="loginUserDto">Entity shape with credentials</param>
         /// <returns>User if it was found, null if not</returns>
@@ -71,5 +71,10 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// <param name="newUser">Dto shape with params to update</param>
         /// <returns>Dto with updated user, null if user cannot be found or updated</returns>
         public Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser);
+        /// <summary>
+        /// Asynchronously check if a user is enabled based on their userID
+        /// </summary>
+        /// <returns></returns>
+        public Task<bool> CheckUserEnabled(LoginUserDto loginUserDto);
     }
 }

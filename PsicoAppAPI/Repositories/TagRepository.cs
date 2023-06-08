@@ -25,5 +25,13 @@ namespace PsicoAppAPI.Repositories
             var tag = await _context.Tags.FirstOrDefaultAsync(t => t.Name == name);
             return tag;
         }
+
+        public async Task<IEnumerable<Tag>?> GetTags()
+        {
+            // The design of the applications uses a small data for tags
+            // so it's not necessary to use pagination or other techniques
+            var tags = await _context.Tags.ToListAsync();
+            return tags;
+        }
     }
 }

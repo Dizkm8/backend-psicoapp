@@ -72,6 +72,7 @@ namespace PsicoAppAPI.Extensions
             services.AddScoped<IOpenAIService, OpenAIService>();
             services.AddScoped<IMapperService, MapperService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ITimeZoneService, TimeZoneService>();
             return services;
         }
 
@@ -80,6 +81,7 @@ namespace PsicoAppAPI.Extensions
             services.AddScoped<IUserManagementService, UserManagementService>();
             services.AddScoped<IFeedPostManagementService, FeedPostManagementService>();
             services.AddScoped<ISpecialistManagementService, SpecialistManagementService>();
+            services.AddScoped<ITagManagementService, TagManagementService>();
             return services;
         }
 

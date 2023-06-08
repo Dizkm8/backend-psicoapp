@@ -58,8 +58,7 @@ namespace PsicoAppAPI.Services.Mediators
             if (string.IsNullOrEmpty(loginUserDto.Id) ||
                 string.IsNullOrEmpty(loginUserDto.Password)) return false;
             var user = await _userService.GetUserByCredentials(loginUserDto.Id, loginUserDto.Password);
-            // User need to be enable!
-            return user is not null && user.IsEnabled;
+            return user is not null;
         }
 
         public async Task<bool> CheckUserInToken()
@@ -93,7 +92,7 @@ namespace PsicoAppAPI.Services.Mediators
         {
             var userId = _authService.GetUserIdInToken();
             var roleId = _authService.GetUserRoleInToken();
-            if(string.IsNullOrEmpty(userId) || roleId == -1) return null;
+            if (string.IsNullOrEmpty(userId) || roleId == -1) return null;
             var user = await _userService.GetUserById(userId);
             var profileInfoDto = _mapperService.MapToProfileInformationDto(user);
             return profileInfoDto;
@@ -103,7 +102,7 @@ namespace PsicoAppAPI.Services.Mediators
         {
             var userId = _authService.GetUserIdInToken();
             var email = dto.Email;
-            if(string.IsNullOrEmpty(email)) return false;
+            if (string.IsNullOrEmpty(email)) return false;
             var result = await _userService.ExistsEmailInOtherUser(userId, email);
             return result;
         }
@@ -111,13 +110,22 @@ namespace PsicoAppAPI.Services.Mediators
         public async Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser)
         {
             var userId = _authService.GetUserIdInToken();
-            if(string.IsNullOrEmpty(userId)) return null;
+            if (string.IsNullOrEmpty(userId)) return null;
             var user = await _userService.GetUserById(userId);
-            if(user is null) return null;
+            if (user is null) return null;
             var mappedUser = _mapperService.MapAttributesToUser(newUser, user);
             var result = _userService.UpdateUser(mappedUser);
-            if(!result) return null;
+            if (!result) return null;
             return _mapperService.MapToUpdatedProfileInformationDto(mappedUser);
+        }
+
+        public async Task<bool> CheckUserEnabled(LoginUserDto loginUserDto)
+        {
+            var userId = loginUserDto.Id;
+            if (string.IsNullOrEmpty(userId)) return false;
+            var user = await _userService.GetUserById(userId);
+            // User cannot be null and need to be enabled
+            return user is not null && user.IsEnabled;
         }
     }
 }
