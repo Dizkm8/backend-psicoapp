@@ -104,7 +104,7 @@ namespace PsicoAppAPI.Services.Mediators
             var email = dto.Email;
             if (string.IsNullOrEmpty(email)) return false;
             var result = await _userService.ExistsEmailInOtherUser(userId, email);
-            return result;
+            return !result;
         }
 
         public async Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser)
