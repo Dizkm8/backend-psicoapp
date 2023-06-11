@@ -1,105 +1,76 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using PsicoAppAPI.Data;
-using PsicoAppAPI.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using PsicoAppAPI.Controllers.Base;
+using PsicoAppAPI.DTOs.UpdateProfileInformation;
+using PsicoAppAPI.Services.Mediators.Interfaces;
 
 namespace PsicoAppAPI.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseApiController
     {
-        private readonly DataContext _context;
-        private readonly string _jwtSecret;
+        private readonly IUserManagementService _userManagementService;
 
-        public UsersController(DataContext context, IConfiguration configuration)
+        public UsersController(IUserManagementService userManagementService)
         {
-            _context = context;
-            _jwtSecret = configuration.GetValue<string>("JwtSettings:Secret");
+            _userManagementService = userManagementService ??
+                throw new ArgumentNullException(nameof(userManagementService));
         }
 
         /// <summary>
-        /// Get all users in database context
+        /// Get the user's profile information extracting Claims included on the JWT token.
         /// </summary>
-        /// <returns>All users collected</returns>
-        [HttpGet]
-        public IActionResult GetUsers()
+        /// <returns>
+        /// If the JWT was not provided or is invalid, return a Status 401.
+        /// If the JWT have error extracting the Claims, return a Status 404.
+        /// If the user's profile information is not found, return a Status 404.
+        /// If the user's profile information is found, return a Status 200 with the user's profile information.
+        /// The User Profile Information contains:
+        /// Id, roleId, name, firstLastName, secondLastName, email, gender and phone. (Check DTO)
+        /// </returns>
+        [Authorize]
+        [HttpGet("profile-information")]
+        public async Task<ActionResult<ProfileInformationDto>> GetProfileInformation()
         {
-            var users = _context.Users.ToList();
-            return Ok(users);
+            var profileInformationDto = await _userManagementService.GetUserProfileInformation();
+            if (profileInformationDto is null) return Unauthorized("JWT not provided or invalid");
+            return Ok(profileInformationDto);
         }
 
         /// <summary>
-        /// Login: checks if the user exists in the database and if the entered password matches the one registered in the database
+        /// Update the user's profile information extracting Claims included on the JWT token.
         /// </summary>
-        /// <returns>user whose login credentials match</returns>
-        [AllowAnonymous] // Permite que este endpoint sea accesible sin autenticación
-        [HttpPost("login")]
-        public IActionResult Login(string id, string password)
+        /// <param name="updateProfileInformationDto">
+        /// Name: User's name, must be not null and have at least 2 characters
+        /// FirstLastName: User's first last name, must be not null and have at least 2 characters
+        /// SecondLastName: User's second last name, must be not null and have at least 2 characters
+        /// Email: User's email, must be not null, have a valid email format and be unique
+        /// Gender: User's gender, must be not null or empty
+        /// Phone: User's phone, must be not null and have 8 digits
+        /// </param>
+        /// <returns>
+        /// If the ModelState have errors based on params requeriments, return a Status 400 with the errors.
+        /// If the Email exists in other user, return a Status 400 with the error.
+        /// If the user cannot be updated in the database, return a Status 500 with a generic error.
+        /// If the user is added to the database, return a Status 200 with the user's data shaped
+        ///  as UpdateProfileInformationDto.
+        /// </returns>
+        [Authorize]
+        [HttpPut("profile-information")]
+        public async Task<ActionResult> UpdateProfileInformation([FromBody] UpdateProfileInformationDto updateProfileInformationDto)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Rut == id && x.Password == password);
-
-            if (user == null)
+            if (!ModelState.IsValid)
             {
-                return Unauthorized(); // Devuelve un código 401 si las credenciales son inválidas
+                return BadRequest(ModelState);
             }
+            // Needs to validate if exists In Different users to avoid
+            // rejecting the update if the user doesn't change the email
+            var existsEmail = await _userManagementService.CheckEmailUpdatingAvailability(updateProfileInformationDto);
+            if (existsEmail) return BadRequest(new { error = "Email already exists" });
 
-            var token = GenerateJwtToken(user.Rut);
-
-            return Ok(new { Token = token }); // Devuelve el token JWT en la respuesta
-        }
-
-        /// <summary>
-        /// Add a user in database context if user's id is not registered in the database
-        /// </summary>
-        /// <param name="user">User to add</param>
-        /// <returns>User saved</returns>
-        [HttpPost("sign-up")]
-        public IActionResult AddUser(User user)
-        {
-            if (!UserExists(user.Rut))
-            {
-                _context.Users.Add(user);
-                _context.SaveChanges();
-                return Ok(user);
-            }
-            else
-            {
-                return Conflict();
-            }
-        }
-
-        // Resto del código...
-
-        private bool UserExists(string rut)
-        {
-            return _context.Users.Any(e => e.Rut == rut);
-        }
-
-        private string GenerateJwtToken(string userId)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSecret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, userId)
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+            var result = await _userManagementService.UpdateProfileInformation(updateProfileInformationDto);
+            if (result is null) return StatusCode(StatusCodes.Status500InternalServerError,
+                new { error = "Internal error updating User" });
+            return Ok(result);
         }
     }
 }
