@@ -1,5 +1,6 @@
 using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.Mediators.Interfaces;
+using PsicoAppAPI.Models;
 using PsicoAppAPI.Services.Interfaces;
 
 namespace PsicoAppAPI.Mediators
@@ -7,65 +8,43 @@ namespace PsicoAppAPI.Mediators
     public class FeedPostManagementService : IFeedPostManagementService
     {
         private readonly IFeedPostService _feedPostService;
-        private readonly IAuthService _authService;
+        private readonly IAuthManagementService _authService;
         private readonly IMapperService _mapperService;
-        private readonly IUserService _userService;
         private readonly ITagService _tagService;
-        private readonly IOpenAIService _openAIService;
 
-        public FeedPostManagementService(IFeedPostService feedPostService, IAuthService authService,
-            IMapperService mapperService, IUserService userService, ITagService tagService,
-            IOpenAIService openAIService)
+        public FeedPostManagementService(IFeedPostService feedPostService, IAuthManagementService authService,
+            IMapperService mapperService, ITagService tagService,
+            IOpenAIService openAiService)
         {
-            _feedPostService = feedPostService;
-            _authService = authService;
-            _mapperService = mapperService;
-            _userService = userService;
-            _tagService = tagService;
-            _openAIService = openAIService;
+            _feedPostService = feedPostService ?? throw new ArgumentNullException(nameof(feedPostService));
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
+            _tagService = tagService ?? throw new ArgumentNullException(nameof(tagService));
         }
 
         public async Task<FeedPostDto?> AddFeedPost(AddFeedPostDto feedPostDto)
         {
-            var userId = _authService.GetUserIdInToken();
-            if (userId is null) return null;
-            var isSpecialist = await ValidateSpecialist(userId);
-            if (!isSpecialist) return null;
+            var user = await _authService.GetUserEnabledAndSpecialistFromToken();
+            if(user is null) return null;
+            var userId = user.Id;
 
             var feedPost = _mapperService.MapToFeedPost(feedPostDto);
-            if (feedPost is null) return null;
+            if(feedPost is null) return null;
             // Update properties not mapped
             feedPost.UserId = userId;
             feedPost.PublishedOn = DateOnly.FromDateTime(DateTime.Now);
 
             var result = await _feedPostService.AddFeedPost(feedPost);
-            if (!result) return null;
+            if(!result) return null;
 
             var postDto = _mapperService.MapToFeedPostDto(feedPost);
             return postDto;
-        }
-
-        public async Task<bool> CheckPost(AddFeedPostDto feedPostDto)
-        {
-            var content = feedPostDto.Content;
-            var title = feedPostDto.Title;
-            if (content is null || title is null) return false;
-            var result = await _openAIService.CheckPsychologyContent(new List<string> { content, title });
-            return result;
         }
 
         public async Task<bool> CheckPostTag(AddFeedPostDto feedPostDto)
         {
             var result = await _tagService.ExistsTagById(feedPostDto.TagId);
             return result;
-        }
-
-        private async Task<bool> ValidateSpecialist(string userId)
-        {
-            var user = await _userService.GetUserById(userId);
-            if (user is null) return false;
-            var specialistRoleId = await _userService.GetIdOfSpecialistRole();
-            return user.RoleId == specialistRoleId;
         }
     }
 }

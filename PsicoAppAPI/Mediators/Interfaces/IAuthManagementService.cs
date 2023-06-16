@@ -51,4 +51,17 @@ public interface IAuthManagementService
     /// <returns>true if its valid. otherwise false</returns>
     public bool ExistsUserRoleInToken();
     
+    /// <summary>
+    /// Check if the user found using userId extracted from token is specialist
+    /// </summary>
+    /// <param name="userId">User id to check</param>
+    /// <returns>true if it is specialist. otherwise false</returns>
+    public Task<bool> IsUserSpecialist();
+    /// <summary>
+    /// Get a enabled user by userId extracted from token and check
+    /// if it is specialists
+    /// </summary>
+    /// <returns>User that match the filters. otherwise false</returns>
+    public Task<User?> GetUserEnabledAndSpecialistFromToken();
+
 }

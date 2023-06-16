@@ -1,5 +1,6 @@
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
+using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.Mediators.Interfaces
 {
@@ -76,5 +77,17 @@ namespace PsicoAppAPI.Mediators.Interfaces
         /// </summary>
         /// <returns></returns>
         public Task<bool> CheckUserEnabled(LoginUserDto loginUserDto);
+        /// <summary>
+        /// Check if the user with the Id provided is specialist
+        /// </summary>
+        /// <param name="userId">User id to check</param>
+        /// <returns>true if it is specialist. otherwise false</returns>
+        public Task<bool> IsUserSpecialist(string userId);
+        /// <summary>
+        /// Get a user enabled by their userId 
+        /// </summary>
+        /// <param name="userId">User id to check</param>
+        /// <returns>true if could be found and it is enabled. otherwise false</returns>
+        public Task<User?> GetUserEnabled(string userId);
     }
 }

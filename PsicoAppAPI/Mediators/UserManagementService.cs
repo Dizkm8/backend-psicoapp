@@ -1,6 +1,7 @@
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Mediators.Interfaces;
+using PsicoAppAPI.Models;
 using PsicoAppAPI.Services.Interfaces;
 
 namespace PsicoAppAPI.Mediators
@@ -21,7 +22,6 @@ namespace PsicoAppAPI.Mediators
 
         public async Task<RegisterClientDto?> AddClient(RegisterClientDto registerClientDto)
         {
-            if(registerClientDto is null) return null;
             var user = _mapperService.MapToUser(registerClientDto);
             if(user is null) return null;
             var result = await _userService.AddClient(user);
@@ -109,7 +109,7 @@ namespace PsicoAppAPI.Mediators
             var userId = _authService.GetUserIdInToken();
             var email = dto.Email;
             if(string.IsNullOrEmpty(email)) return false;
-            
+
             var result = await _userService.ExistsEmailInOtherUser(email, userId);
             return result;
         }
@@ -129,10 +129,24 @@ namespace PsicoAppAPI.Mediators
         {
             var userId = loginUserDto.Id;
             if(string.IsNullOrEmpty(userId)) return false;
-            
+
             var user = await _userService.GetUserById(userId);
             // User cannot be null and need to be enabled
             return user is not null && user.IsEnabled;
+        }
+        public async Task<bool> IsUserSpecialist(string userId)
+        {
+            var user = await GetUserEnabled(userId);
+            if(user is null) return false;
+            
+            var specialistRoleId = await _userService.GetIdOfSpecialistRole();
+            return user.RoleId == specialistRoleId;
+        }
+        public async Task<User?> GetUserEnabled(string userId)
+        {
+            var user = await _userService.GetUserById(userId);
+            if(user is not null && user.IsEnabled) return user;
+            return null;
         }
     }
 }

@@ -58,4 +58,17 @@ public class AuthManagementService : IAuthManagementService
         var userRole = GetUserRoleInToken();
         return userRole != -1;
     }
+    public async Task<bool> IsUserSpecialist()
+    {
+        var user = await GetUserEnabledAndSpecialistFromToken();
+        return user is not null;
+    }
+    public async Task<User?> GetUserEnabledAndSpecialistFromToken()
+    {
+        var user = await GetUserEnabledFromToken();
+        if(user is null) return null;
+
+        var specialistRoleId = await _userService.GetIdOfSpecialistRole();
+        return user.RoleId == specialistRoleId ? user : null;
+    }
 }
