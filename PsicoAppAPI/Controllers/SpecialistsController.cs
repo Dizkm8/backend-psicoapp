@@ -10,11 +10,11 @@ namespace PsicoAppAPI.Controllers
 {
     public class SpecialistsController : BaseApiController
     {
-        private readonly ISpecialistManagementService _service;
+        private readonly ISpecialistManagementService _specialistService;
 
-        public SpecialistsController(ISpecialistManagementService service)
+        public SpecialistsController(ISpecialistManagementService specialistService)
         {
-            _service = service ?? throw new ArgumentNullException(nameof(service));
+            _specialistService = specialistService ?? throw new ArgumentNullException(nameof(specialistService));
         }
 
         /// <summary>
@@ -36,18 +36,16 @@ namespace PsicoAppAPI.Controllers
         /// StartTime: DateTime c# class, follows ISO8601 format.
         /// IsAvailable: bool, true if the specialist is available at that time, false otherwise.
         /// </returns>
-        [Authorize(Roles = "3")]
-        [HttpGet("availability/{date}")]
-        public async Task<ActionResult<IEnumerable<AvailabilitySlotDto>?>> GetScheduleAvailability([Required] DateOnly date)
+        [Authorize]
+        [HttpGet("availability/{userId}")]
+        public async Task<ActionResult<IEnumerable<AvailabilitySlotDto>?>> GetScheduleAvailability(
+            [Required] string userId)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if(!ModelState.IsValid) return BadRequest(ModelState);
 
-            if (!_service.ValidateDate(date)) return NotFound(
-                new ErrorModel { ErrorCode = 404, Message = "The date provided are not in the allowed range" });
-
-            var slots = await _service.GetAvailabilitySlots(date);
-            if (slots is null) return StatusCode(StatusCodes.Status500InternalServerError,
-                new { error = "Internal error getting availability" });
+            var slots = await _specialistService.GetAvailabilitySlots(userId);
+            if(slots is null)
+                return Unauthorized("The user id provided is not a specialist or does not exists");
             return Ok(slots);
         }
 
@@ -77,24 +75,27 @@ namespace PsicoAppAPI.Controllers
         [HttpPost("add-availability")]
         public async Task<ActionResult> AddScheduleAvailability(IEnumerable<AddAvailabilityDto> availabilities)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if(!ModelState.IsValid) return BadRequest(ModelState);
 
-            var convertedAvailabilities = await _service.TransformToChileUTC(availabilities);
-            if (convertedAvailabilities is null) return StatusCode(StatusCodes.Status500InternalServerError,
-                new { error = "Internal error adding availabilities" });
+            var convertedAvailabilities = await _specialistService.TransformToChileUTC(availabilities);
+            if(convertedAvailabilities is null)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { error = "Internal error adding availabilities" });
 
-            var checkHours = _service.CheckHourRange(convertedAvailabilities);
-            if (!checkHours) return BadRequest("One or more availabilities provided are not in the valid hour range");
+            var checkHours = _specialistService.CheckHourRange(convertedAvailabilities);
+            if(!checkHours) return BadRequest("One or more availabilities provided are not in the valid hour range");
 
-            var CheckDuplicatedAvailabilities = await _service.CheckDuplicatedAvailabilities(convertedAvailabilities);
-            if (CheckDuplicatedAvailabilities) return BadRequest(
-                new ErrorModel { ErrorCode = 400, Message = "One or more availabilities provided already exists duplicated" });
+            var CheckDuplicatedAvailabilities = await _specialistService.CheckDuplicatedAvailabilities(convertedAvailabilities);
+            if(CheckDuplicatedAvailabilities)
+                return BadRequest(
+                    new ErrorModel
+                        { ErrorCode = 400, Message = "One or more availabilities provided already exists duplicated" });
 
-            var result = await _service.AddSpecialistAvailability(convertedAvailabilities);
-            if (result is null) return StatusCode(StatusCodes.Status500InternalServerError,
-                new { error = "Internal error adding availabilities" });
+            var result = await _specialistService.AddSpecialistAvailability(convertedAvailabilities);
+            if(result is null)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { error = "Internal error adding availabilities" });
             return Ok(result);
         }
-
     }
 }
