@@ -1,6 +1,6 @@
 using PsicoAppAPI.DTOs.Specialist;
 
-namespace PsicoAppAPI.Services.Mediators.Interfaces
+namespace PsicoAppAPI.Mediators.Interfaces
 {
     public interface ISpecialistManagementService
     {
