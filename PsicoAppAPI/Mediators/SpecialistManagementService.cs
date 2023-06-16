@@ -1,9 +1,9 @@
 using PsicoAppAPI.DTOs.Specialist;
+using PsicoAppAPI.Mediators.Interfaces;
 using PsicoAppAPI.Services.Interfaces;
-using PsicoAppAPI.Services.Mediators.Interfaces;
 using PsicoAppAPI.Util;
 
-namespace PsicoAppAPI.Services.Mediators
+namespace PsicoAppAPI.Mediators
 {
     public class SpecialistManagementService : ISpecialistManagementService
     {

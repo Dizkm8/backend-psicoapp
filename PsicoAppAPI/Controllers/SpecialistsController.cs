@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.Specialist;
-using PsicoAppAPI.Services.Mediators.Interfaces;
+using PsicoAppAPI.Mediators.Interfaces;
 
 namespace PsicoAppAPI.Controllers
 {

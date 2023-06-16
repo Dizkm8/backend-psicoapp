@@ -1,7 +1,7 @@
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
 
-namespace PsicoAppAPI.Services.Mediators.Interfaces
+namespace PsicoAppAPI.Mediators.Interfaces
 {
     public interface IUserManagementService
     {
@@ -14,7 +14,7 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// <summary>
         /// Generate a JWT token for the user
         /// </summary>
-        /// <param name="userId">User id to assign token</param>
+        /// <param name="loginUserDto">User id to assign token</param>
         /// <returns>string if the user id exists or wasn't null. Otherwise null</returns>
         public Task<string?> GenerateToken(LoginUserDto loginUserDto);
         /// <summary>
@@ -63,7 +63,7 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// not considering the current user's email
         /// </summary>
         /// <param name="dto">Shape of information</param>
-        /// <returns>True if it is available. othernise false</returns>
+        /// <returns>True if it is available. otherwise false</returns>
         public Task<bool> CheckEmailUpdatingAvailability(UpdateProfileInformationDto dto);
         /// <summary>
         /// Asynchronously update users information contained on Dto shape using the user's Id in the JWT

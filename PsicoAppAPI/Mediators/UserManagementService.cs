@@ -1,10 +1,9 @@
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
-using PsicoAppAPI.Models;
+using PsicoAppAPI.Mediators.Interfaces;
 using PsicoAppAPI.Services.Interfaces;
-using PsicoAppAPI.Services.Mediators.Interfaces;
 
-namespace PsicoAppAPI.Services.Mediators
+namespace PsicoAppAPI.Mediators
 {
     public class UserManagementService : IUserManagementService
     {

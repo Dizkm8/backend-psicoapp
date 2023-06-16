@@ -1,8 +1,8 @@
 using PsicoAppAPI.DTOs.BasePosts;
+using PsicoAppAPI.Mediators.Interfaces;
 using PsicoAppAPI.Services.Interfaces;
-using PsicoAppAPI.Services.Mediators.Interfaces;
 
-namespace PsicoAppAPI.Services.Mediators
+namespace PsicoAppAPI.Mediators
 {
     public class TagManagementService : ITagManagementService
     {
