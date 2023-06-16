@@ -8,11 +8,11 @@ namespace PsicoAppAPI.Mediators
     public class SpecialistManagementService : ISpecialistManagementService
     {
         private readonly ISpecialistService _specialistService;
-        private readonly IAuthService _authService;
+        private readonly IAuthManagementService _authService;
         private readonly IMapperService _mapperService;
         private readonly ITimeZoneService _timeZoneService;
 
-        public SpecialistManagementService(ISpecialistService specialistService, IAuthService authService,
+        public SpecialistManagementService(ISpecialistService specialistService, IAuthManagementService authService,
             IMapperService mapperService, ITimeZoneService timeZoneService)
         {
             _specialistService = specialistService ?? throw new ArgumentNullException(nameof(specialistService));
@@ -21,64 +21,71 @@ namespace PsicoAppAPI.Mediators
             _timeZoneService = timeZoneService ?? throw new ArgumentNullException(nameof(timeZoneService));
         }
 
-        public async Task<IEnumerable<AvailabilitySlotDto>?> AddSpecialistAvailability(IEnumerable<AddAvailabilityDto> availabilities)
+        public async Task<IEnumerable<AvailabilitySlotDto>?> AddSpecialistAvailability(
+            IEnumerable<AddAvailabilityDto> availabilities)
         {
-            var userId = _authService.GetUserIdInToken();
-            if (userId is null) return null;
+            var user = await _authService.GetUserEnabledFromToken();
+            if(user is null) return null;
+            var userId = user.Id;
 
-            var mappedAvailabilities = _mapperService.MapToListOfAvailabilitySlot(availabilities, userId);
-            if (mappedAvailabilities is null) return null;
+            var mappedAvailabilities =
+                _mapperService.MapToListOfAvailabilitySlot(availabilities, userId);
+            if(mappedAvailabilities is null) return null;
 
             var result = await _specialistService.AddAvailabilities(mappedAvailabilities, userId);
-            if (!result) return null;
+            if(!result) return null;
             return _mapperService.MapToListOfAvailabilitySlotDto(mappedAvailabilities.ToList());
         }
 
         public async Task<bool> CheckDuplicatedAvailabilities(IEnumerable<AddAvailabilityDto> availabilities)
         {
-            var userId = _authService.GetUserIdInToken();
-            if (userId is null) return false;
+            var user = await _authService.GetUserEnabledFromToken();
+            if(user is null) return false;
+            var userId = user.Id;
 
             foreach (var availability in availabilities)
             {
                 var startTime = availability.StartTime;
                 var result = await _specialistService.ExistsAvailability(userId, startTime);
-                if (result) return true;
+                if(result) return true;
             }
+
             // If none of the availabilities exists, return false
             return false;
         }
 
         public bool CheckHourRange(IEnumerable<AddAvailabilityDto> availabilities)
         {
-            var result = availabilities.FirstOrDefault(x => x.StartTime.Hour < 8 || x.StartTime.Hour > 20);
+            var result = availabilities.FirstOrDefault(x => x.StartTime.Hour is < 8 or > 20);
             // if result is null means that all the availabilities are in the range
             return result is null;
         }
 
         public async Task<List<AvailabilitySlotDto>?> GetAvailabilitySlots(DateOnly date)
         {
-            var userId = _authService.GetUserIdInToken();
-            if (userId is null) return null;
+            var user = await _authService.GetUserEnabledFromToken();
+            if(user is null) return null;
+            var userId = user.Id;
             // Get the initial date of the week to use as initial value of the range
             var startDate = DateHelper.GetMondayOfTheWeek(date);
             // Get the final date of the week to use as final value of the range
             var endDate = DateHelper.GetSundayOfTheWeek(date);
 
             var availabilitySlots = await _specialistService.GetAvailabilityByDate(userId, startDate, endDate);
-            if (availabilitySlots is null) return null;
+            if(availabilitySlots is null) return null;
             var mappedSlots = _mapperService.MapToListOfAvailabilitySlotDto(availabilitySlots);
             return mappedSlots;
         }
 
-        public async Task<IEnumerable<AddAvailabilityDto>?> TransformToChileUTC(IEnumerable<AddAvailabilityDto> availabilities)
+        public async Task<IEnumerable<AddAvailabilityDto>?> TransformToChileUTC(
+            IEnumerable<AddAvailabilityDto> availabilities)
         {
             try
             {
                 availabilities = await Task.WhenAll(availabilities.Select(async x =>
                 {
                     var dateTime = await _timeZoneService.ConvertToChileUTC(x.StartTime) ??
-                        throw new Exception("Error converting to Chile UTC");
+                                   throw new Exception("Error converting to Chile UTC");
                     x.StartTime = dateTime;
                     return x;
                 }));
@@ -87,6 +94,7 @@ namespace PsicoAppAPI.Mediators
             {
                 return null;
             }
+
             return availabilities;
         }
 
