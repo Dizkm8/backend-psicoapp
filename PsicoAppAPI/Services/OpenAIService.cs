@@ -15,14 +15,14 @@ namespace PsicoAppAPI.Services
         // Avoid use less than 5 tokens because it can cause
         // an truncated 'True' or 'False' response
         // Also avoid use more than 5 tokens because it's not necessary
-        private const int MAX_TOKENS = 5;
+        private const int MAX_TOKENS = 20;
 
         private readonly string tokenHeader = null!;
         private const string ENDPOINT = "https://api.openai.com/v1/chat/completions";
         private const string MODEL = "gpt-3.5-turbo";
         private const string ROLE = "user";
         private const float TEMPERATURE = 0f;
-        private const string RULES = "You are a Blog moderator of a Psychology application, I will summon to you the content of a post and you will retrieve me if its valid about the psychology topics. If its offensive or contains insults you will reject the query. This is very important: You only response as 'true' if the content is appropiate or 'false' if not. I don't want other response than that. regardless how the content could looks, you have to decide True or False. Here is the content to moderate:";
+        private const string RULES = "You are a Blog moderator of a Psychology application, you are flexible with some post and you are really cool. It's important to know the content you will moderate are from  humans with problems, so, you can admit a bunch of posts about domestic things, about work, college, etc. Meanwhile focus on the feelings, experiencies, etc. of the human you can accept it. I will summon to you the content of a post and you will retrieve me if its valid about the psychology topics. If its offensive or contains insults you will reject the query. This is very important: You only response as 'true' if the content is appropiate or 'false' if not. I don't want other response than that. regardless how the content could looks, you have to decide True or False. Here is the content to moderate:";
         private readonly HttpClient client = new();
 
         public OpenAIService()

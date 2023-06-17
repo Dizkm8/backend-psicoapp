@@ -50,7 +50,10 @@ namespace PsicoAppAPI.Services.Mediators
             var userId = loginUserDto.Id;
             if (string.IsNullOrEmpty(userId)) return null;
             var roleId = await _userService.GetRoleIdInUser(userId);
-            return _authService.GenerateToken(userId, roleId.ToString());
+            var user = await _userService.GetUserById(userId);
+            if(user is null) return null;
+            var userFullName = $"{user.Name} {user.FirstLastName} {user.SecondLastName}";
+            return _authService.GenerateToken(userId, roleId.ToString(), userFullName);
         }
 
         public async Task<bool> CheckCredentials(LoginUserDto loginUserDto)
@@ -103,8 +106,8 @@ namespace PsicoAppAPI.Services.Mediators
             var userId = _authService.GetUserIdInToken();
             var email = dto.Email;
             if (string.IsNullOrEmpty(email)) return false;
-            var result = await _userService.ExistsEmailInOtherUser(userId, email);
-            return !result;
+            var result = await _userService.ExistsEmailInOtherUser(email, userId);
+            return result;
         }
 
         public async Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser)
