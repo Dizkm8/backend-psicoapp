@@ -32,5 +32,10 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// </summary>
         /// <value>IAvailabilitySlotRepository</value>
         public IAvailabilitySlotRepository AvailabilitySlotRepository { get; }
+        /// <summary>
+        /// Get the ISpecialitiesRepository
+        /// </summary>
+        /// /// <value>ISpecialitiesRepository</value>
+        public ISpecialitiesRepository SpecialitiesRepository { get; }
     }
 }

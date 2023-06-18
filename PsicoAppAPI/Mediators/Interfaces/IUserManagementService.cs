@@ -1,7 +1,8 @@
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
+using PsicoAppAPI.Models;
 
-namespace PsicoAppAPI.Services.Mediators.Interfaces
+namespace PsicoAppAPI.Mediators.Interfaces
 {
     public interface IUserManagementService
     {
@@ -14,7 +15,7 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// <summary>
         /// Generate a JWT token for the user
         /// </summary>
-        /// <param name="userId">User id to assign token</param>
+        /// <param name="loginUserDto">User id to assign token</param>
         /// <returns>string if the user id exists or wasn't null. Otherwise null</returns>
         public Task<string?> GenerateToken(LoginUserDto loginUserDto);
         /// <summary>
@@ -63,7 +64,7 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// not considering the current user's email
         /// </summary>
         /// <param name="dto">Shape of information</param>
-        /// <returns>True if it is available. othernise false</returns>
+        /// <returns>True if it is available. otherwise false</returns>
         public Task<bool> CheckEmailUpdatingAvailability(UpdateProfileInformationDto dto);
         /// <summary>
         /// Asynchronously update users information contained on Dto shape using the user's Id in the JWT
@@ -76,5 +77,22 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// </summary>
         /// <returns></returns>
         public Task<bool> CheckUserEnabled(LoginUserDto loginUserDto);
+        /// <summary>
+        /// Check if the user with the Id provided is specialist
+        /// </summary>
+        /// <param name="userId">User id to check</param>
+        /// <returns>true if it is specialist. otherwise false</returns>
+        public Task<bool> IsUserSpecialist(string userId);
+        /// <summary>
+        /// Get a user enabled by their userId 
+        /// </summary>
+        /// <param name="userId">User id to check</param>
+        /// <returns>true if could be found and it is enabled. otherwise false</returns>
+        public Task<User?> GetUserEnabled(string userId);
+        /// <summary>
+        /// Get all the users with specialists Role
+        /// </summary>
+        /// <returns>IEnumerable with the users specialists</returns>
+        public Task<IEnumerable<User>> GetAllSpecialists();
     }
 }

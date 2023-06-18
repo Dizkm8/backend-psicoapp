@@ -1,26 +1,32 @@
 [
     {
-        "Name": "Speciality 1"
+        "Name": "Clínico"
     },
     {
-        "Name": "Speciality 2"
+        "Name": "Educacional"
     },
     {
-        "Name": "Speciality 3"
+        "Name": "Social"
     },
     {
-        "Name": "Speciality 4"
+        "Name": "Laboral"
     },
     {
-        "Name": "Speciality 5"
+        "Name": "Judicial"
     },
     {
-        "Name": "Speciality 6"
+        "Name": "Sistémico"
     },
     {
-        "Name": "Speciality 7"
+        "Name": "Cognitivo-Conductual"
     },
     {
-        "Name": "Speciality 8"
+        "Name": "Cognitivo-Constructivista"
+    },
+    {
+        "Name": "Transpersonal"
+    },
+    {
+        "Name": "Mixto"
     }
 ]

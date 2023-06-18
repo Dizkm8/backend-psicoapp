@@ -83,5 +83,18 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="tags">IEnumerable with tags</param>
         /// <returns>IEnumerable of tags, null if cannot be mapped</returns>
         public IEnumerable<TagDto> MapToTagDto(IEnumerable<Tag>? tags);
+        /// <summary>
+        /// Maps a IEnumerable of Specialist to a IEnumerable of SpecialistDto
+        /// </summary>
+        /// <param name="specialists">Specialists to map</param>
+        /// <returns>IEnumerable with mapped specialists</returns>
+        public IEnumerable<SpecialistDto> MapToListOfSpecialistDto(IEnumerable<Specialist> specialists);
+        /// <summary>
+        /// Maps a IEnumerable of User to a IEnumerable of SpecialistDto
+        /// </summary>
+        /// <param name="users">Users to map</param>
+        /// <returns>IEnumerable with mapped specialists</returns>
+        public IEnumerable<SpecialistDto> MapToListOfSpecialistDto(IEnumerable<User> users);
+
     }
 }

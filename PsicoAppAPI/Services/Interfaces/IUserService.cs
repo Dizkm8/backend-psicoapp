@@ -105,5 +105,10 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="user">User to update</param>
         /// <returns>True if could be updated. otherwise false</returns>
         public bool UpdateUser(User? user);
+        /// <summary>
+        /// Asynchronously get all the users in the database with the role of specialist
+        /// </summary>
+        /// <returns>IEnumerable with users</returns>
+        public Task<IEnumerable<User>> GetAllUsersSpecialists();
     }
 }

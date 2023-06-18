@@ -1,6 +1,7 @@
+using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.Specialist;
 
-namespace PsicoAppAPI.Services.Mediators.Interfaces
+namespace PsicoAppAPI.Mediators.Interfaces
 {
     public interface ISpecialistManagementService
     {
@@ -10,7 +11,7 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// </summary>
         /// <param name="date">Initialdate to get the availability slots</param>
         /// <returns>List with the availabilities and if they're taken (IsAvailable bool)</returns>
-        public Task<List<AvailabilitySlotDto>?> GetAvailabilitySlots(DateOnly date);
+        public Task<List<AvailabilitySlotDto>?> GetAvailabilitySlots(string userId);
         /// <summary>
         /// Validates if the date is in 8 weeks range from the current week
         /// </summary>
@@ -41,5 +42,11 @@ namespace PsicoAppAPI.Services.Mediators.Interfaces
         /// <param name="availabilities">Availabilities to check</param>
         /// <returns>True if they're valid. null otherwise</returns>
         public bool CheckHourRange(IEnumerable<AddAvailabilityDto> availabilities);
+        /// <summary>
+        /// Get all the specialists in the database
+        /// </summary>
+        /// <returns>IEnumerable with the specialists. null if cannot be obtained</returns>
+        public Task<IEnumerable<SpecialistDto>?> GetAllSpecialists();
+        
     }
 }

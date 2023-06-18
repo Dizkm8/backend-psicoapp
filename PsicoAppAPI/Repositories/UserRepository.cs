@@ -37,6 +37,12 @@ namespace PsicoAppAPI.Repositories
             return result;
         }
 
+        public async Task<IEnumerable<User>> GetAllUsersSpecialists()
+        {
+            var users = await _context.Users.Where(user => user.RoleId == 3).ToListAsync();
+            return users;
+        }
+
         public async Task<User?> GetUserByEmail(string email)
         {
             var user = await _context.Users.FirstOrDefaultAsync(user =>

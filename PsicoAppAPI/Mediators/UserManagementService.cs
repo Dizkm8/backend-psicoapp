@@ -1,28 +1,27 @@
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
+using PsicoAppAPI.Mediators.Interfaces;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Services.Interfaces;
-using PsicoAppAPI.Services.Mediators.Interfaces;
 
-namespace PsicoAppAPI.Services.Mediators
+namespace PsicoAppAPI.Mediators
 {
     public class UserManagementService : IUserManagementService
     {
-        private readonly IAuthService _authService;
         private readonly IUserService _userService;
         private readonly IMapperService _mapperService;
+        private readonly IAuthManagementService _authService;
 
-        public UserManagementService(IAuthService authService,
-            IUserService userService, IMapperService mapperService)
+        public UserManagementService(IUserService userService, IMapperService mapperService,
+            IAuthManagementService authService)
         {
-            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
         }
 
         public async Task<RegisterClientDto?> AddClient(RegisterClientDto registerClientDto)
         {
-            if (registerClientDto is null) return null;
             var user = _mapperService.MapToUser(registerClientDto);
             if (user is null) return null;
             var result = await _userService.AddClient(user);
@@ -49,17 +48,19 @@ namespace PsicoAppAPI.Services.Mediators
         {
             var userId = loginUserDto.Id;
             if (string.IsNullOrEmpty(userId)) return null;
+            //TODO: Fix order of roleId and getUser here
             var roleId = await _userService.GetRoleIdInUser(userId);
             var user = await _userService.GetUserById(userId);
-            if(user is null) return null;
+            if (user is null) return null;
             var userFullName = $"{user.Name} {user.FirstLastName} {user.SecondLastName}";
+
             return _authService.GenerateToken(userId, roleId.ToString(), userFullName);
         }
 
         public async Task<bool> CheckCredentials(LoginUserDto loginUserDto)
         {
             if (string.IsNullOrEmpty(loginUserDto.Id) ||
-                string.IsNullOrEmpty(loginUserDto.Password)) return false;
+               string.IsNullOrEmpty(loginUserDto.Password)) return false;
             var user = await _userService.GetUserByCredentials(loginUserDto.Id, loginUserDto.Password);
             return user is not null;
         }
@@ -76,8 +77,10 @@ namespace PsicoAppAPI.Services.Mediators
         {
             var currentPassword = updatePasswordDto.CurrentPassword;
             if (string.IsNullOrEmpty(currentPassword)) return false;
+
             var userId = _authService.GetUserIdInToken();
             if (string.IsNullOrEmpty(userId)) return false;
+
             var user = await _userService.GetUserByCredentials(userId, currentPassword);
             return user is not null;
         }
@@ -87,16 +90,16 @@ namespace PsicoAppAPI.Services.Mediators
             var userId = _authService.GetUserIdInToken();
             var password = updatePasswordDto.NewPassword;
             if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(password)) return false;
+
             var result = await _userService.UpdateUserPassword(userId, password);
             return result;
         }
 
         public async Task<ProfileInformationDto?> GetUserProfileInformation()
         {
-            var userId = _authService.GetUserIdInToken();
-            var roleId = _authService.GetUserRoleInToken();
-            if (string.IsNullOrEmpty(userId) || roleId == -1) return null;
-            var user = await _userService.GetUserById(userId);
+            var user = await _authService.GetUserEnabledFromToken();
+            if (user is null) return null;
+
             var profileInfoDto = _mapperService.MapToProfileInformationDto(user);
             return profileInfoDto;
         }
@@ -106,16 +109,16 @@ namespace PsicoAppAPI.Services.Mediators
             var userId = _authService.GetUserIdInToken();
             var email = dto.Email;
             if (string.IsNullOrEmpty(email)) return false;
+
             var result = await _userService.ExistsEmailInOtherUser(email, userId);
             return result;
         }
 
         public async Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser)
         {
-            var userId = _authService.GetUserIdInToken();
-            if (string.IsNullOrEmpty(userId)) return null;
-            var user = await _userService.GetUserById(userId);
+            var user = await _authService.GetUserEnabledFromToken();
             if (user is null) return null;
+
             var mappedUser = _mapperService.MapAttributesToUser(newUser, user);
             var result = _userService.UpdateUser(mappedUser);
             if (!result) return null;
@@ -126,9 +129,31 @@ namespace PsicoAppAPI.Services.Mediators
         {
             var userId = loginUserDto.Id;
             if (string.IsNullOrEmpty(userId)) return false;
+
             var user = await _userService.GetUserById(userId);
             // User cannot be null and need to be enabled
             return user is not null && user.IsEnabled;
+        }
+        public async Task<bool> IsUserSpecialist(string userId)
+        {
+            var user = await GetUserEnabled(userId);
+            if (user is null) return false;
+
+            var specialistRoleId = await _userService.GetIdOfSpecialistRole();
+            return user.RoleId == specialistRoleId;
+        }
+        public async Task<User?> GetUserEnabled(string userId)
+        {
+            var user = await _userService.GetUserById(userId);
+            if (user is not null && user.IsEnabled) return user;
+            return null;
+        }
+
+        public async Task<IEnumerable<User>> GetAllSpecialists()
+        {
+            var specialists = await _userService.GetAllUsersSpecialists();
+            if (specialists is null) return new List<User>();
+            return specialists;
         }
     }
 }
