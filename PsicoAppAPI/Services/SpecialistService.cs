@@ -28,16 +28,45 @@ namespace PsicoAppAPI.Services
             var availability = availabilities.FirstOrDefault(x => x.StartTime == startTime);
             return availability is not null;
         }
-        // public async Task<IEnumerable<SpecialistDto>> GetAllSpecialists(IEnumerable<User> users)
-        // {
-        //     var tasks =
-        //         users.Select(async x => await _unitOfWork.SpecialistRepository.GetSpecialistById(x.Id));
-        //     var specialists = await Task.WhenAll(tasks);
-        //     var test = specialists.Select(x => 
-        //         await _unitOfWork.Specialities
-        //         );
-        //     return specialists;
-        // }
+        public async Task<IEnumerable<SpecialistDto>> GetAllSpecialists(IEnumerable<User> users)
+        {
+            // First we get all the specialists from the table matching Id from user with UserId from specialist
+            var specialistsTask =
+                users.ToList().Select(async x =>
+                {
+                    var specialist = await _unitOfWork.SpecialistRepository.GetSpecialistById(x.Id);
+                    // In order to encapsulate all the data to work with I use anonymous structs
+                    // to temporary save entities data (and reduce queries to db)
+                    var tempObject = new
+                    {
+                        UserId = x.Id,
+                        FullName = $"{x.Name} {x.FirstLastName} {x.SecondLastName}",
+                        specialist?.SpecialityId,
+                        specialityName = string.Empty
+                    };
+                    return tempObject;
+                }).ToList();
+            var possiblyNullSpecialists = await Task.WhenAll(specialistsTask);
+            // Dismiss all null values
+            var specialists = possiblyNullSpecialists.Where(
+                x => x.SpecialityId is null);
+            // Now we have all specialist fullName and their userId, but we have specialityId instead of speciality name
+            // so, for each specialist we search in the specialities table
+            var specialitiesTask = specialists.Select(async x =>
+                {
+                    var specialityName =
+                        await _unitOfWork.SpecialitiesRepository.GetSpecialityById(x.SpecialityId ?? -1);
+                    return new SpecialistDto()
+                    {
+                        UserId = x.UserId,
+                        FullName = x.FullName,
+                        Speciality = specialityName?.Name ?? string.Empty
+                    };
+                }
+            );
+            var specialistsDto = await Task.WhenAll(specialitiesTask);
+            return specialistsDto;
+        }
 
 
         public async Task<List<AvailabilitySlot>?> GetAllAvailability(string? userId)
