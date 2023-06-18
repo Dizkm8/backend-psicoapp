@@ -28,6 +28,7 @@ namespace PsicoAppAPI.Services
             var availability = availabilities.FirstOrDefault(x => x.StartTime == startTime);
             return availability is not null;
         }
+
         public async Task<IEnumerable<SpecialistDto>> GetSpecialistsByUserList(IEnumerable<User> users)
         {
             // First we get all the specialists from the table matching Id from user with UserId from specialist
@@ -49,7 +50,7 @@ namespace PsicoAppAPI.Services
             var possiblyNullSpecialists = await Task.WhenAll(specialistsTask);
             // Dismiss all null values
             var specialists = possiblyNullSpecialists.Where(
-                x => x.SpecialityId is null);
+                x => x.SpecialityId is not null);
             // Now we have all specialist fullName and their userId, but we have specialityId instead of speciality name
             // so, for each specialist we search in the specialities table
             var specialitiesTask = specialists.Select(async x =>

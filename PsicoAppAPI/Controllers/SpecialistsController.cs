@@ -96,7 +96,7 @@ namespace PsicoAppAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("all-specialists")]
+        [HttpGet("get-all-specialists")]
         public async Task<ActionResult<IEnumerable<SpecialistDto>>> GetAllSpecialist()
         {
             var specialists = await _service.GetAllSpecialists();
