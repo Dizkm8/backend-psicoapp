@@ -12,6 +12,7 @@ namespace PsicoAppAPI.Repositories
         private IFeedPostRepository feedPostRepository = null!;
         private ITagRepository tagRepository = null!;
         private IAvailabilitySlotRepository availabilitySlotRepository = null!;
+        private ISpecialitiesRepository _specialitiesRepository = null!;
 
         public UnitOfWork(DataContext context)
         {
@@ -69,6 +70,14 @@ namespace PsicoAppAPI.Repositories
             {
                 availabilitySlotRepository ??= new AvailabilitySlotRepository(_context);
                 return availabilitySlotRepository ?? throw new NotImplementedException();
+            }
+        }
+        public ISpecialitiesRepository SpecialitiesRepository
+        {
+            get
+            {
+                _specialitiesRepository ??= new SpecialitiesRepository(_context);
+                return _specialitiesRepository ?? throw new NotImplementedException();
             }
         }
     }
