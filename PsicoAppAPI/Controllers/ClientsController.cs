@@ -16,12 +16,14 @@ public class ClientsController : BaseApiController
         _service = service ?? throw new ArgumentNullException(nameof(service));
     }
 
-    [Authorize(Roles = "2")]
+    [Authorize(Roles = "3")]
     [HttpPost("add-appointment/{specialistUserId}")]
     public async Task<ActionResult> GenerateAppointment(string specialistUserId, [FromQuery]
         [Required]
         [MinutesSecondsEqualsZero(
             ErrorMessage = "StartTime cannot have minutes, seconds, milliseconds or microseconds different from 0")]
+        [DateWithinEightWeeks(ErrorMessage =
+            "StartTime must be equal to or less than 8 weeks from monday's current week")]
         DateTime dateTime)
     {
         var isAvailable = await _service.IsSpecialistAvailable(specialistUserId, dateTime);
