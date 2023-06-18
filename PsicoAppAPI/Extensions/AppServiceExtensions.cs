@@ -1,6 +1,8 @@
+using System;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PsicoAppAPI.Data;
@@ -16,8 +18,7 @@ namespace PsicoAppAPI.Extensions
 {
     public static class AppServiceExtensions
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services,
-        IConfiguration config)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
             services = AddSwaggerGen(services);
             services = AddAutoMapper(services);
@@ -64,6 +65,8 @@ namespace PsicoAppAPI.Extensions
             services.AddScoped<IFeedPostService, FeedPostService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<ISpecialistService, SpecialistService>();
+            services.AddScoped<IAppointmentService, AppointmentService>();
+            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             return services;
         }
 
@@ -98,16 +101,16 @@ namespace PsicoAppAPI.Extensions
         {
             var jwtSecret = config["JwtSettings:Secret"] ?? throw new Exception("JwtSettings:Secret is null");
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
+                .AddJwtBearer(options =>
                 {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSecret)),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSecret)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
             return services;
         }
 
@@ -116,8 +119,5 @@ namespace PsicoAppAPI.Extensions
             services.AddHttpContextAccessor();
             return services;
         }
-
-
-
     }
 }
