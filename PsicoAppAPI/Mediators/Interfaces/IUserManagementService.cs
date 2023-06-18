@@ -89,5 +89,10 @@ namespace PsicoAppAPI.Mediators.Interfaces
         /// <param name="userId">User id to check</param>
         /// <returns>true if could be found and it is enabled. otherwise false</returns>
         public Task<User?> GetUserEnabled(string userId);
+        /// <summary>
+        /// Get all the users with specialists Role
+        /// </summary>
+        /// <returns>IEnumerable with the users specialists</returns>
+        public Task<IEnumerable<User>> GetAllSpecialists();
     }
 }

@@ -1,4 +1,5 @@
 using AutoMapper;
+using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.BasePosts;
 using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.DTOs.Specialist;
@@ -19,6 +20,8 @@ namespace PsicoAppAPI.RequestHelpers
             CreateMap<AvailabilitySlot, AvailabilitySlotDto>();
             CreateMap<AddAvailabilityDto, AvailabilitySlot>();
             CreateMap<Tag, TagDto>();
+            CreateMap<Specialist, SpecialistDto>();
+            CreateMap<User, SpecialistDto>();
         }
     }
 }

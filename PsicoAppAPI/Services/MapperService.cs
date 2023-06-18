@@ -31,66 +31,78 @@ namespace PsicoAppAPI.Services
 
         public AvailabilitySlotDto? MapToAvailabilitySlotDto(AvailabilitySlot? availabilitySlot)
         {
-            if (availabilitySlot is null) return null;
+            if(availabilitySlot is null) return null;
             return _mapper.Map<AvailabilitySlotDto>(availabilitySlot);
         }
 
         public FeedPost? MapToFeedPost(AddFeedPostDto? addFeedPostDto)
         {
-            if (addFeedPostDto is null) return null;
+            if(addFeedPostDto is null) return null;
             return _mapper.Map<FeedPost>(addFeedPostDto);
         }
 
         public FeedPostDto? MapToFeedPostDto(FeedPost? feedPost)
         {
-            if (feedPost is null) return null;
+            if(feedPost is null) return null;
             return _mapper.Map<FeedPostDto>(feedPost);
         }
 
-        public IEnumerable<AvailabilitySlot>? MapToListOfAvailabilitySlot(IEnumerable<AddAvailabilityDto>? availabilities,
+        public IEnumerable<AvailabilitySlot>? MapToListOfAvailabilitySlot(
+            IEnumerable<AddAvailabilityDto>? availabilities,
             string userId)
         {
-            if (availabilities is null) return null;
+            if(availabilities is null) return null;
             var mappedAvailabilities = availabilities.Select(x =>
-                {
-                    var availabilitySlot = _mapper.Map<AvailabilitySlot>(x);
-                    availabilitySlot.UserId = userId;
-                    availabilitySlot.EndTime = availabilitySlot.StartTime.AddHours(1);
-                    availabilitySlot.IsAvailableOverride = true;
-                    return availabilitySlot;
-                });
+            {
+                var availabilitySlot = _mapper.Map<AvailabilitySlot>(x);
+                availabilitySlot.UserId = userId;
+                availabilitySlot.EndTime = availabilitySlot.StartTime.AddHours(1);
+                availabilitySlot.IsAvailableOverride = true;
+                return availabilitySlot;
+            });
             return mappedAvailabilities;
         }
 
         public List<AvailabilitySlotDto>? MapToListOfAvailabilitySlotDto(List<AvailabilitySlot>? availabilitySlots)
         {
-            if (availabilitySlots is null) return null;
+            if(availabilitySlots is null) return null;
             var mappedDto = availabilitySlots.Select(x => _mapper.Map<AvailabilitySlotDto>(x)).ToList();
             return mappedDto;
         }
 
+        public IEnumerable<SpecialistDto> MapToListOfSpecialistDto(IEnumerable<Specialist> specialists)
+        {
+            var result = specialists.Select(x => _mapper.Map<SpecialistDto>(x));
+            return result;
+        }
+        public IEnumerable<SpecialistDto> MapToListOfSpecialistDto(IEnumerable<User> users)
+        {
+            var result = users.Select(x => _mapper.Map<SpecialistDto>(x));
+            return result;
+        }
+
         public ProfileInformationDto? MapToProfileInformationDto(User? user)
         {
-            if (user is null) return null;
+            if(user is null) return null;
             return _mapper.Map<ProfileInformationDto>(user);
         }
 
         public IEnumerable<TagDto> MapToTagDto(IEnumerable<Tag>? tags)
         {
-            if (tags is null) return new List<TagDto>();
+            if(tags is null) return new List<TagDto>();
             var mappedTags = tags.Select(x => _mapper.Map<TagDto>(x));
             return mappedTags ?? new List<TagDto>();
         }
 
         public UpdateProfileInformationDto? MapToUpdatedProfileInformationDto(User? user)
         {
-            if (user is null) return null;
+            if(user is null) return null;
             return _mapper.Map<UpdateProfileInformationDto>(user);
         }
 
         public User? MapToUser(RegisterClientDto? registerClientDto)
         {
-            if (registerClientDto is null) return null;
+            if(registerClientDto is null) return null;
             return _mapper.Map<User>(registerClientDto);
         }
     }

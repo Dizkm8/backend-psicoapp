@@ -1,3 +1,4 @@
+using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.Specialist;
 
 namespace PsicoAppAPI.Mediators.Interfaces
@@ -41,7 +42,11 @@ namespace PsicoAppAPI.Mediators.Interfaces
         /// <param name="availabilities">Availabilities to check</param>
         /// <returns>True if they're valid. null otherwise</returns>
         public bool CheckHourRange(IEnumerable<AddAvailabilityDto> availabilities);
-        
+        /// <summary>
+        /// Get all the specialists in the database
+        /// </summary>
+        /// <returns>IEnumerable with the specialists. null if cannot be obtained</returns>
+        public Task<IEnumerable<SpecialistDto>?> GetAllSpecialists();
         
     }
 }

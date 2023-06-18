@@ -1,3 +1,4 @@
+using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.Mediators.Interfaces;
 using PsicoAppAPI.Services.Interfaces;
@@ -14,42 +15,44 @@ namespace PsicoAppAPI.Mediators
         private readonly IUserManagementService _userManagementService;
 
         public SpecialistManagementService(ISpecialistService specialistService, IAuthManagementService authService,
-            IMapperService mapperService, ITimeZoneService timeZoneService, IUserManagementService userManagementService)
+            IMapperService mapperService, ITimeZoneService timeZoneService,
+            IUserManagementService userManagementService)
         {
             _specialistService = specialistService ?? throw new ArgumentNullException(nameof(specialistService));
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
             _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
             _timeZoneService = timeZoneService ?? throw new ArgumentNullException(nameof(timeZoneService));
-            _userManagementService = userManagementService ?? throw new ArgumentNullException(nameof(userManagementService));
+            _userManagementService =
+                userManagementService ?? throw new ArgumentNullException(nameof(userManagementService));
         }
 
         public async Task<IEnumerable<AvailabilitySlotDto>?> AddSpecialistAvailability(
             IEnumerable<AddAvailabilityDto> availabilities)
         {
             var user = await _authService.GetUserEnabledFromToken();
-            if (user is null) return null;
+            if(user is null) return null;
             var userId = user.Id;
 
             var mappedAvailabilities =
                 _mapperService.MapToListOfAvailabilitySlot(availabilities, userId);
-            if (mappedAvailabilities is null) return null;
+            if(mappedAvailabilities is null) return null;
 
             var result = await _specialistService.AddAvailabilities(mappedAvailabilities, userId);
-            if (!result) return null;
+            if(!result) return null;
             return _mapperService.MapToListOfAvailabilitySlotDto(mappedAvailabilities.ToList());
         }
 
         public async Task<bool> CheckDuplicatedAvailabilities(IEnumerable<AddAvailabilityDto> availabilities)
         {
             var user = await _authService.GetUserEnabledFromToken();
-            if (user is null) return false;
+            if(user is null) return false;
             var userId = user.Id;
 
             foreach (var availability in availabilities)
             {
                 var startTime = availability.StartTime;
                 var result = await _specialistService.ExistsAvailability(userId, startTime);
-                if (result) return true;
+                if(result) return true;
             }
 
             // If none of the availabilities exists, return false
@@ -63,16 +66,24 @@ namespace PsicoAppAPI.Mediators
             return result is null;
         }
 
+        public async Task<IEnumerable<SpecialistDto>?> GetAllSpecialists()
+        {
+            var users = await _userManagementService.GetAllSpecialists();
+            var specialistsDto = _mapperService.MapToListOfSpecialistDto(users);
+            
+            return specialistsDto;
+        }
+
         public async Task<List<AvailabilitySlotDto>?> GetAvailabilitySlots(string userId)
         {
             var isSpecialist = await _userManagementService.IsUserSpecialist(userId);
-            if (!isSpecialist) return null;
+            if(!isSpecialist) return null;
 
             var startDate = DateOnly.FromDateTime(DateTime.Now);
             var endDate = startDate.AddMonths(2);
 
             var availabilitySlots = await _specialistService.GetAvailabilityByDate(userId, startDate, endDate);
-            if (availabilitySlots is null) return null;
+            if(availabilitySlots is null) return null;
             var mappedSlots = _mapperService.MapToListOfAvailabilitySlotDto(availabilitySlots);
             return mappedSlots;
         }

@@ -138,7 +138,7 @@ namespace PsicoAppAPI.Services
 
         public async Task<bool> AddClient(User? user)
         {
-            if(user is null) return false;
+            if (user is null) return false;
             user.RoleId = await GetIdOfClientRole();
             var result = await AddUser(user);
             return result;
@@ -146,9 +146,14 @@ namespace PsicoAppAPI.Services
 
         public bool UpdateUser(User? user)
         {
-            if(user is null) return false;
+            if (user is null) return false;
             var updatedUser = _unitOfWork.UserRepository.UpdateUserAndSaveChanges(user);
             return updatedUser is not null;
+        }
+
+        public async Task<IEnumerable<User>> GetAllUsersSpecialists()
+        {
+            return await _unitOfWork.UserRepository.GetAllUsersSpecialists();
         }
         #endregion
     }
