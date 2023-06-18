@@ -83,6 +83,7 @@ namespace PsicoAppAPI.Extensions
             services.AddScoped<ISpecialistManagementService, SpecialistManagementService>();
             services.AddScoped<ITagManagementService, TagManagementService>();
             services.AddScoped<IAuthManagementService, AuthManagementService>();
+            services.AddScoped<IClientManagementService, ClientManagementService>();
             return services;
         }
 
