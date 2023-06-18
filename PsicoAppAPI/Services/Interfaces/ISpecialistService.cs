@@ -35,5 +35,11 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="startTime">Starttime of the availability</param>
         /// <returns>True if exists, otherwise false</returns>
         public Task<bool> ExistsAvailability(string userId, DateTime startTime);
+        /// <summary>
+        /// Get all the specialist which match with the users in the provided array
+        /// </summary>
+        /// <param name="users">Users to map</param>
+        /// <returns>Enumerable with Specialists Dto</returns>
+        public Task<IEnumerable<SpecialistDto>> GetSpecialistsByUserList(IEnumerable<User> users);
     }
 }

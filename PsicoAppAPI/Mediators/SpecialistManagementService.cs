@@ -68,9 +68,10 @@ namespace PsicoAppAPI.Mediators
 
         public async Task<IEnumerable<SpecialistDto>?> GetAllSpecialists()
         {
+            // First we collect all the users with role = 3 (specialist)
             var users = await _userManagementService.GetAllSpecialists();
-            var specialistsDto = _mapperService.MapToListOfSpecialistDto(users);
-            
+            // Map users to specialists
+            var specialistsDto = await _specialistService.GetSpecialistsByUserList(users);
             return specialistsDto;
         }
 

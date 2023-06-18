@@ -28,7 +28,7 @@ namespace PsicoAppAPI.Services
             var availability = availabilities.FirstOrDefault(x => x.StartTime == startTime);
             return availability is not null;
         }
-        public async Task<IEnumerable<SpecialistDto>> GetAllSpecialists(IEnumerable<User> users)
+        public async Task<IEnumerable<SpecialistDto>> GetSpecialistsByUserList(IEnumerable<User> users)
         {
             // First we get all the specialists from the table matching Id from user with UserId from specialist
             var specialistsTask =

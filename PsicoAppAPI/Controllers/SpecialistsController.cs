@@ -1,3 +1,4 @@
+using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,11 @@ namespace PsicoAppAPI.Controllers
 {
     public class SpecialistsController : BaseApiController
     {
-        private readonly ISpecialistManagementService _specialistService;
+        private readonly ISpecialistManagementService _service;
 
         public SpecialistsController(ISpecialistManagementService specialistService)
         {
-            _specialistService = specialistService ?? throw new ArgumentNullException(nameof(specialistService));
+            _service = specialistService ?? throw new ArgumentNullException(nameof(specialistService));
         }
 
         /// <summary>
@@ -37,10 +38,10 @@ namespace PsicoAppAPI.Controllers
         public async Task<ActionResult<IEnumerable<AvailabilitySlotDto>?>> GetScheduleAvailability(
             [Required] string userId)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if(!ModelState.IsValid) return BadRequest(ModelState);
 
-            var slots = await _specialistService.GetAvailabilitySlots(userId);
-            if (slots is null)
+            var slots = await _service.GetAvailabilitySlots(userId);
+            if(slots is null)
                 return Unauthorized("The user id provided is not a specialist or does not exists");
             return Ok(slots);
         }
@@ -71,24 +72,24 @@ namespace PsicoAppAPI.Controllers
         [HttpPost("add-availability")]
         public async Task<ActionResult> AddScheduleAvailability(IEnumerable<AddAvailabilityDto> availabilities)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if(!ModelState.IsValid) return BadRequest(ModelState);
 
-            var convertedAvailabilities = await _specialistService.TransformToChileUTC(availabilities);
-            if (convertedAvailabilities is null)
+            var convertedAvailabilities = await _service.TransformToChileUTC(availabilities);
+            if(convertedAvailabilities is null)
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new { error = "Internal error adding availabilities" });
 
-            var checkHours = _specialistService.CheckHourRange(convertedAvailabilities);
-            if (!checkHours) return BadRequest("One or more availabilities provided are not in the valid hour range");
+            var checkHours = _service.CheckHourRange(convertedAvailabilities);
+            if(!checkHours) return BadRequest("One or more availabilities provided are not in the valid hour range");
 
-            var CheckDuplicatedAvailabilities = await _specialistService.CheckDuplicatedAvailabilities(convertedAvailabilities);
-            if (CheckDuplicatedAvailabilities)
+            var CheckDuplicatedAvailabilities = await _service.CheckDuplicatedAvailabilities(convertedAvailabilities);
+            if(CheckDuplicatedAvailabilities)
                 return BadRequest(
                     new ErrorModel
-                    { ErrorCode = 400, Message = "One or more availabilities provided already exists duplicated" });
+                        { ErrorCode = 400, Message = "One or more availabilities provided already exists duplicated" });
 
-            var result = await _specialistService.AddSpecialistAvailability(convertedAvailabilities);
-            if (result is null)
+            var result = await _service.AddSpecialistAvailability(convertedAvailabilities);
+            if(result is null)
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new { error = "Internal error adding availabilities" });
             return Ok(result);
@@ -96,12 +97,13 @@ namespace PsicoAppAPI.Controllers
 
         [Authorize]
         [HttpGet("all-specialists")]
-        public async Task<ActionResult> GetAllSpecialist()
+        public async Task<ActionResult<IEnumerable<SpecialistDto>>> GetAllSpecialist()
         {
-            
-            return Ok();
+            var specialists = await _service.GetAllSpecialists();
+            if(specialists is null)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { error = "Internal error getting specialists" });
+            return Ok(specialists);
         }
-
-
     }
 }
