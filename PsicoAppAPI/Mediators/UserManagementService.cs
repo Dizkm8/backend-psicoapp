@@ -134,6 +134,7 @@ namespace PsicoAppAPI.Mediators
             // User cannot be null and need to be enabled
             return user is not null && user.IsEnabled;
         }
+
         public async Task<bool> IsUserSpecialist(string userId)
         {
             var user = await GetUserEnabled(userId);
@@ -142,6 +143,7 @@ namespace PsicoAppAPI.Mediators
             var specialistRoleId = await _userService.GetIdOfSpecialistRole();
             return user.RoleId == specialistRoleId;
         }
+        
         public async Task<User?> GetUserEnabled(string userId)
         {
             var user = await _userService.GetUserById(userId);

@@ -26,8 +26,19 @@ public class ClientsController : BaseApiController
             "StartTime must be equal to or less than 8 weeks from monday's current week")]
         DateTime dateTime)
     {
-        var isAvailable = await _service.IsSpecialistAvailable(specialistUserId, dateTime);
-        if(!isAvailable) return BadRequest("The specialist is not available at the specified time");
+        // Check if the userId provided match with a specialist enabled
+        var isSpecialist = await _service.IsUserSpecialist(specialistUserId);
+        if(!isSpecialist) return BadRequest("The userId provided do not match with an enabled specialist");
+
+        // Then check if the specialist have the availability requested
+        var isSpecialistAvailable = await _service.IsSpecialistAvailable(specialistUserId, dateTime);
+        if(!isSpecialistAvailable) return BadRequest("The specialist is not available at the specified time");
+
+        var isUserEnabled = await _service.IsUserEnabled();
+        if(!isUserEnabled) return Unauthorized("The user are not enabled to do this action");
+        
+        
+        
         return Ok();
     }
 }
