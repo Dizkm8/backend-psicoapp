@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.FeedPost;
-using PsicoAppAPI.Services.Mediators.Interfaces;
+using PsicoAppAPI.Mediators.Interfaces;
 
 namespace PsicoAppAPI.Controllers
 {
@@ -20,10 +20,6 @@ namespace PsicoAppAPI.Controllers
         [HttpPost("create-post")]
         public async Task<ActionResult> AddFeedPost(AddFeedPostDto addFeedPost)
         {
-            var validateContent = await _service.CheckPost(addFeedPost);
-            if (!validateContent) return BadRequest(
-                new ErrorModel { ErrorCode = 400, Message = "The title or content don't follow the rules to post" });
-
             var existsTag = await _service.CheckPostTag(addFeedPost);
             if (!existsTag) return NotFound($"Tag with ID {addFeedPost.TagId} does not exist");
 
