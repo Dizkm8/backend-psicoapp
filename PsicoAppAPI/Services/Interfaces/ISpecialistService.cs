@@ -1,3 +1,4 @@
+using PsicoAppAPI.DTOs;
 using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.Services.Interfaces
@@ -34,5 +35,11 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="startTime">Starttime of the availability</param>
         /// <returns>True if exists, otherwise false</returns>
         public Task<bool> ExistsAvailability(string userId, DateTime startTime);
+        /// <summary>
+        /// Get all the specialists from the system based on users list
+        /// </summary>
+        /// <param name="users">Users to match with specialist entity</param>
+        /// <returns>IEnumerable with SpecialistDto</returns>
+        // public Task<IEnumerable<SpecialistDto>> GetAllSpecialists(IEnumerable<User> users);
     }
 }
