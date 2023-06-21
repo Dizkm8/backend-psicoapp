@@ -37,5 +37,10 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// </summary>
         /// <value>IAppointmentRepository</value>
         public IAppointmentRepository AppointmentRepository { get; }
+        /// <summary>
+        /// Get the IAppointmentStatusesRepository
+        /// </summary>
+        /// <value>IAppointmentStatusesRepository</value>
+        public IAppointmentStatusesRepository AppointmentStatusesRepository { get; }
     }
 }
