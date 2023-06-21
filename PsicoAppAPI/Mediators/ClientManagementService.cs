@@ -56,6 +56,11 @@ public class ClientManagementService : IClientManagementService
 
     public async Task<bool> AddAppointment(string specialistUserId, DateTime availability)
     {
+        // Change utc 0 to utc-4 or utc-3 (Chile)
+        var utcAvailability = await _timeZoneService.ConvertToChileUTC(availability);
+        if (utcAvailability is null) return false;
+        availability = (DateTime)utcAvailability;
+
         var clientUserId = _authMediator.GetUserIdInToken();
         if (clientUserId is null) return false;
         var appointmentResult = await _appointmentService.AddAppointment(clientUserId, specialistUserId, availability);

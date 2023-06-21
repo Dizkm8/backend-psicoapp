@@ -33,8 +33,10 @@ namespace PsicoAppAPI.Services
             var availabilities = await _unitOfWork.AvailabilitySlotRepository.GetAvailabilitySlotsByUserId(userId);
             var availability = availabilities?.FirstOrDefault(x => x.StartTime == availabilityDate && x.IsAvailable);
             if (availability is null) return false;
-            
+
             availability.IsAvailableOverride = false;
+            var result =
+                await _unitOfWork.AvailabilitySlotRepository.UpdateAvailabilityToUserAndSaveChanges(availability);
             return true;
         }
 
