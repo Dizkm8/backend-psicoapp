@@ -20,5 +20,12 @@ public interface IClientManagementService
     /// </summary>
     /// <returns>true if it is enabled. otherwise false</returns>
     public Task<bool> IsUserEnabled();
+    /// <summary>
+    /// Add an appointment to the client (identified with userId from token)
+    /// and specialist (identified with specialistUserId) in the provided Datetime availability
+    /// The initial status of the appointment is Booked
+    /// </summary>
+    /// <returns>true if could be added. otherwise false</returns>
+    public Task<bool> AddAppointment(string specialistUserId, DateTime availability);
 
 }

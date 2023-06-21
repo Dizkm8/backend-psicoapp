@@ -28,18 +28,18 @@ public class ClientsController : BaseApiController
     {
         // Check if the userId provided match with a specialist enabled
         var isSpecialist = await _service.IsUserSpecialist(specialistUserId);
-        if(!isSpecialist) return NotFound("The userId provided do not match with an enabled specialist");
+        if (!isSpecialist) return NotFound("The userId provided do not match with an enabled specialist");
 
         // Then check if the specialist have the availability requested
         var isSpecialistAvailable = await _service.IsSpecialistAvailable(specialistUserId, dateTime);
-        if(!isSpecialistAvailable) return BadRequest("The specialist is not available at the specified time");
+        if (!isSpecialistAvailable) return BadRequest("The specialist is not available at the specified time");
 
         var isUserEnabled = await _service.IsUserEnabled();
-        if(!isUserEnabled) return Unauthorized("The user are not enabled to do this action");
-        
-        
+        if (!isUserEnabled) return Unauthorized("The user are not enabled to do this action");
 
-        
-        return Ok();
+        var result = await _service.AddAppointment(specialistUserId, dateTime);
+        if (result) return Ok("Appointment successfully added");
+        return StatusCode(StatusCodes.Status500InternalServerError,
+            new { error = "Internal error adding appointment" });
     }
 }

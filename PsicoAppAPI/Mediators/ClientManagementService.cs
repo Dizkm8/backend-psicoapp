@@ -32,23 +32,32 @@ public class ClientManagementService : IClientManagementService
     {
         // Change utc 0 to utc-4 or utc-3 (Chile)
         var utcAvailability = await _timeZoneService.ConvertToChileUTC(availability);
-        if(utcAvailability is null) return false;
+        if (utcAvailability is null) return false;
         // If availability are not in specialist list return false
         var availabilities = await _specialistMediator.GetAvailabilitySlots(specialistUserId);
-        if(availabilities is null) return false;
+        if (availabilities is null) return false;
 
         var availabilityDto = availabilities
             .FirstOrDefault(x => x.StartTime == utcAvailability && x.IsAvailable);
         return availabilityDto is not null;
     }
+
     public async Task<bool> IsUserSpecialist(string userId)
     {
         var result = await _userMediator.IsUserSpecialist(userId);
         return result;
     }
+
     public async Task<bool> IsUserEnabled()
     {
         var result = await _authMediator.ExistsUserInTokenAndIsEnabled();
+        return result;
+    }
+
+    public async Task<bool> AddAppointment(string specialistUserId, DateTime availability)
+    {
+        var clientUserId = _authMediator.GetUserIdInToken();
+        var result = await _appointmentService.AddAppointment(clientUserId, specialistUserId, availability);
         return result;
     }
 }
