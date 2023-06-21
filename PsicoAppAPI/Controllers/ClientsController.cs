@@ -15,7 +15,8 @@ public class ClientsController : BaseApiController
     {
         _service = service ?? throw new ArgumentNullException(nameof(service));
     }
-
+    
+    //TODO: Update this to Roles = "2"
     [Authorize(Roles = "3")]
     [HttpPost("add-appointment/{specialistUserId}")]
     public async Task<ActionResult> GenerateAppointment(string specialistUserId, [FromQuery]

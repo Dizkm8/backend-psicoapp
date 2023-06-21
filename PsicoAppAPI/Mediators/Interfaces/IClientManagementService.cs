@@ -27,5 +27,5 @@ public interface IClientManagementService
     /// </summary>
     /// <returns>true if could be added. otherwise false</returns>
     public Task<bool> AddAppointment(string specialistUserId, DateTime availability);
-
+    
 }

@@ -57,7 +57,10 @@ public class ClientManagementService : IClientManagementService
     public async Task<bool> AddAppointment(string specialistUserId, DateTime availability)
     {
         var clientUserId = _authMediator.GetUserIdInToken();
-        var result = await _appointmentService.AddAppointment(clientUserId, specialistUserId, availability);
-        return result;
+        if (clientUserId is null) return false;
+        var appointmentResult = await _appointmentService.AddAppointment(clientUserId, specialistUserId, availability);
+        if (!appointmentResult) return false;
+        var disableAvailabilityResult = await _specialistService.DisableAvailability(specialistUserId, availability);
+        return disableAvailabilityResult;
     }
 }
