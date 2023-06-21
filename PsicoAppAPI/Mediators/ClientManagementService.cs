@@ -11,10 +11,12 @@ public class ClientManagementService : IClientManagementService
     private readonly ITimeZoneService _timeZoneService;
     private readonly IUserManagementService _userMediator;
     private readonly IAuthManagementService _authMediator;
+    private readonly IAppointmentService _appointmentService;
 
     public ClientManagementService(IUserService userService, ISpecialistService specialistService,
         ISpecialistManagementService specialistManagementService, ITimeZoneService timeZoneService,
-        IUserManagementService userMediator, IAuthManagementService authMediator)
+        IUserManagementService userMediator, IAuthManagementService authMediator,
+        IAppointmentService appointmentService)
     {
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         _specialistService = specialistService ?? throw new ArgumentNullException(nameof(specialistService));
@@ -23,6 +25,7 @@ public class ClientManagementService : IClientManagementService
         _timeZoneService = timeZoneService ?? throw new ArgumentNullException(nameof(timeZoneService));
         _userMediator = userMediator ?? throw new ArgumentNullException(nameof(userMediator));
         _authMediator = authMediator ?? throw new ArgumentNullException(nameof(authMediator));
+        _appointmentService = appointmentService ?? throw new ArgumentNullException(nameof(appointmentService));
     }
 
     public async Task<bool> IsSpecialistAvailable(string specialistUserId, DateTime availability)

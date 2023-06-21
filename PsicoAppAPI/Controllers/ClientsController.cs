@@ -28,7 +28,7 @@ public class ClientsController : BaseApiController
     {
         // Check if the userId provided match with a specialist enabled
         var isSpecialist = await _service.IsUserSpecialist(specialistUserId);
-        if(!isSpecialist) return BadRequest("The userId provided do not match with an enabled specialist");
+        if(!isSpecialist) return NotFound("The userId provided do not match with an enabled specialist");
 
         // Then check if the specialist have the availability requested
         var isSpecialistAvailable = await _service.IsSpecialistAvailable(specialistUserId, dateTime);
@@ -38,6 +38,7 @@ public class ClientsController : BaseApiController
         if(!isUserEnabled) return Unauthorized("The user are not enabled to do this action");
         
         
+
         
         return Ok();
     }

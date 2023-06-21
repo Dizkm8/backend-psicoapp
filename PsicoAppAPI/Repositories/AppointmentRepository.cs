@@ -26,5 +26,11 @@ namespace PsicoAppAPI.Repositories
                 .Where(a => a.RequestingUserId == userIdString || a.RequestedUserId == userIdString)
                 .ToListAsync();
         }
+
+        public async Task<bool> AddAppointmentAndSaveChanges(Appointment appointment)
+        {
+            await _context.Appointments.AddAsync(appointment);
+            return await _context.SaveChangesAsync() > 0;
+        }
     }
 }

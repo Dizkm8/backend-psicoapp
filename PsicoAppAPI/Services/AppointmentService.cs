@@ -19,5 +19,10 @@ namespace PsicoAppAPI.Services
         {
             return await _appointmentRepository.GetAppointmentsByUser(userId);
         }
+
+        public Task<bool> AddAppointment(string RequestingUserId, string RequestedUserId, DateTime BookedDate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
