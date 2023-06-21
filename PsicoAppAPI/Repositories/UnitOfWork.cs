@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using PsicoAppAPI.Data;
 using PsicoAppAPI.Repositories.Interfaces;
 
@@ -12,6 +14,8 @@ namespace PsicoAppAPI.Repositories
         private IFeedPostRepository feedPostRepository = null!;
         private ITagRepository tagRepository = null!;
         private IAvailabilitySlotRepository availabilitySlotRepository = null!;
+        private IAppointmentRepository appointmentRepository = null!;
+        private IAppointmentStatusesRepository statusesRepository = null!;
 
         public UnitOfWork(DataContext context)
         {
@@ -23,7 +27,7 @@ namespace PsicoAppAPI.Repositories
             get
             {
                 userRepository ??= new UserRepository(_context);
-                return userRepository ?? throw new NotImplementedException();
+                return userRepository;
             }
         }
 
@@ -32,7 +36,7 @@ namespace PsicoAppAPI.Repositories
             get
             {
                 specialistRepository ??= new SpecialistRepository(_context);
-                return specialistRepository ?? throw new NotImplementedException();
+                return specialistRepository;
             }
         }
 
@@ -41,7 +45,7 @@ namespace PsicoAppAPI.Repositories
             get
             {
                 rolesRepository ??= new RolesRepository(_context);
-                return rolesRepository ?? throw new NotImplementedException();
+                return rolesRepository;
             }
         }
 
@@ -50,7 +54,7 @@ namespace PsicoAppAPI.Repositories
             get
             {
                 feedPostRepository ??= new FeedPostRepository(_context);
-                return feedPostRepository ?? throw new NotImplementedException();
+                return feedPostRepository;
             }
         }
 
@@ -59,7 +63,7 @@ namespace PsicoAppAPI.Repositories
             get
             {
                 tagRepository ??= new TagRepository(_context);
-                return tagRepository ?? throw new NotImplementedException();
+                return tagRepository;
             }
         }
 
@@ -68,8 +72,31 @@ namespace PsicoAppAPI.Repositories
             get
             {
                 availabilitySlotRepository ??= new AvailabilitySlotRepository(_context);
-                return availabilitySlotRepository ?? throw new NotImplementedException();
+                return availabilitySlotRepository;
             }
+        }
+
+        public IAppointmentRepository AppointmentRepository
+        {
+            get
+            {
+                appointmentRepository ??= new AppointmentRepository(_context);
+                return appointmentRepository;
+            }
+        }
+
+        public IAppointmentStatusesRepository AppointmentStatusesRepository
+        {
+            get
+            {
+                statusesRepository ??= new AppointmentStatusesRepository(_context);
+                return statusesRepository;
+            }
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
         }
     }
 }

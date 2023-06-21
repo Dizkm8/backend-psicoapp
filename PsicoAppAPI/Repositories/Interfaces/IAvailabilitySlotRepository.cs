@@ -25,5 +25,10 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// <param name="userId">User id</param>
         /// <returns>True if could be added, otherwise false</returns>
         public Task<bool> AddAvailabilitiesToUser(IEnumerable<AvailabilitySlot> availabilities, string userId);
+        /// <summary>
+        /// Update an existing availability to a specialist
+        /// </summary>
+        /// <param name="availability">Availibility to update</param>
+        public Task<bool> UpdateAvailabilityToUserAndSaveChanges(AvailabilitySlot availability);
     }
 }

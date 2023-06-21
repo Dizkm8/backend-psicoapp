@@ -78,7 +78,7 @@ namespace PsicoAppAPI.Mediators.Interfaces
         /// <returns></returns>
         public Task<bool> CheckUserEnabled(LoginUserDto loginUserDto);
         /// <summary>
-        /// Check if the user with the Id provided is specialist
+        /// Check if the user with the Id provided is specialist and if it is enabled
         /// </summary>
         /// <param name="userId">User id to check</param>
         /// <returns>true if it is specialist. otherwise false</returns>

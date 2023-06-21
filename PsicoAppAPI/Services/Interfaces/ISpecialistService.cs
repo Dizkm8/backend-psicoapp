@@ -34,5 +34,12 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="startTime">Starttime of the availability</param>
         /// <returns>True if exists, otherwise false</returns>
         public Task<bool> ExistsAvailability(string userId, DateTime startTime);
+        /// <summary>
+        /// Sets to disabled a specific availability of a specialists identified by their userId
+        /// </summary>
+        /// <param name="userId">User id of the specialist</param>
+        /// <param name="availabilityDate">Date of their availability</param>
+        /// <returns>true if could be updated. otherwise false</returns>
+        public Task<bool> DisableAvailability(string userId, DateTime availabilityDate);
     }
 }
