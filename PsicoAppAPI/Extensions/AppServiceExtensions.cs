@@ -66,6 +66,7 @@ namespace PsicoAppAPI.Extensions
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<ISpecialistService, SpecialistService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
+            services.AddScoped<IAppointmentStatusesService, AppointmentStatusesService>();
             return services;
         }
 

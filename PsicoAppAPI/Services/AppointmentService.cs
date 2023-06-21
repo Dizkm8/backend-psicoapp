@@ -1,8 +1,6 @@
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Repositories.Interfaces;
 using PsicoAppAPI.Services.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace PsicoAppAPI.Services
 {
