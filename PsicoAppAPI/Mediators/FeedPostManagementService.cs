@@ -14,7 +14,7 @@ namespace PsicoAppAPI.Mediators
 
         public FeedPostManagementService(IFeedPostService feedPostService, IAuthManagementService authService,
             IMapperService mapperService, ITagService tagService) : 
-            base(feedPostService, authService, mapperService, tagService)
+            base(authService, mapperService, tagService)
         {
             _feedPostService = feedPostService ?? throw new ArgumentNullException(nameof(feedPostService));
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));

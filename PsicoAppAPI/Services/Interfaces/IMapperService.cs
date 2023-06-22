@@ -1,6 +1,7 @@
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.BasePosts;
 using PsicoAppAPI.DTOs.FeedPost;
+using PsicoAppAPI.DTOs.ForumPost;
 using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
@@ -83,5 +84,20 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="tags">IEnumerable with tags</param>
         /// <returns>IEnumerable of tags, null if cannot be mapped</returns>
         public IEnumerable<TagDto> MapToTagDto(IEnumerable<Tag>? tags);
+        /// <summary>
+        /// Maps the attributes of a AddForumPostDto to a ForumPost
+        /// ForumPost will have:
+        /// PublishedOn attribute not mapped
+        /// UserId attribute not mapped
+        /// </summary>
+        /// <param name="postDto">Dto source</param>
+        /// <returns>ForumPost mapped or null</returns>
+        public ForumPost MapToForumPost(AddForumPostDto? postDto);
+        /// <summary>
+        /// Maps the attributes of a ForumPost to a ForumPostDto
+        /// </summary>
+        /// <param name="post">ForumPost to map</param>
+        /// <returns>FeedPost mapped. Null if cannot be mapped</returns>
+        public ForumPostDto? MapToForumPostDto(ForumPost? post);
     }
 }

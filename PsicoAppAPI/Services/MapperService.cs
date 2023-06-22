@@ -2,6 +2,7 @@ using AutoMapper;
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.BasePosts;
 using PsicoAppAPI.DTOs.FeedPost;
+using PsicoAppAPI.DTOs.ForumPost;
 using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
@@ -47,18 +48,19 @@ namespace PsicoAppAPI.Services
             return _mapper.Map<FeedPostDto>(feedPost);
         }
 
-        public IEnumerable<AvailabilitySlot>? MapToListOfAvailabilitySlot(IEnumerable<AddAvailabilityDto>? availabilities,
+        public IEnumerable<AvailabilitySlot>? MapToListOfAvailabilitySlot(
+            IEnumerable<AddAvailabilityDto>? availabilities,
             string userId)
         {
             if (availabilities is null) return null;
             var mappedAvailabilities = availabilities.Select(x =>
-                {
-                    var availabilitySlot = _mapper.Map<AvailabilitySlot>(x);
-                    availabilitySlot.UserId = userId;
-                    availabilitySlot.EndTime = availabilitySlot.StartTime.AddHours(1);
-                    availabilitySlot.IsAvailableOverride = true;
-                    return availabilitySlot;
-                });
+            {
+                var availabilitySlot = _mapper.Map<AvailabilitySlot>(x);
+                availabilitySlot.UserId = userId;
+                availabilitySlot.EndTime = availabilitySlot.StartTime.AddHours(1);
+                availabilitySlot.IsAvailableOverride = true;
+                return availabilitySlot;
+            });
             return mappedAvailabilities;
         }
 
@@ -80,6 +82,16 @@ namespace PsicoAppAPI.Services
             if (tags is null) return new List<TagDto>();
             var mappedTags = tags.Select(x => _mapper.Map<TagDto>(x));
             return mappedTags ?? new List<TagDto>();
+        }
+
+        public ForumPost MapToForumPost(AddForumPostDto? postDto)
+        {
+            return postDto is null ? new ForumPost() : _mapper.Map<ForumPost>(postDto);
+        }
+
+        public ForumPostDto? MapToForumPostDto(ForumPost? post)
+        {
+            return post is null ? null : _mapper.Map<ForumPostDto>(post);
         }
 
         public UpdateProfileInformationDto? MapToUpdatedProfileInformationDto(User? user)

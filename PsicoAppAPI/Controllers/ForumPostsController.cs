@@ -26,7 +26,7 @@ public class ForumPostsController : BaseApiController
     
         var postToReturn = await _service.AddForumPost(addForumPost);
         if (postToReturn is null) return StatusCode(StatusCodes.Status500InternalServerError,
-            new ErrorModel { ErrorCode = 500, Message = "Internal error creating feedpost" });
+            new ErrorModel { ErrorCode = 500, Message = "Internal error creating forum post" });
         return Ok(postToReturn);
     }
 }
