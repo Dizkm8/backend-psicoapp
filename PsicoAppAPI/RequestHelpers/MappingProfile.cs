@@ -22,6 +22,7 @@ namespace PsicoAppAPI.RequestHelpers
             CreateMap<Tag, TagDto>();
             CreateMap<AddForumPostDto, ForumPost>();
             CreateMap<ForumPost, ForumPostDto>();
+            CreateMap<Comment, CommentDto>();
         }
     }
 }

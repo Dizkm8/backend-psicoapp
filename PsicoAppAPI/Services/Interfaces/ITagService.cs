@@ -21,5 +21,11 @@ namespace PsicoAppAPI.Services.Interfaces
         /// </summary>
         /// <returns>IEnumerable with the tags</returns>
         public Task<IEnumerable<Tag>> GetAllTags();
+        /// <summary>
+        /// Get a tag by its Id
+        /// </summary>
+        /// <param name="id">Tag id</param>
+        /// <returns>Tag if could be found. otherwise false</returns>
+        public Task<Tag?> GetTagById(int id);
     }
 }

@@ -102,6 +102,9 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Property<int>("ForumPostId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("PublishedOn")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("TEXT");

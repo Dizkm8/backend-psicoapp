@@ -34,10 +34,14 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
         forumPost.UserId = userId;
         forumPost.PublishedOn = DateOnly.FromDateTime(DateTime.Now);
 
-        var result = await _forumPostService.AddForumPost(forumPost); // Need to change
+        var result = await _forumPostService.AddForumPost(forumPost);
         if (!result) return null;
 
-        var postDto = _mapperService.MapToForumPostDto(forumPost); // Need to change
+        var postDto = _mapperService.MapToForumPostDto(forumPost);
+        // Map tagId to tagName in postDto
+        var tag = await _tagService.GetTagById(forumPost.TagId);
+        if (postDto is null || tag is null) return null;
+        postDto.TagName = tag.Name;
         return postDto;
     }
 
@@ -48,5 +52,12 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
         if (content is null || title is null) return false;
         var result = await _openAiService.CheckPsychologyContent(new List<string> { content, title });
         return result;
+    }
+
+    public async Task<IEnumerable<ForumPostDto>?> GetAllPosts()
+    {
+        var posts = await _forumPostService.GetAllPosts();
+        var mappedPosts = _mapperService.MapToForumPostDto(posts);
+        return mappedPosts;
     }
 }
