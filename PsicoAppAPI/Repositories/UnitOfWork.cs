@@ -15,6 +15,8 @@ namespace PsicoAppAPI.Repositories
         private ITagRepository tagRepository = null!;
         private IAvailabilitySlotRepository availabilitySlotRepository = null!;
         private IAppointmentRepository appointmentRepository = null!;
+        private IAppointmentStatusesRepository statusesRepository = null!;
+        private IForumPostRepository forumPostRepository = null!;
 
         public UnitOfWork(DataContext context)
         {
@@ -84,14 +86,27 @@ namespace PsicoAppAPI.Repositories
             }
         }
 
+        public IAppointmentStatusesRepository AppointmentStatusesRepository
+        {
+            get
+            {
+                statusesRepository ??= new AppointmentStatusesRepository(_context);
+                return statusesRepository;
+            }
+        }
+
+        public IForumPostRepository ForumPostRepository
+        {
+            get
+            {
+                forumPostRepository ??= new ForumPostRepository(_context);
+                return forumPostRepository;
+            }
+        }
+
         public async Task<int> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync();
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
         }
     }
 }

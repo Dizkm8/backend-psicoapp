@@ -1,6 +1,7 @@
 using AutoMapper;
 using PsicoAppAPI.DTOs.BasePosts;
 using PsicoAppAPI.DTOs.FeedPost;
+using PsicoAppAPI.DTOs.ForumPost;
 using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.Models;
@@ -19,6 +20,8 @@ namespace PsicoAppAPI.RequestHelpers
             CreateMap<AvailabilitySlot, AvailabilitySlotDto>();
             CreateMap<AddAvailabilityDto, AvailabilitySlot>();
             CreateMap<Tag, TagDto>();
+            CreateMap<AddForumPostDto, ForumPost>();
+            CreateMap<ForumPost, ForumPostDto>();
         }
     }
 }
