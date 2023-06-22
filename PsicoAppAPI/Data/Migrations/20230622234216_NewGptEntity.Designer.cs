@@ -11,8 +11,8 @@ using PsicoAppAPI.Data;
 namespace PsicoAppAPI.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230622054854_GPTDb")]
-    partial class GPTDb
+    [Migration("20230622234216_NewGptEntity")]
+    partial class NewGptEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -187,7 +187,7 @@ namespace PsicoAppAPI.Data.Migrations
                     b.ToTable("ForumPosts");
                 });
 
-            modelBuilder.Entity("PsicoAppAPI.Models.GPTRules", b =>
+            modelBuilder.Entity("PsicoAppAPI.Models.GptRules", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -199,7 +199,7 @@ namespace PsicoAppAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GPTRules");
+                    b.ToTable("GptRules");
                 });
 
             modelBuilder.Entity("PsicoAppAPI.Models.Role", b =>

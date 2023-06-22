@@ -1,5 +1,7 @@
+using System.Data;
 using Microsoft.EntityFrameworkCore;
 using PsicoAppAPI.Data;
+using PsicoAppAPI.Models;
 using PsicoAppAPI.Repositories.Interfaces;
 
 namespace PsicoAppAPI.Repositories;
@@ -16,7 +18,17 @@ public class GptRulesRepository : IGptRulesRepository
 
     public async Task<string?> GetRules()
     {
-        var rules = await _context.GPTRules?.ToListAsync()!;
-        return rules[0]?.Rules;
+        var rule = await _context.FindAsync<GptRules>(1);
+        return rule?.Rules;
+    }
+
+    public async Task<bool> SetRulesAndSaveChanges(string newRules)
+    {
+        _context.Update(new GptRules()
+        {
+            Id = 1,
+            Rules = newRules
+        });
+        return await _context.SaveChangesAsync() > 0;
     }
 }

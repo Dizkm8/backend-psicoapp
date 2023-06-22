@@ -41,7 +41,7 @@ namespace PsicoAppAPI.Data
             SeedRoles(context, options);
             SeedTags(context, options);
             SeedAppointmentStatuses(context, options);
-            SeedGPTRules(context, options);
+            SeedGptRules(context, options);
             context.SaveChanges();
         }
 
@@ -85,17 +85,17 @@ namespace PsicoAppAPI.Data
         /// </summary>
         /// <param name="context"></param>
         /// <param name="options"></param>
-        private static void SeedGPTRules(DataContext context, JsonSerializerOptions options)
+        private static void SeedGptRules(DataContext context, JsonSerializerOptions options)
         {
-            var result = context.GPTRules?.Any();
-            if (result == true || result == null) return;
+            var result = context.GptRules?.Any();
+            if (result is true or null) return;
             var rulesData = File.ReadAllText("Data/Seeds/GPTRulesData.json");
-            var rulesList = JsonSerializer.Deserialize<List<GPTRules>>(rulesData, options);
+            var rulesList = JsonSerializer.Deserialize<List<GptRules>>(rulesData, options);
             if (rulesList == null) return;
             // Probably Specialities table will not be null, but this validation
             // avoids the warning message
-            if (context.GPTRules == null) throw new Exception("Specialities table is null");
-            context.GPTRules.AddRange(rulesList);
+            if (context.GptRules == null) throw new Exception("Specialities table is null");
+            context.GptRules.AddRange(rulesList);
             context.SaveChanges();
         }
 

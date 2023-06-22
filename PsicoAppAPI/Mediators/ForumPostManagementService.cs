@@ -9,11 +9,11 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
     private readonly IAuthManagementService _authService;
     private readonly IMapperService _mapperService;
     private readonly ITagService _tagService;
-    private readonly IOpenAIService _openAiService;
+    private readonly IOpenAiService _openAiService;
     private readonly IForumPostService _forumPostService;
 
     public ForumPostManagementService(IForumPostService forumPostService, IAuthManagementService authService,
-        IMapperService mapperService, ITagService tagService, IOpenAIService openAiService) :
+        IMapperService mapperService, ITagService tagService, IOpenAiService openAiService) :
         base(authService, mapperService, tagService)
     {
         _forumPostService = forumPostService ?? throw new ArgumentNullException(nameof(forumPostService));

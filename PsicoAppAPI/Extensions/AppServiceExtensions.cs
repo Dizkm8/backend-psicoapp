@@ -73,7 +73,7 @@ namespace PsicoAppAPI.Extensions
 
         private static IServiceCollection AddHelperServices(IServiceCollection services)
         {
-            services.AddScoped<IOpenAIService, OpenAiService>();
+            services.AddScoped<IOpenAiService, OpenAiService>();
             services.AddScoped<IMapperService, MapperService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITimeZoneService, TimeZoneService>();
@@ -89,6 +89,7 @@ namespace PsicoAppAPI.Extensions
             services.AddScoped<ITagManagementService, TagManagementService>();
             services.AddScoped<IAuthManagementService, AuthManagementService>();
             services.AddScoped<IClientManagementService, ClientManagementService>();
+            services.AddScoped<IAdminManagementService, AdminManagementService>();
             return services;
         }
 

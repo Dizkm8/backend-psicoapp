@@ -8,7 +8,7 @@ using PsicoAppAPI.Repositories.Interfaces;
 
 namespace PsicoAppAPI.Services
 {
-    public class OpenAiService : IOpenAIService
+    public class OpenAiService : IOpenAiService
     {
         // Avoid use less than 5 tokens because it can cause
         // an truncated 'True' or 'False' response
@@ -21,6 +21,7 @@ namespace PsicoAppAPI.Services
 
         private readonly HttpClient _client = new();
         private string? _rules;
+
         private readonly IUnitOfWork _unitOfWork;
 
 
@@ -62,10 +63,8 @@ namespace PsicoAppAPI.Services
 
         public async Task<bool> CheckPsychologyContent(IEnumerable<string> args)
         {
-            if (!await GetRules())
-            {
-                return false;
-            }
+            var rules = await GetRules();
+            if (rules is null) return false;
 
             foreach (var item in args)
             {
@@ -89,14 +88,16 @@ namespace PsicoAppAPI.Services
             return true;
         }
 
-        /// <summary>
-        /// Get the rules to gpt moderation from repository
-        /// </summary>
-        /// <returns>true if exists and could be assigned to _rules attr. otherwise false</returns>
-        private async Task<bool> GetRules()
+        public async Task<string?> GetRules()
         {
             _rules ??= await _unitOfWork.GptRulesRepository.GetRules();
-            return _rules is not null;
+            return _rules;
+        }
+
+        public async Task<bool> SetRules(string newRules)
+        {
+            // fix
+            return false;
         }
     }
 }

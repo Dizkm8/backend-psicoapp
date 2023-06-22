@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PsicoAppAPI.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class GPTDb : Migration
+    public partial class NewGptEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -25,7 +25,7 @@ namespace PsicoAppAPI.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GPTRules",
+                name: "GptRules",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -34,7 +34,7 @@ namespace PsicoAppAPI.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GPTRules", x => x.Id);
+                    table.PrimaryKey("PK_GptRules", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -352,7 +352,7 @@ namespace PsicoAppAPI.Data.Migrations
                 name: "FeedPosts");
 
             migrationBuilder.DropTable(
-                name: "GPTRules");
+                name: "GptRules");
 
             migrationBuilder.DropTable(
                 name: "Specialists");
