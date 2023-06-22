@@ -4,55 +4,55 @@ using DotNetEnv;
 using Newtonsoft.Json;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using PsicoAppAPI.Repositories.Interfaces;
 
 namespace PsicoAppAPI.Services
 {
-    public class OpenAIService : IOpenAIService
+    public class OpenAiService : IOpenAIService
     {
-        private readonly string apiKey = null!;
-        private readonly OpenAIAPI api;
-
         // Avoid use less than 5 tokens because it can cause
         // an truncated 'True' or 'False' response
         // Also avoid use more than 5 tokens because it's not necessary
-        private const int MAX_TOKENS = 20;
+        private const int MaxTokens = 5;
+        private const string Endpoint = "https://api.openai.com/v1/chat/completions";
+        private const string Model = "gpt-3.5-turbo";
+        private const string Role = "user";
+        private const float Temperature = 0f;
 
-        private readonly string tokenHeader = null!;
-        private const string ENDPOINT = "https://api.openai.com/v1/chat/completions";
-        private const string MODEL = "gpt-3.5-turbo";
-        private const string ROLE = "user";
-        private const float TEMPERATURE = 0f;
-        private const string RULES = "You are a Blog moderator of a Psychology application, you are flexible with some post and you are really cool. It's important to know the content you will moderate are from  humans with problems, so, you can admit a bunch of posts about domestic things, about work, college, etc. Meanwhile focus on the feelings, experiencies, etc. of the human you can accept it. I will summon to you the content of a post and you will retrieve me if its valid about the psychology topics. If its offensive or contains insults you will reject the query. This is very important: You only response as 'true' if the content is appropiate or 'false' if not. I don't want other response than that. regardless how the content could looks, you have to decide True or False. Here is the content to moderate:";
-        private readonly HttpClient client = new();
+        private readonly HttpClient _client = new();
+        private string? _rules;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public OpenAIService()
+
+        public OpenAiService(IUnitOfWork unitOfWork)
         {
             Env.Load();
-            apiKey = Env.GetString("GPT_API_KEY") ?? throw new ArgumentNullException("GPT_API_KEY Not found in .env file");
-            api = new OpenAIAPI(apiKey);
-            tokenHeader = $"Bearer {apiKey}";
-            client.DefaultRequestHeaders.Add("Authorization", tokenHeader);
+            var apiKey = Env.GetString("GPT_API_KEY") ??
+                         throw new ArgumentNullException("GPT_API_KEY Not found in .env file");
+            var tokenHeader = $"Bearer {apiKey}";
+            _client.DefaultRequestHeaders.Add("Authorization", tokenHeader);
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
         public async Task<string?> GetRequest(string? query)
         {
             var messages = new[]
             {
-                new {role = ROLE, content = query}
+                new { role = Role, content = query }
             };
 
             var data = new
             {
-                model = MODEL,
+                model = Model,
                 messages,
-                temperature = TEMPERATURE,
-                max_tokens = MAX_TOKENS,
+                temperature = Temperature,
+                max_tokens = MaxTokens,
             };
 
             var jsonString = JsonConvert.SerializeObject(data);
             var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync(ENDPOINT, content);
+            var response = await _client.PostAsync(Endpoint, content);
             var responseContent = await response.Content.ReadAsStringAsync();
             var jsonResponse = JObject.Parse(responseContent);
 
@@ -62,11 +62,16 @@ namespace PsicoAppAPI.Services
 
         public async Task<bool> CheckPsychologyContent(IEnumerable<string> args)
         {
+            if (!await GetRules())
+            {
+                return false;
+            }
+
             foreach (var item in args)
             {
                 if (string.IsNullOrEmpty(item)) return false;
 
-                var query = RULES + "\n\n" + item;
+                var query = _rules + "\n\n" + item;
                 var response = await GetRequest(query);
                 if (response is null) return false;
 
@@ -80,7 +85,18 @@ namespace PsicoAppAPI.Services
                 // If any response is false, the post is invalid
                 if (!result) return false;
             }
+
             return true;
+        }
+
+        /// <summary>
+        /// Get the rules to gpt moderation from repository
+        /// </summary>
+        /// <returns>true if exists and could be assigned to _rules attr. otherwise false</returns>
+        private async Task<bool> GetRules()
+        {
+            _rules ??= await _unitOfWork.GptRulesRepository.GetRules();
+            return _rules is not null;
         }
     }
 }

@@ -8,15 +8,16 @@ namespace PsicoAppAPI.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DataContext _context;
-        private IUserRepository userRepository = null!;
-        private ISpecialistRepository specialistRepository = null!;
-        private IRolesRepository rolesRepository = null!;
-        private IFeedPostRepository feedPostRepository = null!;
-        private ITagRepository tagRepository = null!;
-        private IAvailabilitySlotRepository availabilitySlotRepository = null!;
-        private IAppointmentRepository appointmentRepository = null!;
-        private IAppointmentStatusesRepository statusesRepository = null!;
-        private IForumPostRepository forumPostRepository = null!;
+        private IUserRepository _userRepository = null!;
+        private ISpecialistRepository _specialistRepository = null!;
+        private IRolesRepository _rolesRepository = null!;
+        private IFeedPostRepository _feedPostRepository = null!;
+        private ITagRepository _tagRepository = null!;
+        private IAvailabilitySlotRepository _availabilitySlotRepository = null!;
+        private IAppointmentRepository _appointmentRepository = null!;
+        private IAppointmentStatusesRepository _statusesRepository = null!;
+        private IForumPostRepository _forumPostRepository = null!;
+        private IGptRulesRepository _gptRulesRepository = null!;
 
         public UnitOfWork(DataContext context)
         {
@@ -27,8 +28,8 @@ namespace PsicoAppAPI.Repositories
         {
             get
             {
-                userRepository ??= new UserRepository(_context);
-                return userRepository;
+                _userRepository ??= new UserRepository(_context);
+                return _userRepository;
             }
         }
 
@@ -36,8 +37,8 @@ namespace PsicoAppAPI.Repositories
         {
             get
             {
-                specialistRepository ??= new SpecialistRepository(_context);
-                return specialistRepository;
+                _specialistRepository ??= new SpecialistRepository(_context);
+                return _specialistRepository;
             }
         }
 
@@ -45,8 +46,8 @@ namespace PsicoAppAPI.Repositories
         {
             get
             {
-                rolesRepository ??= new RolesRepository(_context);
-                return rolesRepository;
+                _rolesRepository ??= new RolesRepository(_context);
+                return _rolesRepository;
             }
         }
 
@@ -54,8 +55,8 @@ namespace PsicoAppAPI.Repositories
         {
             get
             {
-                feedPostRepository ??= new FeedPostRepository(_context);
-                return feedPostRepository;
+                _feedPostRepository ??= new FeedPostRepository(_context);
+                return _feedPostRepository;
             }
         }
 
@@ -63,8 +64,8 @@ namespace PsicoAppAPI.Repositories
         {
             get
             {
-                tagRepository ??= new TagRepository(_context);
-                return tagRepository;
+                _tagRepository ??= new TagRepository(_context);
+                return _tagRepository;
             }
         }
 
@@ -72,8 +73,8 @@ namespace PsicoAppAPI.Repositories
         {
             get
             {
-                availabilitySlotRepository ??= new AvailabilitySlotRepository(_context);
-                return availabilitySlotRepository;
+                _availabilitySlotRepository ??= new AvailabilitySlotRepository(_context);
+                return _availabilitySlotRepository;
             }
         }
 
@@ -81,8 +82,8 @@ namespace PsicoAppAPI.Repositories
         {
             get
             {
-                appointmentRepository ??= new AppointmentRepository(_context);
-                return appointmentRepository;
+                _appointmentRepository ??= new AppointmentRepository(_context);
+                return _appointmentRepository;
             }
         }
 
@@ -90,8 +91,8 @@ namespace PsicoAppAPI.Repositories
         {
             get
             {
-                statusesRepository ??= new AppointmentStatusesRepository(_context);
-                return statusesRepository;
+                _statusesRepository ??= new AppointmentStatusesRepository(_context);
+                return _statusesRepository;
             }
         }
 
@@ -99,14 +100,18 @@ namespace PsicoAppAPI.Repositories
         {
             get
             {
-                forumPostRepository ??= new ForumPostRepository(_context);
-                return forumPostRepository;
+                _forumPostRepository ??= new ForumPostRepository(_context);
+                return _forumPostRepository;
             }
         }
 
-        public async Task<int> SaveChangesAsync()
+        public IGptRulesRepository GptRulesRepository
         {
-            return await _context.SaveChangesAsync();
+            get
+            {
+                _gptRulesRepository ??= new GptRulesRepository(_context);
+                return _gptRulesRepository;
+            }
         }
     }
 }

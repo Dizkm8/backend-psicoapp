@@ -55,5 +55,10 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// </summary>
         /// <value>IForumPostRepository</value>
         public IForumPostRepository ForumPostRepository { get; }
+        /// <summary>
+        /// Get the IGptRulesRepository
+        /// </summary>
+        /// <value>IGptRulesRepository</value>
+        public IGptRulesRepository GptRulesRepository { get; }
     }
 }
