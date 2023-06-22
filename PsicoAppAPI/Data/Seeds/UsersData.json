@@ -23,4 +23,5 @@
 
 
 {"Id":"207676918","Name":"David Nahum","FirstLastName":"Araya","SecondLastName":"Cádiz","Email":"davidnahumac@gmail.com","Gender":"Male","IsEnabled":true,"Phone":74113387,"Password":"davidaraya","RoleId":3},
-{"Id":"207785296","Name":"Ignacia Yaritsa","FirstLastName":"Rivas","SecondLastName":"Figueroa","Email":"ignacia.rivas@alumnos.ucn.cl","Gender":"Female","IsEnabled":true,"Phone":74113387,"Password":"ignaciarivas","RoleId":1}]
+{"Id":"207785296","Name":"Ignacia Yaritsa","FirstLastName":"Rivas","SecondLastName":"Figueroa","Email":"ignacia.rivas@alumnos.ucn.cl","Gender":"Female","IsEnabled":true,"Phone":74113387,"Password":"ignaciarivas","RoleId":1},
+{"Id":"103661455","Name":"Mauricio David","FirstLastName":"Araya","SecondLastName":"Serrano","Email":"mdaraya@gmail.com","Gender":"Male","IsEnabled":true,"Phone":74113387,"Password":"mauricioaraya","RoleId":2}]

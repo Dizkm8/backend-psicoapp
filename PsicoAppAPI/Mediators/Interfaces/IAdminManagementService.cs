@@ -13,4 +13,9 @@ public interface IAdminManagementService
     /// <param name="newRules">New rules to set</param>
     /// <returns>true if rules could be updated. otherwise false</returns>
     public Task<bool> SetModerationRules(string newRules);
+    /// <summary>
+    /// Check using the token if the userId match with an enabled user and if it is admin
+    /// </summary>
+    /// <returns>true if match with the filters. otherwise false</returns>
+    public Task<bool> IsUserAdmin();
 }

@@ -25,4 +25,10 @@ public class AdminManagementService : IAdminManagementService
     {
         throw new NotImplementedException();
     }
+
+    public async Task<bool> IsUserAdmin()
+    {
+        var user = await _authService.GetUserEnabledAndAdminFromToken();
+        return user is not null;
+    }
 }

@@ -69,5 +69,11 @@ public interface IAuthManagementService
     /// </summary>
     /// <returns>User that match the filters. otherwise false</returns>
     public Task<User?> GetUserEnabledAndClientFromToken();
+    /// <summary>
+    /// Get a enabled user by userId extracted from token and check
+    /// if it is admin
+    /// </summary>
+    /// <returns>User that match the filters. otherwise false</returns>
+    public Task<User?> GetUserEnabledAndAdminFromToken();
 
 }
