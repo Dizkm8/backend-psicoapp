@@ -1,3 +1,4 @@
+using PsicoAppAPI.DTOs.ForumPost;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Repositories.Interfaces;
 using PsicoAppAPI.Services.Interfaces;
@@ -17,5 +18,11 @@ public class ForumPostService : IForumPostService
     {
         if (post is null) return false;
         return await _unitOfWork.ForumPostRepository.AddForumPostAndSaveChanges(post);
+    }
+
+    public async Task<IEnumerable<ForumPostDto>> GetAllPosts()
+    {
+        var posts = await _unitOfWork.ForumPostRepository.GetAllPosts();
+        return new List<ForumPostDto>();
     }
 }

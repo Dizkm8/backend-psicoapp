@@ -54,8 +54,9 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
         return result;
     }
 
-    public Task<IEnumerable<ForumPostDto>> GetAllPosts()
+    public async Task<IEnumerable<ForumPostDto>?> GetAllPosts()
     {
-        throw new NotImplementedException();
+        var posts = await _forumPostService.GetAllPosts();
+        return posts;
     }
 }

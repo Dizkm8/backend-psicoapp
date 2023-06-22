@@ -20,5 +20,5 @@ public interface IForumPostManagementService : IPostManagementService
     /// Get all forum posts 
     /// </summary>
     /// <returns>IEnumerable with the forum posts shaped as Dto</returns>
-    public Task<IEnumerable<ForumPostDto>> GetAllPosts();
+    public Task<IEnumerable<ForumPostDto>?> GetAllPosts();
 }
