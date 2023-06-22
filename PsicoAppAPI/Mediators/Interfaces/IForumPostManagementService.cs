@@ -10,4 +10,10 @@ public interface IForumPostManagementService : IPostManagementService
     /// <param name="forumPostDto">Forum post Dto shape to add</param>
     /// <returns>True if could be added. otherwise false</returns>
     public Task<ForumPostDto?> AddForumPost(AddForumPostDto forumPostDto);
+    /// <summary>
+    /// Using OpenAI API to check if the post is valid
+    /// </summary>
+    /// <param name="post">FeedpostDto shape with content to check</param>
+    /// <returns>True if its adecuate to application. otherwise false</returns>
+    public Task<bool> CheckPost(AddForumPostDto post);
 }

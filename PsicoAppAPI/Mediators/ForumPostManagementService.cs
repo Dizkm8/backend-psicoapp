@@ -29,9 +29,6 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
         if (user is null) return null;
         var userId = user.Id;
 
-        var moderationResult = await _openAiService.CheckPsychologyContent(new List<string> { forumPostDto.Title, forumPostDto.Content });
-        if (!moderationResult) return null;
-
         var forumPost = _mapperService.MapToForumPost(forumPostDto);
         // Update properties not mapped
         forumPost.UserId = userId;
@@ -42,5 +39,14 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
 
         var postDto = _mapperService.MapToForumPostDto(forumPost); // Need to change
         return postDto;
+    }
+
+    public async Task<bool> CheckPost(AddForumPostDto post)
+    {
+        var content = post.Content;
+        var title = post.Title;
+        if (content is null || title is null) return false;
+        var result = await _openAiService.CheckPsychologyContent(new List<string> { content, title });
+        return result;
     }
 }
