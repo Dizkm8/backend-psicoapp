@@ -63,6 +63,7 @@ namespace PsicoAppAPI.Extensions
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IFeedPostService, FeedPostService>();
+            services.AddScoped<IForumPostService, ForumPostService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<ISpecialistService, SpecialistService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
@@ -83,6 +84,7 @@ namespace PsicoAppAPI.Extensions
         {
             services.AddScoped<IUserManagementService, UserManagementService>();
             services.AddScoped<IFeedPostManagementService, FeedPostManagementService>();
+            services.AddScoped<IForumPostManagementService, ForumPostManagementService>();
             services.AddScoped<ISpecialistManagementService, SpecialistManagementService>();
             services.AddScoped<ITagManagementService, TagManagementService>();
             services.AddScoped<IAuthManagementService, AuthManagementService>();

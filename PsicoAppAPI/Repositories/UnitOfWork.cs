@@ -16,6 +16,7 @@ namespace PsicoAppAPI.Repositories
         private IAvailabilitySlotRepository availabilitySlotRepository = null!;
         private IAppointmentRepository appointmentRepository = null!;
         private IAppointmentStatusesRepository statusesRepository = null!;
+        private IForumPostRepository forumPostRepository = null!;
 
         public UnitOfWork(DataContext context)
         {
@@ -91,6 +92,15 @@ namespace PsicoAppAPI.Repositories
             {
                 statusesRepository ??= new AppointmentStatusesRepository(_context);
                 return statusesRepository;
+            }
+        }
+
+        public IForumPostRepository ForumPostRepository
+        {
+            get
+            {
+                forumPostRepository ??= new ForumPostRepository(_context);
+                return forumPostRepository;
             }
         }
 

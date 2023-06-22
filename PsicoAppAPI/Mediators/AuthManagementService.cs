@@ -19,7 +19,7 @@ public class AuthManagementService : IAuthManagementService
     {
         var userId = _authService.GetUserIdInToken();
         var user = await _userService.GetUserById(userId);
-        if(user is not null && user.IsEnabled) return user;
+        if (user is not null && user.IsEnabled) return user;
         return null;
     }
     public async Task<bool> ExistsUserInTokenAndIsEnabled()
@@ -66,9 +66,18 @@ public class AuthManagementService : IAuthManagementService
     public async Task<User?> GetUserEnabledAndSpecialistFromToken()
     {
         var user = await GetUserEnabledFromToken();
-        if(user is null) return null;
+        if (user is null) return null;
 
         var specialistRoleId = await _userService.GetIdOfSpecialistRole();
         return user.RoleId == specialistRoleId ? user : null;
+    }
+
+    public async Task<User?> GetUserEnabledAndClientFromToken()
+    {
+        var user = await GetUserEnabledFromToken();
+        if (user is null) return null;
+
+        var clientRoleId = await _userService.GetIdOfClientRole();
+        return user.RoleId == clientRoleId ? user : null;
     }
 }
