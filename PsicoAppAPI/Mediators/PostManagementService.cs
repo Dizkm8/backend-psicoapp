@@ -1,4 +1,5 @@
 using PsicoAppAPI.DTOs.FeedPost;
+using PsicoAppAPI.DTOs.ForumPost;
 using PsicoAppAPI.Mediators.Interfaces;
 using PsicoAppAPI.Services.Interfaces;
 
@@ -19,11 +20,16 @@ public class PostManagementService : IPostManagementService
         _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
         _tagService = tagService ?? throw new ArgumentNullException(nameof(tagService));
     }
-    
 
     public async Task<bool> CheckPostTag(AddFeedPostDto feedPostDto)
     {
         var result = await _tagService.ExistsTagById(feedPostDto.TagId);
+        return result;
+    }
+
+    public async Task<bool> CheckPostTag(AddForumPostDto forumPostDto)
+    {
+        var result = await _tagService.ExistsTagById(forumPostDto.TagId);
         return result;
     }
 }

@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PsicoAppAPI.DTOs.FeedPost
 {
-    public class AddFeedPostDto
+    public class AddFeedPostDto 
     {
         [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; } = null!;
