@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PsicoAppAPI.Data;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Repositories.Interfaces;
@@ -19,4 +20,16 @@ public class ForumPostRepository : IForumPostRepository
         var result = await _context.SaveChangesAsync() > 0;
         return result;
     }
+
+    public async Task<List<ForumPost>> GetAllPosts()
+    {
+        var posts = await _context.ForumPosts.Include(p => p.User)
+                                             .Include(p => p.Tag)
+                                             .Include(p => p.Comments)
+                                             .ThenInclude(c => c.User)
+                                             .ToListAsync();
+        return posts;
+    }
+
+
 }

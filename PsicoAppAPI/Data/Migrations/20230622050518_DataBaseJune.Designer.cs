@@ -11,8 +11,8 @@ using PsicoAppAPI.Data;
 namespace PsicoAppAPI.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230604013751_NewDataBase")]
-    partial class NewDataBase
+    [Migration("20230622050518_DataBaseJune")]
+    partial class DataBaseJune
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,7 +75,7 @@ namespace PsicoAppAPI.Data.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsAvailable")
+                    b.Property<bool>("IsAvailableOverride")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("StartTime")
@@ -104,6 +104,9 @@ namespace PsicoAppAPI.Data.Migrations
 
                     b.Property<int>("ForumPostId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("PublishedOn")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
                         .IsRequired()

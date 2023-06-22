@@ -105,5 +105,11 @@ namespace PsicoAppAPI.Services
             if (registerClientDto is null) return null;
             return _mapper.Map<User>(registerClientDto);
         }
+
+        public List<ForumPostDto> MapToForumPostDto(List<ForumPost>? posts)
+        {
+            var mappedPosts = posts?.Select(x => _mapper.Map<ForumPostDto>(x)).ToList();
+            return mappedPosts ?? new List<ForumPostDto>();
+        }
     }
 }
