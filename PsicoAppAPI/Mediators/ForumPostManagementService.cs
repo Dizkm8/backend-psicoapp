@@ -29,6 +29,9 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
         if (user is null) return null;
         var userId = user.Id;
 
+        var moderationResult = await _openAiService.CheckPsychologyContent(new List<string> { forumPostDto.Title, forumPostDto.Content });
+        if (!moderationResult) return null;
+
         var forumPost = _mapperService.MapToForumPost(forumPostDto);
         // Update properties not mapped
         forumPost.UserId = userId;
