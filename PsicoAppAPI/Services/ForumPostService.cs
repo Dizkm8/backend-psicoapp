@@ -20,9 +20,9 @@ public class ForumPostService : IForumPostService
         return await _unitOfWork.ForumPostRepository.AddForumPostAndSaveChanges(post);
     }
 
-    public async Task<IEnumerable<ForumPostDto>> GetAllPosts()
+    public async Task<List<ForumPost>> GetAllPosts()
     {
         var posts = await _unitOfWork.ForumPostRepository.GetAllPosts();
-        return new List<ForumPostDto>();
+        return posts;
     }
 }

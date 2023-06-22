@@ -41,7 +41,7 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
         // Map tagId to tagName in postDto
         var tag = await _tagService.GetTagById(forumPost.TagId);
         if (postDto is null || tag is null) return null;
-        postDto.Tag = tag.Name;
+        postDto.TagName = tag.Name;
         return postDto;
     }
 
@@ -57,6 +57,7 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
     public async Task<IEnumerable<ForumPostDto>?> GetAllPosts()
     {
         var posts = await _forumPostService.GetAllPosts();
-        return posts;
+        var mappedPosts = _mapperService.MapToForumPostDto(posts);
+        return mappedPosts;
     }
 }

@@ -26,6 +26,7 @@ public class ForumPostRepository : IForumPostRepository
         var posts = await _context.ForumPosts.Include(p => p.User)
                                              .Include(p => p.Tag)
                                              .Include(p => p.Comments)
+                                             .ThenInclude(c => c.User)
                                              .ToListAsync();
         return posts;
     }

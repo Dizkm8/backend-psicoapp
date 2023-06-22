@@ -15,5 +15,5 @@ public interface IForumPostService
     /// Get all ForumPosts from the database
     /// </summary>
     /// <returns>IEnumerable with the forum posts</returns>
-    public Task<IEnumerable<ForumPostDto>> GetAllPosts();
+    public Task<List<ForumPost>> GetAllPosts();
 }

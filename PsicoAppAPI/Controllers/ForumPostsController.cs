@@ -56,6 +56,6 @@ public class ForumPostsController : BaseApiController
         var posts = await _service.GetAllPosts();
         if(posts is null) return StatusCode(StatusCodes.Status500InternalServerError,
             new ErrorModel { ErrorCode = 500, Message = "Internal error fetching all forum posts" });
-        return Ok();
+        return Ok(posts);
     }
 }
