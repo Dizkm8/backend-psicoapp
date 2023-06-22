@@ -16,4 +16,9 @@ public interface IForumPostManagementService : IPostManagementService
     /// <param name="post">FeedpostDto shape with content to check</param>
     /// <returns>True if its adecuate to application. otherwise false</returns>
     public Task<bool> CheckPost(AddForumPostDto post);
+    /// <summary>
+    /// Get all forum posts 
+    /// </summary>
+    /// <returns>IEnumerable with the forum posts shaped as Dto</returns>
+    public Task<IEnumerable<ForumPostDto>> GetAllPosts();
 }

@@ -7,5 +7,5 @@ public class ForumPostDto
     public string Content { get; set; } = null!;
     public DateOnly PublishedOn { get; set; } = DateOnly.MinValue;
     public string UserId { get; set; } = null!;
-    public int TagId { get; set; }
+    public string Tag { get; set; } = null!;
 }

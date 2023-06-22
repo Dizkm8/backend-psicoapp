@@ -48,4 +48,11 @@ public class ForumPostsController : BaseApiController
             new ErrorModel { ErrorCode = 500, Message = "Internal error creating forum post" });
         return Ok(postToReturn);
     }
+
+    [Authorize]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ForumPostDto>>> GetAllForumPosts()
+    {
+        return Ok();
+    }
 }
