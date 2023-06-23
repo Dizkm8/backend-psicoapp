@@ -49,4 +49,9 @@ public class ForumPostService : IForumPostService
         var result = await _unitOfWork.ForumPostRepository.DeletePostById(postId);
         return result;
     }
+
+    public Task<bool> DeleteComment(int postId, int commentId)
+    {
+        throw new NotImplementedException();
+    }
 }

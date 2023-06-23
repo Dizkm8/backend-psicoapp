@@ -110,4 +110,14 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
         var user = await _authService.GetUserEnabledAndAdminFromToken();
         return user is not null;
     }
+
+    public Task<bool> DeleteComment(int postId, int commentId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<bool> ExistsComment(int postId, int commentId)
+    {
+        throw new NotImplementedException();
+    }
 }

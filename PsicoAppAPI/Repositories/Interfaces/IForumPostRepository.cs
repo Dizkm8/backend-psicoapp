@@ -33,4 +33,11 @@ public interface IForumPostRepository
     /// <param name="postId">Id of the post</param>
     /// <returns>true if could be deleted. otherwise false</returns>
     public Task<bool> DeletePostById(int postId);
+    /// <summary>
+    /// Delete a comment by their Id and the post Id where is attached
+    /// </summary>
+    /// <param name="postId">Id of the post</param>
+    /// <param name="commentId">Id of the comment</param>
+    /// <returns></returns>
+    public Task<bool> DeleteCommentByIdAndPostId(int postId, int commentId);
 }

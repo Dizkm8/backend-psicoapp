@@ -201,4 +201,18 @@ public class ForumPostsController : BaseApiController
                 new ErrorModel { ErrorCode = 500, Message = "Internal error deleting the post" });
         return Ok();
     }
+
+    [Authorize]
+    [HttpDelete("delete-comment/{postId:int}/{commentId:int}")]
+    public async Task<ActionResult> DeleteComment(int postId, int commentId)
+    {
+        var isAdmin = await _service.IsUserAdmin();
+        if (!isAdmin) return Unauthorized("The user with userId from token are not a valid admin");
+
+        var existsPost = await _service.ExistsPost(postId);
+        if (!existsPost) return BadRequest("Post Id do not match with any existing post");
+
+        
+        return Ok();
+    }
 }
