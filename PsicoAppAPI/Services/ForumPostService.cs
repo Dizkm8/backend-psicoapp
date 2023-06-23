@@ -32,8 +32,9 @@ public class ForumPostService : IForumPostService
         return result;
     }
 
-    public Task<Comment?> AddComment(Comment comment, int postId)
+    public async Task<bool> AddComment(Comment comment)
     {
-        throw new NotImplementedException();
+        var result = await _unitOfWork.CommentRepository.AddCommentAndSaveChanges(comment);
+        return result;
     }
 }

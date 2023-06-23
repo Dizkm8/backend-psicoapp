@@ -8,16 +8,17 @@ namespace PsicoAppAPI.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DataContext _context;
-        private IUserRepository _userRepository = null!;
-        private ISpecialistRepository _specialistRepository = null!;
-        private IRolesRepository _rolesRepository = null!;
-        private IFeedPostRepository _feedPostRepository = null!;
-        private ITagRepository _tagRepository = null!;
-        private IAvailabilitySlotRepository _availabilitySlotRepository = null!;
-        private IAppointmentRepository _appointmentRepository = null!;
-        private IAppointmentStatusesRepository _statusesRepository = null!;
-        private IForumPostRepository _forumPostRepository = null!;
-        private IGptRulesRepository _gptRulesRepository = null!;
+        private IUserRepository? _userRepository;
+        private ISpecialistRepository? _specialistRepository;
+        private IRolesRepository? _rolesRepository;
+        private IFeedPostRepository? _feedPostRepository;
+        private ITagRepository? _tagRepository;
+        private IAvailabilitySlotRepository? _availabilitySlotRepository;
+        private IAppointmentRepository? _appointmentRepository;
+        private IAppointmentStatusesRepository? _statusesRepository;
+        private IForumPostRepository? _forumPostRepository;
+        private IGptRulesRepository? _gptRulesRepository;
+        private ICommentRepository? _commentRepository;
 
         public UnitOfWork(DataContext context)
         {
@@ -111,6 +112,15 @@ namespace PsicoAppAPI.Repositories
             {
                 _gptRulesRepository ??= new GptRulesRepository(_context);
                 return _gptRulesRepository;
+            }
+        }
+
+        public ICommentRepository CommentRepository
+        {
+            get
+            {
+                _commentRepository ??= new CommentRepository(_context);
+                return _commentRepository;
             }
         }
     }

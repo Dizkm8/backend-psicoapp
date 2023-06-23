@@ -25,10 +25,9 @@ public interface IForumPostService
     /// <returns>true if exists. otherwise false</returns>
     public Task<bool> ExistsPost(int postId);
     /// <summary>
-    /// Add a new comment to a post identified by their post Id
+    /// Add a new comment to a post identified by their post Id in the comment entity
     /// </summary>
     /// <param name="comment">Comment to add</param>
-    /// <param name="postId">post Id to add comment</param>
-    /// <returns>The Comment if could be added. otherwise null</returns>
-    public Task<Comment?> AddComment(Comment comment, int postId);
+    /// <returns>true if could be added. otherwise false</returns>
+    public Task<bool> AddComment(Comment comment);
 }

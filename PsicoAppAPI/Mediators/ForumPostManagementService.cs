@@ -1,5 +1,6 @@
 using PsicoAppAPI.DTOs.ForumPost;
 using PsicoAppAPI.Mediators.Interfaces;
+using PsicoAppAPI.Models;
 using PsicoAppAPI.Services.Interfaces;
 
 namespace PsicoAppAPI.Mediators;
@@ -71,5 +72,22 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
     {
         var user = await _authService.GetUserEnabledAndSpecialistFromToken();
         return user is not null;
+    }
+
+    public async Task<bool> AddComment(int postId, string content)
+    {
+        var user = await _authService.GetUserEnabledAndSpecialistFromToken();
+        if (user is null) return false;
+
+        var comment = new Comment()
+        {
+            Content = content,
+            PublishedOn = DateTime.Now,
+            UserId = user.Id,
+            ForumPostId = postId
+        };
+
+        var result = await _forumPostService.AddComment(comment);
+        return result;
     }
 }

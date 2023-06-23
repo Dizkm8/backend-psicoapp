@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
@@ -102,15 +101,19 @@ public class ForumPostsController : BaseApiController
     [Authorize(Roles = "3")]
     [HttpPost("add-comment/{postId:int}")]
     public async Task<ActionResult> CommentForumPost([Required] int postId,
-        [Required] [FromBody] JsonElement jsonContent)
+        [Required] [FromBody] string content)
     {
-        var content = System.Text.Json.JsonSerializer.Serialize(jsonContent);
         var isSpecialist = await _service.IsUserSpecialist();
         if (!isSpecialist) return Unauthorized("The user with userId from token are not a valid specialist");
 
         var existsPost = await _service.ExistsPost(postId);
-        if (!existsPost) return BadRequest("Post Id do not match with any forum post");
+        if (!existsPost) return BadRequest("Post Id do not match with any existing post");
 
+        var result = await _service.AddComment(postId, content);
+        if(!result) return StatusCode(StatusCodes.Status500InternalServerError,
+            new ErrorModel { ErrorCode = 500, Message = "Internal error adding a new comment" });
         return Ok();
     }
+    
+    
 }

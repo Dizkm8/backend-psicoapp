@@ -1,4 +1,5 @@
 using PsicoAppAPI.DTOs.ForumPost;
+using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.Mediators.Interfaces;
 
@@ -33,4 +34,11 @@ public interface IForumPostManagementService : IPostManagementService
     /// </summary>
     /// <returns>true if match with the filters. otherwise false</returns>
     public Task<bool> IsUserSpecialist();
+    /// <summary>
+    /// Add a new comment to an existing post identified by their postId
+    /// </summary>
+    /// <param name="postId">Id of the post</param>
+    /// <param name="content">Content of the comment</param>
+    /// <returns>true if could be added. otherwise false</returns>
+    public Task<bool> AddComment(int postId, string content);
 }
