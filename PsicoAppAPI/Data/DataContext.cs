@@ -15,6 +15,7 @@ namespace PsicoAppAPI.Data
         public DbSet<Role> Roles { get; set; } = null!;
         public DbSet<Tag> Tags { get; set; } = null!;
         public DbSet<AppointmentStatus> AppointmentStatuses { get; set; } = null!;
+        public DbSet<GptRules> GptRules { get; set; } = null!;
         #endregion
 
         /// <summary>

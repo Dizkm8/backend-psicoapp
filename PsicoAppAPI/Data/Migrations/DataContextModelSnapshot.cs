@@ -184,6 +184,21 @@ namespace PsicoAppAPI.Data.Migrations
                     b.ToTable("ForumPosts");
                 });
 
+            modelBuilder.Entity("PsicoAppAPI.Models.GptRules", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Rules")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GptRules");
+                });
+
             modelBuilder.Entity("PsicoAppAPI.Models.Role", b =>
                 {
                     b.Property<int>("Id")

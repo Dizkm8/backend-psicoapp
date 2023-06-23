@@ -41,6 +41,7 @@ namespace PsicoAppAPI.Data
             SeedRoles(context, options);
             SeedTags(context, options);
             SeedAppointmentStatuses(context, options);
+            SeedGptRules(context, options);
             context.SaveChanges();
         }
 
@@ -79,6 +80,25 @@ namespace PsicoAppAPI.Data
         }
 
         #region SEED_FIRST_ORDER
+        /// <summary>
+        /// Seed the database with the rules of GPT in the json file if the database is empty.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="options"></param>
+        private static void SeedGptRules(DataContext context, JsonSerializerOptions options)
+        {
+            var result = context.GptRules?.Any();
+            if (result is true or null) return;
+            var rulesData = File.ReadAllText("Data/Seeds/GPTRulesData.json");
+            var rulesList = JsonSerializer.Deserialize<List<GptRules>>(rulesData, options);
+            if (rulesList == null) return;
+            // Probably Specialities table will not be null, but this validation
+            // avoids the warning message
+            if (context.GptRules == null) throw new Exception("Specialities table is null");
+            context.GptRules.AddRange(rulesList);
+            context.SaveChanges();
+        }
+
         /// <summary>
         /// Seed the database with the specialities in the json file if the database is empty.
         /// </summary>
