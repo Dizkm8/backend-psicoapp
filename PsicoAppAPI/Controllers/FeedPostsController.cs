@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
@@ -76,6 +77,33 @@ namespace PsicoAppAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new ErrorModel { ErrorCode = 500, Message = "Internal error fetching all forum posts" });
             return Ok(posts);
+        }
+
+        /// <summary>
+        /// Delete a post by their post Id
+        /// </summary>
+        /// <param name="postId">Id of the post</param>
+        /// <returns>
+        /// If the user Id from the provided token doesn't match with a admin return a status 401 Unauthorized with a custom message
+        /// If the the post Id do not match with any post return a status404 with a BadRequest with custom message
+        /// If something went wrong deleting the post return a status 500 internal server error with a custom messsage
+        /// If everything goes well return a status 200
+        /// </returns>
+        [Authorize(Roles = "1")]
+        [HttpDelete("delete-post/{postId:int}")]
+        public async Task<ActionResult> DeletePost([Required] int postId)
+        {
+            var isSpecialist = await _service.IsUserAdmin();
+            if (!isSpecialist) return Unauthorized("The user with userId from token are not a valid admin");
+
+            var existsPost = await _service.ExistsPost(postId);
+            if (!existsPost) return BadRequest("Post Id do not match with any existing post");
+
+            var result = await _service.DeletePost(postId);
+            if (!result)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ErrorModel { ErrorCode = 500, Message = "Internal error deleting the post" });
+            return Ok();
         }
     }
 }

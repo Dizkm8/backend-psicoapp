@@ -29,5 +29,25 @@ namespace PsicoAppAPI.Repositories
                 .ToListAsync();
             return posts;
         }
+
+        public async Task<FeedPost?> GetPostById(int postId)
+        {
+            var post = await _context.FeedPosts
+                .Where(p => p.Id == postId)
+                .Include(p => p.User)
+                .Include(p => p.Tag)
+                .SingleOrDefaultAsync();
+            return post;
+        }
+
+        public async Task<bool> DeletePostById(int postId)
+        {
+            var post = await _context.FeedPosts.SingleOrDefaultAsync(p => p.Id == postId);
+            if (post is null) return false;
+            _context.Remove(post);
+
+            var result = await _context.SaveChangesAsync() > 0;
+            return result;
+        }
     }
 }
