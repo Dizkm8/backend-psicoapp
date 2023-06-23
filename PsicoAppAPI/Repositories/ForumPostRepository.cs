@@ -24,12 +24,22 @@ public class ForumPostRepository : IForumPostRepository
     public async Task<List<ForumPost>> GetAllPosts()
     {
         var posts = await _context.ForumPosts.Include(p => p.User)
-                                             .Include(p => p.Tag)
-                                             .Include(p => p.Comments)
-                                             .ThenInclude(c => c.User)
-                                             .ToListAsync();
+            .Include(p => p.Tag)
+            .Include(p => p.Comments)
+            .ThenInclude(c => c.User)
+            .ToListAsync();
         return posts;
     }
 
+    public async Task<ForumPost?> GetPostById(int postId)
+    {
+        var post = await _context.ForumPosts.FindAsync(postId);
+        return post;
+    }
 
+    public async Task<bool> ExistsPost(int postId)
+    {
+        var post = await GetPostById(postId);
+        return post is not null;
+    }
 }

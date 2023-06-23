@@ -25,4 +25,16 @@ public class ForumPostService : IForumPostService
         var posts = await _unitOfWork.ForumPostRepository.GetAllPosts();
         return posts;
     }
+
+    public async Task<bool> ExistsPost(int postId)
+    {
+        var result = await _unitOfWork.ForumPostRepository.ExistsPost(postId);
+        return result;
+    }
+
+    public async Task<bool> AddComment(Comment comment)
+    {
+        var result = await _unitOfWork.CommentRepository.AddCommentAndSaveChanges(comment);
+        return result;
+    }
 }
