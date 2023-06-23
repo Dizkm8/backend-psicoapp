@@ -68,6 +68,13 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
         return result;
     }
 
+    public async Task<ForumPostDto?> GetPost(int postId)
+    {
+        var post = await _forumPostService.GetPostById(postId);
+        var mappedPost = _mapperService.MapToForumPostDto(post);
+        return mappedPost;
+    }
+
     public async Task<bool> IsUserSpecialist()
     {
         var user = await _authService.GetUserEnabledAndSpecialistFromToken();

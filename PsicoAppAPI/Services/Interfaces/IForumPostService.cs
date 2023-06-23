@@ -17,6 +17,11 @@ public interface IForumPostService
     /// </summary>
     /// <returns>IEnumerable with the forum posts</returns>
     public Task<List<ForumPost>> GetAllPosts();
+    /// <summary>
+    /// Get a post by their postId
+    /// </summary>
+    /// <returns>Post if exists. otherwise null</returns>
+    public Task<ForumPost?> GetPostById(int postId);
 
     /// <summary>
     /// Check if a post exists based on their post Id

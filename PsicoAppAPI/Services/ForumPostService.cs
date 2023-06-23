@@ -26,6 +26,12 @@ public class ForumPostService : IForumPostService
         return posts;
     }
 
+    public async Task<ForumPost?> GetPostById(int postId)
+    {
+        var post = await _unitOfWork.ForumPostRepository.GetPostById(postId);
+        return post;
+    }
+
     public async Task<bool> ExistsPost(int postId)
     {
         var result = await _unitOfWork.ForumPostRepository.ExistsPost(postId);

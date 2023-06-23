@@ -33,7 +33,13 @@ public class ForumPostRepository : IForumPostRepository
 
     public async Task<ForumPost?> GetPostById(int postId)
     {
-        var post = await _context.ForumPosts.FindAsync(postId);
+        var post = await _context.ForumPosts
+            .Where(p => p.Id == postId)
+            .Include(p => p.User)
+            .Include(p => p.Tag)
+            .Include(p => p.Comments)
+            .ThenInclude(c => c.User)
+            .SingleOrDefaultAsync();
         return post;
     }
 
