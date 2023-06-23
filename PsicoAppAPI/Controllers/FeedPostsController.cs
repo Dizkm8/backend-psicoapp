@@ -86,6 +86,13 @@ namespace PsicoAppAPI.Controllers
             var isSpecialist = await _service.IsUserAdmin();
             if (!isSpecialist) return Unauthorized("The user with userId from token are not a valid admin");
 
+            var existsPost = await _service.ExistsPost(postId);
+            if (!existsPost) return BadRequest("Post Id do not match with any existing post");
+
+            var result = await _service.DeletePost(postId);
+            if (!result)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ErrorModel { ErrorCode = 500, Message = "Internal error deleting the post" });
             return Ok();
         }
     }

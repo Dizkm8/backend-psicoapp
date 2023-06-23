@@ -59,9 +59,10 @@ namespace PsicoAppAPI.Mediators
             throw new NotImplementedException();
         }
 
-        public Task<bool> ExistsPost(int postId)
+        public async Task<bool> ExistsPost(int postId)
         {
-            throw new NotImplementedException();
+            var post = await _feedPostService.GetPostById(postId);
+            return post is not null;
         }
     }
 }
