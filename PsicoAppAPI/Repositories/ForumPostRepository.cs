@@ -58,4 +58,30 @@ public class ForumPostRepository : IForumPostRepository
         var result = await _context.SaveChangesAsync() > 0;
         return result;
     }
+
+    public async Task<bool> DeleteCommentByIdAndPostId(int postId, int commentId)
+    {
+        var post = await _context.ForumPosts.Where(p => p.Id == postId)
+            .Include(p => p.Comments)
+            .ThenInclude(c => c.User)
+            .SingleOrDefaultAsync();
+
+        var comment = post?.Comments.SingleOrDefault(c => c.Id == commentId);
+        if (comment is null) return false;
+
+        _context.Remove(comment);
+        var result = await _context.SaveChangesAsync() > 0;
+        return result;
+    }
+
+    public async Task<Comment?> GetCommentByIdAndPostId(int postId, int commentId)
+    {
+        var post = await _context.ForumPosts.Where(p => p.Id == postId)
+            .Include(p => p.Comments)
+            .ThenInclude(c => c.User)
+            .SingleOrDefaultAsync();
+        
+        var comment = post?.Comments.SingleOrDefault(c => c.Id == commentId);
+        return comment;
+    }
 }
