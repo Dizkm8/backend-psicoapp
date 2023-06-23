@@ -61,9 +61,10 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
         return mappedPosts;
     }
 
-    public async Task<bool> ExistsPost(string postId)
+    public async Task<bool> ExistsPost(int postId)
     {
-        throw new NotImplementedException();
+        var result = await _forumPostService.ExistsPost(postId);
+        return result;
     }
 
     public async Task<bool> IsUserSpecialist()

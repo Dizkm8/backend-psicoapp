@@ -26,7 +26,7 @@ public interface IForumPostManagementService : IPostManagementService
     /// </summary>
     /// <param name="postId">Id of the post</param>
     /// <returns>true if exists. otherwise false</returns>
-    public Task<bool> ExistsPost(string postId);
+    public Task<bool> ExistsPost(int postId);
     
     /// <summary>
     /// Check using the token if the userId match with an enabled user and if it is specialist

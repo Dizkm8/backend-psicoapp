@@ -26,7 +26,13 @@ public class ForumPostService : IForumPostService
         return posts;
     }
 
-    public Task<bool> ExistsPost(string postId)
+    public async Task<bool> ExistsPost(int postId)
+    {
+        var result = await _unitOfWork.ForumPostRepository.ExistsPost(postId);
+        return result;
+    }
+
+    public Task<Comment?> AddComment(Comment comment, int postId)
     {
         throw new NotImplementedException();
     }

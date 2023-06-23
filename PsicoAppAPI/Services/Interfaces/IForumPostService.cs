@@ -23,12 +23,12 @@ public interface IForumPostService
     /// </summary>
     /// <param name="postId">Id of the post</param>
     /// <returns>true if exists. otherwise false</returns>
-    public Task<bool> ExistsPost(string postId);
+    public Task<bool> ExistsPost(int postId);
     /// <summary>
     /// Add a new comment to a post identified by their post Id
     /// </summary>
     /// <param name="comment">Comment to add</param>
     /// <param name="postId">post Id to add comment</param>
     /// <returns>The Comment if could be added. otherwise null</returns>
-    public Task<Comment?> AddComment(Comment comment, string postId);
+    public Task<Comment?> AddComment(Comment comment, int postId);
 }

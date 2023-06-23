@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
@@ -98,9 +100,17 @@ public class ForumPostsController : BaseApiController
     }
 
     [Authorize(Roles = "3")]
-    [HttpPost("add-comment/{postId}")]
-    public async Task<ActionResult> CommentForumPost(string postId, [FromBody] string content)
+    [HttpPost("add-comment/{postId:int}")]
+    public async Task<ActionResult> CommentForumPost([Required] int postId,
+        [Required] [FromBody] JsonElement jsonContent)
     {
+        var content = System.Text.Json.JsonSerializer.Serialize(jsonContent);
+        var isSpecialist = await _service.IsUserSpecialist();
+        if (!isSpecialist) return Unauthorized("The user with userId from token are not a valid specialist");
+
+        var existsPost = await _service.ExistsPost(postId);
+        if (!existsPost) return BadRequest("Post Id do not match with any forum post");
+
         return Ok();
     }
 }
