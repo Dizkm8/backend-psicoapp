@@ -60,4 +60,15 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
         var mappedPosts = _mapperService.MapToForumPostDto(posts);
         return mappedPosts;
     }
+
+    public async Task<bool> ExistsPost(string postId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<bool> IsUserSpecialist()
+    {
+        var user = await _authService.GetUserEnabledAndSpecialistFromToken();
+        return user is not null;
+    }
 }

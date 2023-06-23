@@ -25,4 +25,9 @@ public class ForumPostService : IForumPostService
         var posts = await _unitOfWork.ForumPostRepository.GetAllPosts();
         return posts;
     }
+
+    public Task<bool> ExistsPost(string postId)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -21,4 +21,16 @@ public interface IForumPostManagementService : IPostManagementService
     /// </summary>
     /// <returns>IEnumerable with the forum posts shaped as Dto</returns>
     public Task<IEnumerable<ForumPostDto>?> GetAllPosts();
+    /// <summary>
+    /// Check if a post exists based on their post Id
+    /// </summary>
+    /// <param name="postId">Id of the post</param>
+    /// <returns>true if exists. otherwise false</returns>
+    public Task<bool> ExistsPost(string postId);
+    
+    /// <summary>
+    /// Check using the token if the userId match with an enabled user and if it is specialist
+    /// </summary>
+    /// <returns>true if match with the filters. otherwise false</returns>
+    public Task<bool> IsUserSpecialist();
 }

@@ -37,15 +37,17 @@ public class ForumPostsController : BaseApiController
     public async Task<ActionResult> AddForumPost(AddForumPostDto addForumPost)
     {
         var validateContent = await _service.CheckPost(addForumPost);
-        if (!validateContent) return BadRequest(
-            new ErrorModel { ErrorCode = 400, Message = "The title or content don't follow the rules to post" });
+        if (!validateContent)
+            return BadRequest(
+                new ErrorModel { ErrorCode = 400, Message = "The title or content don't follow the rules to post" });
 
         var existsTag = await _service.CheckPostTag(addForumPost);
         if (!existsTag) return NotFound($"Tag with ID {addForumPost.TagId} does not exist");
 
         var postToReturn = await _service.AddForumPost(addForumPost);
-        if (postToReturn is null) return StatusCode(StatusCodes.Status500InternalServerError,
-            new ErrorModel { ErrorCode = 500, Message = "Internal error creating forum post" });
+        if (postToReturn is null)
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new ErrorModel { ErrorCode = 500, Message = "Internal error creating forum post" });
         return Ok(postToReturn);
     }
 
@@ -89,8 +91,16 @@ public class ForumPostsController : BaseApiController
     public async Task<ActionResult<IEnumerable<ForumPostDto>>> GetAllForumPosts()
     {
         var posts = await _service.GetAllPosts();
-        if(posts is null) return StatusCode(StatusCodes.Status500InternalServerError,
-            new ErrorModel { ErrorCode = 500, Message = "Internal error fetching all forum posts" });
+        if (posts is null)
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new ErrorModel { ErrorCode = 500, Message = "Internal error fetching all forum posts" });
         return Ok(posts);
+    }
+
+    [Authorize(Roles = "3")]
+    [HttpPost("add-comment/{postId}")]
+    public async Task<ActionResult> CommentForumPost(string postId, [FromBody] string content)
+    {
+        return Ok();
     }
 }
