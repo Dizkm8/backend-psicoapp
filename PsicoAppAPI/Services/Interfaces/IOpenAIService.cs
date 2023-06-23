@@ -1,6 +1,6 @@
 namespace PsicoAppAPI.Services.Interfaces
 {
-    public interface IOpenAIService
+    public interface IOpenAiService
     {
         /// <summary>
         /// Get a request from OpenAI API
@@ -22,5 +22,17 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="args">array with content to check</param>
         /// <returns>True if it's valid. otherwise false</returns>
         public Task<bool> CheckPsychologyContent(IEnumerable<string> args);
+
+        /// <summary>
+        /// Get the rules to gpt moderation from repository
+        /// </summary>
+        /// <returns>string if rules exists. otherwise false</returns>
+        public Task<string?> GetRules();
+        /// <summary>
+        /// Set the rules to gpt moderation in the repository
+        /// </summary>
+        /// <param name="newRules">New rules to update</param>
+        /// <returns>true if new rules could be setted. otherwise false</returns>
+        public Task<bool> SetRules(string newRules);
     }
 }

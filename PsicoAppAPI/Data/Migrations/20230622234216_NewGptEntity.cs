@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PsicoAppAPI.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class DataBaseJune : Migration
+    public partial class NewGptEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,6 +22,19 @@ namespace PsicoAppAPI.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AppointmentStatuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GptRules",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Rules = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GptRules", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -337,6 +350,9 @@ namespace PsicoAppAPI.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "FeedPosts");
+
+            migrationBuilder.DropTable(
+                name: "GptRules");
 
             migrationBuilder.DropTable(
                 name: "Specialists");
