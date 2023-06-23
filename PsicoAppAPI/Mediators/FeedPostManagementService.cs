@@ -54,9 +54,10 @@ namespace PsicoAppAPI.Mediators
             return user is not null;
         }
 
-        public Task<bool> DeletePost(int postId)
+        public async Task<bool> DeletePost(int postId)
         {
-            throw new NotImplementedException();
+            var result = await _feedPostService.DeletePostById(postId);
+            return result;
         }
 
         public async Task<bool> ExistsPost(int postId)

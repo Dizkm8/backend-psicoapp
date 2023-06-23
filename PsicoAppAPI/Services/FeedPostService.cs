@@ -30,5 +30,11 @@ namespace PsicoAppAPI.Services
             var post = await _unitOfWork.FeedPostRepository.GetPostById(postId);
             return post;
         }
+
+        public async Task<bool> DeletePostById(int postId)
+        {
+            var result = await _unitOfWork.FeedPostRepository.DeletePostById(postId);
+            return result;
+        }
     }
 }

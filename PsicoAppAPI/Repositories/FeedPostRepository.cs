@@ -44,7 +44,7 @@ namespace PsicoAppAPI.Repositories
         {
             // Create a new temp post with the postId to delete correctly from database
             var tempPost = new FeedPost { Id = postId };
-            _context.FeedPosts.RemoveRange(tempPost);
+            _context.FeedPosts.Remove(tempPost);
             
             var result = await _context.SaveChangesAsync() > 0;
 
