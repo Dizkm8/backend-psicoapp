@@ -98,6 +98,17 @@ public class ForumPostsController : BaseApiController
         return Ok(posts);
     }
 
+    /// <summary>
+    /// Comment an existing post
+    /// </summary>
+    /// <param name="postId">Post Id of the forum post to comment</param>
+    /// <param name="content">Content of the comment to add</param>
+    /// <returns>
+    /// If the user identified by their userId in token are not specialist or are not enabled return 401 Unauthorized
+    /// If the postId do not match with any existing forum post in the database return a BadRequest with a custom error
+    /// If something went wrong adding the comment to the forum return a error status 500 internal error server
+    /// If everything goes well return a 200 status code with no message
+    /// </returns>
     [Authorize(Roles = "3")]
     [HttpPost("add-comment/{postId:int}")]
     public async Task<ActionResult> CommentForumPost([Required] int postId,
@@ -116,6 +127,42 @@ public class ForumPostsController : BaseApiController
         return Ok();
     }
 
+    /// <summary>
+    /// Get all forum posts
+    /// </summary>
+    /// <param name="postId">Post id of the forum post to get</param>
+    /// <returns>
+    /// If the user Id from the provided token doesn't match with a client return 401 Unauthorized
+    /// If something went wrong fetching the posts or do not exists return error 400 Bad Request
+    /// If everything goes well, return a the post with the following properties:
+    /// Id: Post's id
+    /// Title: Post's title
+    /// Content: Post's content
+    /// PublishedOn: Post's published date (ISO 8601)
+    /// UserId: Post's user id
+    /// 
+    /// The next three attributes are used to show the user's full name
+    /// I suggest threat like "private" stuff, so they are not used in the client side
+    /// use fullName attribute instead
+    /// UserName: Post's user name 
+    /// UserFirstLastName: Post's user first last name
+    /// UserSecondLastName: Post's user second last name
+    /// 
+    /// FullName: Post's user full name
+    /// TagName: Post's tag name
+    /// Comments: Post's comments, this is a list, so, follow this structure:
+    ///    Id: Comment's id
+    ///    Content: Comment's content
+    ///    PublishedOn: Comment's published date (ISO 8601)
+    ///    
+    ///    As the previous attributes, the next three attributes are used to show the user's full name
+    ///    same rules apply here
+    ///    UserName: Comment's user name
+    ///    UserFirstLastName: Comment's user first last name
+    ///    UserSecondLastName: Comment's user second last name
+    /// 
+    ///    FullName: Comment's user full name
+    /// </returns>
     [Authorize]
     [HttpGet("get-post/{postId:int}")]
     public async Task<ActionResult<ForumPostDto>> GetForumPost(int postId)
