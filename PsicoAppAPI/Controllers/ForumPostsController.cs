@@ -212,7 +212,9 @@ public class ForumPostsController : BaseApiController
         var existsPost = await _service.ExistsPost(postId);
         if (!existsPost) return BadRequest("Post Id do not match with any existing post");
 
+        var existComment = await _service.ExistsComment(postId, commentId);
+        if(!existComment) return BadRequest("Comment Id do not match with any existing comment");
         
-        return Ok();
+        return Ok(existComment);
     }
 }

@@ -54,4 +54,10 @@ public class ForumPostService : IForumPostService
     {
         throw new NotImplementedException();
     }
+
+    public async Task<bool> ExistsComment(int postId, int commentId)
+    {
+        var comment = await _unitOfWork.ForumPostRepository.GetCommentByIdAndPostId(postId, commentId);
+        return comment is not null;
+    }
 }

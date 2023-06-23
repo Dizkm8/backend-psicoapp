@@ -40,4 +40,11 @@ public interface IForumPostRepository
     /// <param name="commentId">Id of the comment</param>
     /// <returns></returns>
     public Task<bool> DeleteCommentByIdAndPostId(int postId, int commentId);
+    /// <summary>
+    /// Check if exists a comment by their Id and the post Id where is attached
+    /// </summary>
+    /// <param name="postId">Id of the post</param>
+    /// <param name="commentId">Id of the comment</param>
+    /// <returns>Comment if could be found. otherwise null</returns>
+    public Task<Comment?> GetCommentByIdAndPostId(int postId, int commentId);
 }

@@ -118,6 +118,7 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
 
     public Task<bool> ExistsComment(int postId, int commentId)
     {
-        throw new NotImplementedException();
+        var result = _forumPostService.ExistsComment(postId, commentId);
+        return result;
     }
 }

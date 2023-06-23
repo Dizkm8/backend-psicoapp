@@ -48,4 +48,11 @@ public interface IForumPostService
     /// <param name="commentId">Id of the comment</param>
     /// <returns>true if could be deleted. otherwise false</returns>
     public Task<bool> DeleteComment(int postId, int commentId);
+    /// <summary>
+    /// Check if exists comment by their Id and the post Id where is attached
+    /// </summary>
+    /// <param name="postId">Id of the post where is attached</param>
+    /// <param name="commentId">Id of the comment</param>
+    /// <returns>true if exists. otherwise false</returns>
+    public Task<bool> ExistsComment(int postId, int commentId);
 }
