@@ -30,6 +30,7 @@ public class AdminController : BaseApiController
     }
 
     [Authorize(Roles = "1")]
+    //TODO: Change to HttpPut
     [HttpPost("update-rules")]
     public async Task<ActionResult<string>> SetGptRules(
         [Required] [StringLength(800, ErrorMessage = "Rules cannot be larger than 255 characters.")]
