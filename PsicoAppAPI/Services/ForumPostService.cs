@@ -43,4 +43,10 @@ public class ForumPostService : IForumPostService
         var result = await _unitOfWork.CommentRepository.AddCommentAndSaveChanges(comment);
         return result;
     }
+
+    public async Task<bool> DeletePostById(int postId)
+    {
+        var result = await _unitOfWork.ForumPostRepository.DeletePostById(postId);
+        return result;
+    }
 }
