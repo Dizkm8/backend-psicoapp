@@ -79,6 +79,16 @@ namespace PsicoAppAPI.Controllers
             return Ok(posts);
         }
 
+        /// <summary>
+        /// Delete a post by their post Id
+        /// </summary>
+        /// <param name="postId">Id of the post</param>
+        /// <returns>
+        /// If the user Id from the provided token doesn't match with a admin return a status 401 Unauthorized with a custom message
+        /// If the the post Id do not match with any post return a status404 with a BadRequest with custom message
+        /// If something went wrong deleting the post return a status 500 internal server error with a custom messsage
+        /// If everything goes well return a status 200
+        /// </returns>
         [Authorize(Roles = "1")]
         [HttpDelete("delete-post/{postId:int}")]
         public async Task<ActionResult> DeletePost([Required] int postId)
