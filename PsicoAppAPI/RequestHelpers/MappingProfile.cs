@@ -1,4 +1,5 @@
 using AutoMapper;
+using PsicoAppAPI.DTOs.Appointment;
 using PsicoAppAPI.DTOs.BasePosts;
 using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.DTOs.ForumPost;
@@ -23,6 +24,7 @@ namespace PsicoAppAPI.RequestHelpers
             CreateMap<AddForumPostDto, ForumPost>();
             CreateMap<ForumPost, ForumPostDto>();
             CreateMap<Comment, CommentDto>();
+            CreateMap<Appointment, AppointmentDto>();
         }
     }
 }

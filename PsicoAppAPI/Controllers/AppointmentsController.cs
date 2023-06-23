@@ -6,6 +6,7 @@ using PsicoAppAPI.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using PsicoAppAPI.DTOs.Appointment;
 using PsicoAppAPI.Mediators.Interfaces;
 
 namespace PsicoAppAPI.Controllers
@@ -23,8 +24,11 @@ namespace PsicoAppAPI.Controllers
         [HttpGet("get-appointment/{userId}")]
         public async Task<ActionResult<IEnumerable<AppointmentDto>>> GetAppointmentByUser(string userId)
         {
-            
-            return Ok();
+            var isClient = await _service.IsUserClient();
+            if (!isClient) return Unauthorized("The user with userId from token are not a valid client");
+
+            var appointments = _service.GetAppointmentsByUser(userId);
+            return Ok(appointments);
         }
     }
 }

@@ -14,9 +14,10 @@ namespace PsicoAppAPI.Services
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public async Task<List<Appointment>> GetAppointmentsByUser(int userId)
+        public async Task<List<Appointment>> GetAppointmentsByUser(string userId)
         {
-            throw new NotImplementedException();
+            var appointments = await _unitOfWork.AppointmentRepository.GetAppointmentsByUser(userId);
+            return appointments ?? new List<Appointment>();
         }
 
         public async Task<bool> AddAppointment(string requestingUserId, string requestedUserId, DateTime bookedDate)

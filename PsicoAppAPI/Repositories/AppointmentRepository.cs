@@ -16,7 +16,7 @@ namespace PsicoAppAPI.Repositories
             _context = context;
         }
 
-        public async Task<List<Appointment>> GetAppointmentsByUser(string userId)
+        public async Task<List<Appointment>?> GetAppointmentsByUser(string userId)
         {
             var appointments = await _context.Appointments
                 .Where(a => a.RequestingUserId == userId)

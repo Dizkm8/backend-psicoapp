@@ -11,7 +11,7 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// </summary>
         /// <param name="userId">Id of the user</param>
         /// <returns>List with the Appointment</returns>
-        Task<List<Appointment>> GetAppointmentsByUser(string userId);
+        Task<List<Appointment>?> GetAppointmentsByUser(string userId);
         /// <summary>
         /// Add a new appointment to the database
         /// </summary>
