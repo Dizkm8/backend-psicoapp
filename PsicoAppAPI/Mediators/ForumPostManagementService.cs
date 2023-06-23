@@ -1,3 +1,4 @@
+using OpenAI_API.Moderation;
 using PsicoAppAPI.DTOs.ForumPost;
 using PsicoAppAPI.Mediators.Interfaces;
 using PsicoAppAPI.Models;
@@ -96,5 +97,17 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
 
         var result = await _forumPostService.AddComment(comment);
         return result;
+    }
+
+    public async Task<bool> DeletePost(int postId)
+    {
+        var result = await _forumPostService.DeletePostById(postId);
+        return result;
+    }
+
+    public async Task<bool> IsUserAdmin()
+    {
+        var user = await _authService.GetUserEnabledAndAdminFromToken();
+        return user is not null;
     }
 }
