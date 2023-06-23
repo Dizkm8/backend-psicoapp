@@ -102,7 +102,7 @@ public class ForumPostsController : BaseApiController
     /// Comment an existing post
     /// </summary>
     /// <param name="postId">Post Id of the forum post to comment</param>
-    /// <param name="content">Content of the comment to add</param>
+    /// <param name="comment">Comment Dto to add with content</param>
     /// <returns>
     /// If the user identified by their userId in token are not specialist or are not enabled return 401 Unauthorized
     /// If the postId do not match with any existing forum post in the database return a BadRequest with a custom error
@@ -111,8 +111,7 @@ public class ForumPostsController : BaseApiController
     /// </returns>
     [Authorize(Roles = "3")]
     [HttpPost("add-comment/{postId:int}")]
-    public async Task<ActionResult> CommentForumPost([Required] int postId,
-        [Required] [FromBody] string content)
+    public async Task<ActionResult> CommentForumPost(int postId, [FromBody] AddCommentDto comment)
     {
         var isSpecialist = await _service.IsUserSpecialist();
         if (!isSpecialist) return Unauthorized("The user with userId from token are not a valid specialist");
@@ -120,6 +119,7 @@ public class ForumPostsController : BaseApiController
         var existsPost = await _service.ExistsPost(postId);
         if (!existsPost) return BadRequest("Post Id do not match with any existing post");
 
+        var content = comment.Content;
         var result = await _service.AddComment(postId, content);
         if (!result)
             return StatusCode(StatusCodes.Status500InternalServerError,
