@@ -42,12 +42,11 @@ namespace PsicoAppAPI.Repositories
 
         public async Task<bool> DeletePostById(int postId)
         {
-            // Create a new temp post with the postId to delete correctly from database
-            var tempPost = new FeedPost { Id = postId };
-            _context.FeedPosts.Remove(tempPost);
-            
-            var result = await _context.SaveChangesAsync() > 0;
+            var post = await _context.FeedPosts.SingleOrDefaultAsync(p => p.Id == postId);
+            if (post is null) return false;
+            _context.Remove(post);
 
+            var result = await _context.SaveChangesAsync() > 0;
             return result;
         }
     }
