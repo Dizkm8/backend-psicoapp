@@ -1,5 +1,3 @@
-using System;
-
 namespace PsicoAppAPI.DTOs
 {
     public class AppointmentDto
