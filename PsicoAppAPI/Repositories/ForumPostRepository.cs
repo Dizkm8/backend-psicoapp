@@ -48,4 +48,14 @@ public class ForumPostRepository : IForumPostRepository
         var post = await GetPostById(postId);
         return post is not null;
     }
+
+    public async Task<bool> DeletePostById(int postId)
+    {
+        var post = await _context.ForumPosts.SingleOrDefaultAsync(p => p.Id == postId);
+        if (post is null) return false;
+        _context.Remove(post);
+
+        var result = await _context.SaveChangesAsync() > 0;
+        return result;
+    }
 }

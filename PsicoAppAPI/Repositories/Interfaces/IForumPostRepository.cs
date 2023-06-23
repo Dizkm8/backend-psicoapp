@@ -27,4 +27,10 @@ public interface IForumPostRepository
     /// <param name="postId">Id of the post</param>
     /// <returns>true if exists. otherwise false</returns>
     public Task<bool> ExistsPost(int postId);
+    /// <summary>
+    /// Delete a forum post by their ID
+    /// </summary>
+    /// <param name="postId">Id of the post</param>
+    /// <returns>true if could be deleted. otherwise false</returns>
+    public Task<bool> DeletePostById(int postId);
 }

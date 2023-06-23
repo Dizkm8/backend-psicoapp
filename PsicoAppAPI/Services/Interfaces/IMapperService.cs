@@ -105,5 +105,11 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="posts">Posts to map</param>
         /// <returns>List of mapped posts</returns>
         public List<ForumPostDto> MapToForumPostDto(List<ForumPost>? posts);
+        /// <summary>
+        /// Map list of FeedPost to List of FeedPostDto
+        /// </summary>
+        /// <param name="posts">Posts to map</param>
+        /// <returns>List of mapped posts</returns>
+        public List<FeedPostDto> MapToFeedPostDto(List<FeedPost>? posts);
     }
 }
