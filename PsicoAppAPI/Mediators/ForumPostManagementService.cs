@@ -111,9 +111,10 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
         return user is not null;
     }
 
-    public Task<bool> DeleteComment(int postId, int commentId)
+    public async Task<bool> DeleteComment(int postId, int commentId)
     {
-        throw new NotImplementedException();
+        var result = await _forumPostService.DeleteComment(postId, commentId);
+        return result;
     }
 
     public Task<bool> ExistsComment(int postId, int commentId)

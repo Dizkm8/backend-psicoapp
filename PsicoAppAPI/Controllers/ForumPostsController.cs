@@ -213,8 +213,12 @@ public class ForumPostsController : BaseApiController
         if (!existsPost) return BadRequest("Post Id do not match with any existing post");
 
         var existComment = await _service.ExistsComment(postId, commentId);
-        if(!existComment) return BadRequest("Comment Id do not match with any existing comment");
-        
-        return Ok(existComment);
+        if (!existComment) return BadRequest("Comment Id do not match with any existing comment");
+
+        var result = await _service.DeleteComment(postId, commentId);
+        if (!result)
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new ErrorModel { ErrorCode = 500, Message = "Internal error deleting the comment" });
+        return Ok();
     }
 }

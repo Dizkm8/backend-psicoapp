@@ -50,9 +50,10 @@ public class ForumPostService : IForumPostService
         return result;
     }
 
-    public Task<bool> DeleteComment(int postId, int commentId)
+    public async Task<bool> DeleteComment(int postId, int commentId)
     {
-        throw new NotImplementedException();
+        var result = await _unitOfWork.ForumPostRepository.DeleteCommentByIdAndPostId(postId, commentId);
+        return result;
     }
 
     public async Task<bool> ExistsComment(int postId, int commentId)
