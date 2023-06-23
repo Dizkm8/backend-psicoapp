@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PsicoAppAPI.Data;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Repositories.Interfaces;
@@ -18,6 +19,15 @@ namespace PsicoAppAPI.Repositories
             await _context.FeedPosts.AddAsync(feedPost);
             var result = await _context.SaveChangesAsync() > 0;
             return result;
+        }
+
+        public async Task<List<FeedPost>> GetAllPosts()
+        {
+            var posts = await _context.FeedPosts
+                .Include(p => p.User)
+                .Include(p => p.Tag)
+                .ToListAsync();
+            return posts;
         }
     }
 }

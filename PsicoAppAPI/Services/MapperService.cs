@@ -111,5 +111,11 @@ namespace PsicoAppAPI.Services
             var mappedPosts = posts?.Select(x => _mapper.Map<ForumPostDto>(x)).ToList();
             return mappedPosts ?? new List<ForumPostDto>();
         }
+
+        public List<FeedPostDto> MapToFeedPostDto(List<FeedPost>? posts)
+        {
+            var mappedPosts = posts?.Select(x => _mapper.Map<FeedPostDto>(x)).ToList();
+            return mappedPosts ?? new List<FeedPostDto>();
+        }
     }
 }
