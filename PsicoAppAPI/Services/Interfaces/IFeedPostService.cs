@@ -16,5 +16,10 @@ namespace PsicoAppAPI.Services.Interfaces
         /// </summary>
         /// <returns>IEnumerable with the FeedPost</returns>
         public Task<List<FeedPost>> GetAllPosts();
+        /// <summary>
+        /// Get a post by their postId
+        /// </summary>
+        /// <returns>Post if exists. otherwise null</returns>
+        public Task<FeedPost?> GetPostById(int postId);
     }
 }

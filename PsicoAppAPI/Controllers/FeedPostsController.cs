@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
@@ -76,6 +77,16 @@ namespace PsicoAppAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new ErrorModel { ErrorCode = 500, Message = "Internal error fetching all forum posts" });
             return Ok(posts);
+        }
+
+        [Authorize(Roles = "1")]
+        [HttpDelete("delete-post/{postId:int}")]
+        public async Task<ActionResult> DeletePost([Required] int postId)
+        {
+            var isSpecialist = await _service.IsUserAdmin();
+            if (!isSpecialist) return Unauthorized("The user with userId from token are not a valid admin");
+
+            return Ok();
         }
     }
 }

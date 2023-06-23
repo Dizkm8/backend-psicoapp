@@ -24,5 +24,10 @@ namespace PsicoAppAPI.Services
             var posts = await _unitOfWork.FeedPostRepository.GetAllPosts();
             return posts;
         }
+
+        public Task<FeedPost?> GetPostById(int postId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

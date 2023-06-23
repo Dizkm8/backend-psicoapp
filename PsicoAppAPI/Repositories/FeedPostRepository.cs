@@ -29,5 +29,15 @@ namespace PsicoAppAPI.Repositories
                 .ToListAsync();
             return posts;
         }
+
+        public async Task<FeedPost?> GetPostById(int postId)
+        {
+            var post = await _context.FeedPosts
+                .Where(p => p.Id == postId)
+                .Include(p => p.User)
+                .Include(p => p.Tag)
+                .SingleOrDefaultAsync();
+            return post;
+        }
     }
 }

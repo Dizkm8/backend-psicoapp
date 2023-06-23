@@ -47,5 +47,21 @@ namespace PsicoAppAPI.Mediators
             var mappedPosts = _mapperService.MapToFeedPostDto(posts);
             return mappedPosts;
         }
+
+        public async Task<bool> IsUserAdmin()
+        {
+            var user = await _authService.GetUserEnabledAndAdminFromToken();
+            return user is not null;
+        }
+
+        public Task<bool> DeletePost(int postId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> ExistsPost(int postId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
