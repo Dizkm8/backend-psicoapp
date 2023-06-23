@@ -41,5 +41,16 @@ namespace PsicoAppAPI.Controllers
                 new ErrorModel { ErrorCode = 500, Message = "Internal error creating feedpost" });
             return Ok(postToReturn);
         }
+        
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<FeedPostDto>>> GetAllForumPosts()
+        {
+            var posts = await _service.GetAllPosts();
+            if (posts is null)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ErrorModel { ErrorCode = 500, Message = "Internal error fetching all forum posts" });
+            return Ok(posts);
+        }
     }
 }

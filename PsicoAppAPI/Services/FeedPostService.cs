@@ -18,5 +18,11 @@ namespace PsicoAppAPI.Services
             if (feedPost is null) return false;
             return await _unitOfWork.FeedPostRepository.AddFeedPostAndSaveChanges(feedPost);
         }
+
+        public async Task<List<FeedPost>> GetAllPosts()
+        {
+            var posts = await _unitOfWork.FeedPostRepository.GetAllPosts();
+            return posts;
+        }
     }
 }

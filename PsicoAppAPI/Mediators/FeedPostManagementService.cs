@@ -13,7 +13,7 @@ namespace PsicoAppAPI.Mediators
         private readonly ITagService _tagService;
 
         public FeedPostManagementService(IFeedPostService feedPostService, IAuthManagementService authService,
-            IMapperService mapperService, ITagService tagService) : 
+            IMapperService mapperService, ITagService tagService) :
             base(authService, mapperService, tagService)
         {
             _feedPostService = feedPostService ?? throw new ArgumentNullException(nameof(feedPostService));
@@ -39,6 +39,13 @@ namespace PsicoAppAPI.Mediators
 
             var postDto = _mapperService.MapToFeedPostDto(feedPost);
             return postDto;
+        }
+
+        public async Task<IEnumerable<FeedPostDto>?> GetAllPosts()
+        {
+            var posts = await _feedPostService.GetAllPosts();
+            var mappedPosts = _mapperService.MapToFeedPostDto(posts);
+            return mappedPosts;
         }
     }
 }

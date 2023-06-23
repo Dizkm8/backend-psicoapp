@@ -10,13 +10,7 @@ public class ForumPostDto
     public string UserName { get; set; } = null!;
     public string UserFirstLastName { get; set; } = null!;
     public string UserSecondLastName { get; set; } = null!;
-    public string FullName
-    {
-        get
-        {
-            return $"{UserName} {UserFirstLastName} {UserSecondLastName}";
-        }
-    }
+    public string FullName => $"{UserName} {UserFirstLastName} {UserSecondLastName}";
     public string TagName { get; set; } = null!;
     public List<CommentDto> Comments { get; set; } = new();
 }

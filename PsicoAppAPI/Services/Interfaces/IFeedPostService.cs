@@ -11,5 +11,10 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="feedPost">Feedpost to add</param>
         /// <returns>True if could be added. otherwise false</returns>
         public Task<bool> AddFeedPost(FeedPost? feedPost);
+        /// <summary>
+        /// Get all FeedPost from the database
+        /// </summary>
+        /// <returns>IEnumerable with the FeedPost</returns>
+        public Task<List<FeedPost>> GetAllPosts();
     }
 }
