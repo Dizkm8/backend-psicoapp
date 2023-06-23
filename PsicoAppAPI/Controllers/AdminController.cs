@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
@@ -33,10 +32,9 @@ public class AdminController : BaseApiController
     [Authorize(Roles = "1")]
     [HttpPost("update-rules")]
     public async Task<ActionResult<string>> SetGptRules(
-        [Required] [StringLength(800, ErrorMessage = "Rules cannot be larger than 255 characters.")] [FromBody]
-        JsonElement jsonElement)
+        [Required] [StringLength(800, ErrorMessage = "Rules cannot be larger than 255 characters.")]
+        string rules)
     {
-        var rules = JsonSerializer.Serialize(jsonElement);
         var isAdmin = await _service.IsUserAdmin();
         if (!isAdmin) return Unauthorized("The user with userId from token are not a valid admin");
 
