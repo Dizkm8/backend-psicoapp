@@ -110,10 +110,11 @@ public class ForumPostsController : BaseApiController
         if (!existsPost) return BadRequest("Post Id do not match with any existing post");
 
         var result = await _service.AddComment(postId, content);
-        if(!result) return StatusCode(StatusCodes.Status500InternalServerError,
-            new ErrorModel { ErrorCode = 500, Message = "Internal error adding a new comment" });
+        if (!result)
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new ErrorModel { ErrorCode = 500, Message = "Internal error adding a new comment" });
         return Ok();
     }
-    
+
     
 }
