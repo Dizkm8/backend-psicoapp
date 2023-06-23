@@ -65,4 +65,19 @@ public interface IForumPostManagementService : IPostManagementService
     /// </summary>
     /// <returns>true if match with the filters. otherwise false</returns>
     public Task<bool> IsUserAdmin();
+    /// <summary>
+    /// Delete a comment by their Id and the postId where is attached
+    /// </summary>
+    /// <param name="postId">Id of the post where comment is attached</param>
+    /// <param name="commentId">Id of the comment</param>
+    /// <returns>true if could deleted. otherwise false</returns>
+    public Task<bool> DeleteComment(int postId, int commentId);
+
+    /// <summary>
+    /// Check if exists a comment by their Id and the post Id where is attached
+    /// </summary>
+    /// <param name="postId">Id of the post</param>
+    /// <param name="commentId">Id of the comment</param>
+    /// <returns>true if exists. otherwise false</returns>
+    public Task<bool> ExistsComment(int postId, int commentId);
 }
