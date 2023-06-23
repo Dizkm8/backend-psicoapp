@@ -21,9 +21,10 @@ public class AdminManagementService : IAdminManagementService
         return rules;
     }
 
-    public Task<bool> SetModerationRules(string newRules)
+    public async Task<bool> SetModerationRules(string newRules)
     {
-        throw new NotImplementedException();
+        var result = await _openAiService.SetRules(newRules);
+        return result;
     }
 
     public async Task<bool> IsUserAdmin()

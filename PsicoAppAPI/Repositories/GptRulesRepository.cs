@@ -22,13 +22,9 @@ public class GptRulesRepository : IGptRulesRepository
         return rule?.Rules;
     }
 
-    public async Task<bool> SetRulesAndSaveChanges(string newRules)
+    public async Task<bool> SetRulesAndSaveChanges(GptRules rules)
     {
-        _context.Update(new GptRules()
-        {
-            Id = 1,
-            Rules = newRules
-        });
+        _context.Update(rules);
         return await _context.SaveChangesAsync() > 0;
     }
 }

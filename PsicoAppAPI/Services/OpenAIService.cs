@@ -4,6 +4,7 @@ using DotNetEnv;
 using Newtonsoft.Json;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using PsicoAppAPI.Models;
 using PsicoAppAPI.Repositories.Interfaces;
 
 namespace PsicoAppAPI.Services
@@ -96,8 +97,12 @@ namespace PsicoAppAPI.Services
 
         public async Task<bool> SetRules(string newRules)
         {
-            // fix
-            return false;
+            var result = await _unitOfWork.GptRulesRepository.SetRulesAndSaveChanges(new GptRules()
+            {
+                Id = 1,
+                Rules = newRules
+            });
+            return result;
         }
     }
 }
