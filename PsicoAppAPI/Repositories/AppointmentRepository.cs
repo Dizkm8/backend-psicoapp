@@ -60,7 +60,7 @@ namespace PsicoAppAPI.Repositories
 
             // Set the availability of the specialist to isAvailable = true
             var availability = await _context.AvailabilitySlots
-                .Where(a => a.UserId == appointment.RequestingUserId && a.StartTime == appointment.BookedDate)
+                .Where(a => a.UserId == appointment.RequestedUserId && a.StartTime == appointment.BookedDate)
                 .SingleOrDefaultAsync();
             if (availability is null) return false;
             availability.IsAvailableOverride = true;

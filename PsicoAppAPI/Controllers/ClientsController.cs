@@ -17,7 +17,7 @@ public class ClientsController : BaseApiController
     }
     
     //TODO: Update this to Roles = "2"
-    [Authorize(Roles = "3")]
+    [Authorize(Roles = "2")]
     [HttpPost("add-appointment/{specialistUserId}")]
     public async Task<ActionResult> GenerateAppointment(string specialistUserId, [FromQuery]
         [Required]
