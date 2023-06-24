@@ -158,6 +158,12 @@ namespace PsicoAppAPI.Mediators
             return admin is not null || specialist is not null;
         }
 
+        public async Task<bool> IsAdmin()
+        {
+            var admin = await _authService.GetUserEnabledAndAdminFromToken();
+            return admin is not null;
+        }
+
         public async Task<IEnumerable<UserDto>> GetAllUsers()
         {
             var users = await _userService.GetAllUsers();
