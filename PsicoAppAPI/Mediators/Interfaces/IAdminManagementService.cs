@@ -1,3 +1,5 @@
+using PsicoAppAPI.DTOs.User;
+
 namespace PsicoAppAPI.Mediators.Interfaces;
 
 public interface IAdminManagementService
@@ -18,4 +20,16 @@ public interface IAdminManagementService
     /// </summary>
     /// <returns>true if match with the filters. otherwise false</returns>
     public Task<bool> IsUserAdmin();
+    /// <summary>
+    /// Asynchronously check if a email is available to use
+    /// </summary>
+    /// <param name="specialistDto">User shape Dto to email validation</param>
+    /// <returns>True if exists, otherwise false</returns>
+    public Task<bool> CheckEmailAvailability(RegisterSpecialistDto specialistDto);
+    /// <summary>
+    /// Asynchronously check if a user exists by id
+    /// </summary>
+    /// <param name="specialistDto">User shape Dto to Id validation</param>
+    /// <returns>True if exists, otherwise false</returns>
+    public Task<bool> CheckUserIdAvailability(RegisterSpecialistDto specialistDto);
 }

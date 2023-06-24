@@ -5,6 +5,7 @@ using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.DTOs.ForumPost;
 using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
+using PsicoAppAPI.DTOs.User;
 using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.RequestHelpers
@@ -13,7 +14,7 @@ namespace PsicoAppAPI.RequestHelpers
     {
         public MappingProfile()
         {
-            CreateMap<DTOs.RegisterClientDto, User>();
+            CreateMap<RegisterClientDto, User>();
             CreateMap<User, ProfileInformationDto>();
             CreateMap<User, UpdateProfileInformationDto>();
             CreateMap<AddFeedPostDto, FeedPost>();

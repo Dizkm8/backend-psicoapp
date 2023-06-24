@@ -1,5 +1,5 @@
-using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
+using PsicoAppAPI.DTOs.User;
 using PsicoAppAPI.Mediators.Interfaces;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Services.Interfaces;

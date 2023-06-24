@@ -5,6 +5,7 @@ using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.DTOs.ForumPost;
 using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
+using PsicoAppAPI.DTOs.User;
 using PsicoAppAPI.Models;
 
 namespace PsicoAppAPI.Services.Interfaces
