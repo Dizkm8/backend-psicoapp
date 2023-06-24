@@ -44,4 +44,11 @@ public interface IAdminManagementService
     /// <param name="specialistDto">RegisterSpecialistDto to check</param>
     /// <returns>true if exists. otherwise false</returns>
     public Task<bool> ExistsSpeciality(RegisterSpecialistDto specialistDto);
+    /// <summary>
+    /// Update the enabled attribute of a user by their userId
+    /// </summary>
+    /// <param name="userId">Id of the user</param>
+    /// <param name="isEnabled">new state for isEnabled</param>
+    /// <returns>true if could updated. null if userId do not match with any users. otherwise false</returns>
+    public Task<bool?> UpdateUserAvailability(string userId, bool isEnabled);
 }
