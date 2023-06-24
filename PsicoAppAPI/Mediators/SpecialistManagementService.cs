@@ -63,6 +63,13 @@ namespace PsicoAppAPI.Mediators
             return result is null;
         }
 
+        public async Task<IEnumerable<SpecialityDto>> GetAllSpecialities()
+        {
+            var specialities = await _specialistService.GetAllSpecialities();
+            
+            throw new NotImplementedException();
+        }
+
         public async Task<List<AvailabilitySlotDto>?> GetAvailabilitySlots(string userId)
         {
             var isSpecialist = await _userManagementService.IsUserSpecialist(userId);

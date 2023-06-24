@@ -52,6 +52,12 @@ namespace PsicoAppAPI.Services
             return speciality;
         }
 
+        public async Task<List<Speciality>> GetAllSpecialities()
+        {
+            var specialities = await _unitOfWork.SpecialistRepository.GetAllSpecialities();
+            return specialities;
+        }
+
         public async Task<List<AvailabilitySlot>?> GetAllAvailability(string? userId)
         {
             if (userId is null) return null;
