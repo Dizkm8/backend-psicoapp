@@ -12,7 +12,16 @@ namespace PsicoAppAPI.Services.Interfaces
         /// </summary>
         /// <param name="userId">Id of the user</param>
         /// <returns>List with appointments</returns>
-        Task<List<Appointment>> GetAppointmentsByUser(string userId);
+        Task<List<Appointment>> GetAppointmentsByClient(string userId);
+
+        /// <summary>
+        /// Get the appointments of an specialist based on their userId
+        /// descending orderer by BookedDate attribute of Appointment
+        /// </summary>
+        /// <param name="userId">Id of the specialist</param>
+        /// <returns>List with appointments</returns>
+        Task<List<Appointment>> GetAppointmentsBySpecialist(string userId);
+
         /// <summary>
         /// Add an appointment to the database
         /// When an appointment is added, the status is set to "Booked"
@@ -22,12 +31,14 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="bookedDate">date to book the appointment</param>
         /// <returns>true if could be added. otherwise false</returns>
         Task<bool> AddAppointment(string requestingUserId, string requestedUserId, DateTime bookedDate);
+
         /// <summary>
         /// Cancel the appointment by their ID
         /// </summary>
         /// <param name="appointmentId">Id of the appointment</param>
         /// <returns>true if could be canceled. otherwise false</returns>
         Task<bool> CancelAppointment(int appointmentId);
+
         /// <summary>
         /// Get all the appointments of the system
         /// </summary>

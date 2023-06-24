@@ -17,7 +17,7 @@ namespace PsicoAppAPI.Controllers
         }
 
         /// <summary>
-        /// Get all the appointmets of an client
+        /// Get all the appointments of an client
         /// </summary>
         /// <returns>
         /// If the userId in the token are not a client and enabled user return status code 401 Unauthorized
@@ -39,14 +39,47 @@ namespace PsicoAppAPI.Controllers
         /// AppointmentStatusName: The status in words (done, booked or canceled)
         /// </returns>
         [Authorize(Roles = "2")]
-        [HttpGet("get-appointments")]
-        public async Task<ActionResult<IEnumerable<AppointmentDto>>> GetAppointmentByUser()
+        [HttpGet("get-appointments-client")]
+        public async Task<ActionResult<IEnumerable<ClientAppointmentDto>>> GetAppointmentByClient()
         {
             var isClient = await _service.IsUserClient();
             if (!isClient) return Unauthorized("The user with userId from token are not a valid client");
 
-            var appointments = await _service.GetAppointmentsByUser();
+            var appointments = await _service.GetAppointmentsByClient();
             if (appointments is null) return Unauthorized("The user with userId from token are not a valid client");
+            return Ok(appointments);
+        }
+        
+        /// <summary>
+        /// Get all the appointments of an specialist
+        /// </summary>
+        /// <returns>
+        /// If the userId in the token are not a specialist and enabled user return status code 401 Unauthorized
+        /// If the user has no appointments return status 200 with empty list
+        /// If everything goes well return a List with the appointments with status 200
+        /// The list of data returned have the following structure:
+        ///  Id: Id of the appointment
+        /// BookedDate: The Time and Date of the appointment, follows ISO 8601 standard
+        ///
+        /// /// The next three attributes are used to show the user's full name
+        /// I suggest threat like "private" stuff, use RequestedUserFullName attribute instead in the client side
+        /// RequestingUserId: The userId of the client
+        /// RequestingUserName: The name of the client
+        /// RequestingUserFirstLastName: The first last name of the client
+        /// RequestingUserSecondLastName: The second last name of the client
+        /// 
+        /// RequestedUserFullName: The name, first last name and second last name of the client
+        /// AppointmentStatusName: The status in words (done, booked or canceled)
+        /// </returns>
+        [Authorize(Roles = "3")]
+        [HttpGet("get-appointments-specialist")]
+        public async Task<ActionResult<IEnumerable<SpecialistAppointmentDto>>> GetAppointmentsBySpecialist()
+        {
+            var isSpecialist = await _service.IsSpecialist();
+            if (!isSpecialist) return Unauthorized("The user with userId from token are not a valid specialist");
+
+            var appointments = await _service.GetAppointmentsBySpecialist();
+            if (appointments is null) return Unauthorized("The user with userId from token are not a valid specialist");
             return Ok(appointments);
         }
 

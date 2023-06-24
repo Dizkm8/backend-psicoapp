@@ -21,13 +21,23 @@ public class AppointmentManagementService : IAppointmentManagementService
         _timeZoneService = timeZoneService ?? throw new ArgumentNullException(nameof(timeZoneService));
     }
 
-    public async Task<IEnumerable<AppointmentDto>?> GetAppointmentsByUser()
+    public async Task<IEnumerable<ClientAppointmentDto>?> GetAppointmentsByClient()
     {
         var userId = _authService.GetUserIdFromToken();
         if (userId is null) return null;
 
-        var appointments = await _appointmentService.GetAppointmentsByUser(userId);
-        var mappedAppointments = _mapperService.MapToAppointmentDto(appointments);
+        var appointments = await _appointmentService.GetAppointmentsByClient(userId);
+        var mappedAppointments = _mapperService.MapToClientAppointmentDto(appointments);
+        return mappedAppointments;
+    }
+
+    public async Task<IEnumerable<SpecialistAppointmentDto>?> GetAppointmentsBySpecialist()
+    {
+        var userId = _authService.GetUserIdFromToken();
+        if (userId is null) return null;
+
+        var appointments = await _appointmentService.GetAppointmentsBySpecialist(userId);
+        var mappedAppointments = _mapperService.MapToSpecialistAppointmentDto(appointments);
         return mappedAppointments;
     }
 
@@ -56,6 +66,12 @@ public class AppointmentManagementService : IAppointmentManagementService
         return false;
     }
 
+    public async Task<bool> IsSpecialist()
+    {
+        var user = await _authService.GetUserEnabledAndSpecialistFromToken();
+        return user is not null;
+    }
+
     /// <summary>
     /// Canceled an appointment from a client appointments
     /// </summary>
@@ -64,7 +80,7 @@ public class AppointmentManagementService : IAppointmentManagementService
     /// <returns>true if could be canceled</returns>
     private async Task<bool?> ClientCancelAppointment(string userId, int appointmentId)
     {
-        var appointments = await _appointmentService.GetAppointmentsByUser(userId);
+        var appointments = await _appointmentService.GetAppointmentsByClient(userId);
         var appoint = appointments.SingleOrDefault(a => a.Id == appointmentId);
         if (appoint is null) return false;
 
