@@ -58,6 +58,10 @@ public class AdminManagementService : IAdminManagementService
     public async Task<bool> AddSpecialist(RegisterSpecialistDto specialistDto)
     {
         var user = _mapperService.MapToUser(specialistDto);
+        if (user is null) return false;
+        // Password are not provided in dto, so, need to be mapped
+        user.Password = user.Id;
+
         var result = await _userService.AddSpecialist(user, specialistDto.SpecialityId);
         return result;
     }
