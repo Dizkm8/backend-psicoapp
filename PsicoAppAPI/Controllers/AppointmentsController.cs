@@ -1,11 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
-using PsicoAppAPI.Services.Interfaces;
-using PsicoAppAPI.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using PsicoAppAPI.DTOs.Appointment;
 using PsicoAppAPI.Mediators.Interfaces;
 
@@ -41,8 +36,8 @@ namespace PsicoAppAPI.Controllers
         }
 
         [Authorize(Roles = "1, 2")]
-        [HttpDelete("cancel-appointment")]
-        public async Task<ActionResult> CancelAppointment()
+        [HttpDelete("cancel-appointment/{appointmentId:int}")]
+        public async Task<ActionResult> CancelAppointment(int appointmentId)
         {
             var isClientOrAdmin = await _service.IsAdminOrClient();
             if (!isClientOrAdmin) return Unauthorized("The user with userId from token are not a valid user");

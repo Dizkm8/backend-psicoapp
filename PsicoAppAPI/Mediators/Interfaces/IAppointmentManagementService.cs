@@ -20,4 +20,5 @@ public interface IAppointmentManagementService
     /// </summary>
     /// <returns>true if match with the filters. otherwise false</returns>
     public Task<bool> IsAdminOrClient();
+    
 }
