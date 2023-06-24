@@ -14,9 +14,15 @@ namespace PsicoAppAPI.Services
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public async Task<List<Appointment>> GetAppointmentsByUser(string userId)
+        public async Task<List<Appointment>> GetAppointmentsByClient(string userId)
         {
-            var appointments = await _unitOfWork.AppointmentRepository.GetAppointmentsByUser(userId);
+            var appointments = await _unitOfWork.AppointmentRepository.GetAppointmentsByClientOrderDesc(userId);
+            return appointments ?? new List<Appointment>();
+        }
+
+        public async Task<List<Appointment>> GetAppointmentsBySpecialist(string userId)
+        {
+            var appointments = await _unitOfWork.AppointmentRepository.GetAppointmentsBySpecialistOrderDesc(userId);
             return appointments ?? new List<Appointment>();
         }
 
@@ -34,6 +40,18 @@ namespace PsicoAppAPI.Services
             };
             var result = await _unitOfWork.AppointmentRepository.AddAppointmentAndSaveChanges(appointment);
             return result;
+        }
+
+        public async Task<bool> CancelAppointment(int appointmentId)
+        {
+            var result = await _unitOfWork.AppointmentRepository.CancelAppointmentAndSaveChanges(appointmentId);
+            return result;
+        }
+
+        public async Task<List<Appointment>> GetAllAppointments()
+        {
+            var result = await _unitOfWork.AppointmentRepository.GetAllAppointments();
+            return result ?? new List<Appointment>();
         }
     }
 }

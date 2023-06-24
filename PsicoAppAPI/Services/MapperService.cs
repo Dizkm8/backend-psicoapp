@@ -119,10 +119,16 @@ namespace PsicoAppAPI.Services
             return mappedPosts ?? new List<FeedPostDto>();
         }
 
-        public List<AppointmentDto> MapToAppointmentDto(List<Appointment>? appointments)
+        public List<SpecialistAppointmentDto> MapToSpecialistAppointmentDto(List<Appointment>? appointments)
         {
-            var mappedAppointments = appointments?.Select(x => _mapper.Map<AppointmentDto>(x)).ToList();
-            return mappedAppointments ?? new List<AppointmentDto>();
+            var mappedAppointments = appointments?.Select(x => _mapper.Map<SpecialistAppointmentDto>(x)).ToList();
+            return mappedAppointments ?? new List<SpecialistAppointmentDto>();
+        }
+
+        public List<ClientAppointmentDto> MapToClientAppointmentDto(List<Appointment>? appointments)
+        {
+            var mappedAppointments = appointments?.Select(x => _mapper.Map<ClientAppointmentDto>(x)).ToList();
+            return mappedAppointments ?? new List<ClientAppointmentDto>();
         }
     }
 }

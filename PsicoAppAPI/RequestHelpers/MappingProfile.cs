@@ -25,6 +25,8 @@ namespace PsicoAppAPI.RequestHelpers
             CreateMap<ForumPost, ForumPostDto>();
             CreateMap<Comment, CommentDto>();
             CreateMap<Appointment, AppointmentDto>();
+            CreateMap<Appointment, SpecialistAppointmentDto>();
+            CreateMap<Appointment, ClientAppointmentDto>();
         }
     }
 }
