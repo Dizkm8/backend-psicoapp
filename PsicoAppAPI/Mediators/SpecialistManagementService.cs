@@ -66,7 +66,6 @@ namespace PsicoAppAPI.Mediators
         public async Task<IEnumerable<SpecialityDto>> GetAllSpecialities()
         {
             var specialities = await _specialistService.GetAllSpecialities();
-            
             throw new NotImplementedException();
         }
 
