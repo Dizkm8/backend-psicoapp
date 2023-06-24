@@ -113,10 +113,16 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <returns>List of mapped posts</returns>
         public List<FeedPostDto> MapToFeedPostDto(List<FeedPost>? posts);
         /// <summary>
-        /// Map list of Appointment to list of AppointmentDto
+        /// Map list of Appointment to list of SpecialistAppointmentDto
         /// </summary>
         /// <param name="appointments">Appointments to map</param>
         /// <returns>List of mapped appointment</returns>
-        public List<AppointmentDto> MapToAppointmentDto(List<Appointment>? appointments);
+        public List<SpecialistAppointmentDto> MapToSpecialistAppointmentDto(List<Appointment>? appointments);
+        /// <summary>
+        /// Map list of Appointment to list of ClientAppointmentDto
+        /// </summary>
+        /// <param name="appointments">Appointments to map</param>
+        /// <returns>List of mapped appointment</returns>
+        public List<ClientAppointmentDto> MapToClientAppointmentDto(List<Appointment>? appointments);
     }
 }

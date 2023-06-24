@@ -21,14 +21,19 @@ public class AppointmentManagementService : IAppointmentManagementService
         _timeZoneService = timeZoneService ?? throw new ArgumentNullException(nameof(timeZoneService));
     }
 
-    public async Task<IEnumerable<AppointmentDto>?> GetAppointmentsByUser()
+    public async Task<IEnumerable<ClientAppointmentDto>?> GetAppointmentsByClient()
     {
         var userId = _authService.GetUserIdFromToken();
         if (userId is null) return null;
 
         var appointments = await _appointmentService.GetAppointmentsByUser(userId);
-        var mappedAppointments = _mapperService.MapToAppointmentDto(appointments);
+        var mappedAppointments = _mapperService.MapToClientAppointmentDto(appointments);
         return mappedAppointments;
+    }
+
+    public Task<IEnumerable<SpecialistAppointmentDto>?> GetAppointmentsBySpecialist()
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<bool> IsUserClient()

@@ -39,20 +39,20 @@ namespace PsicoAppAPI.Controllers
         /// AppointmentStatusName: The status in words (done, booked or canceled)
         /// </returns>
         [Authorize(Roles = "2")]
-        [HttpGet("get-appointments")]
-        public async Task<ActionResult<IEnumerable<AppointmentDto>>> GetAppointmentByUser()
+        [HttpGet("get-appointments-client")]
+        public async Task<ActionResult<IEnumerable<ClientAppointmentDto>>> GetAppointmentByClient()
         {
             var isClient = await _service.IsUserClient();
             if (!isClient) return Unauthorized("The user with userId from token are not a valid client");
 
-            var appointments = await _service.GetAppointmentsByUser();
+            var appointments = await _service.GetAppointmentsByClient();
             if (appointments is null) return Unauthorized("The user with userId from token are not a valid client");
             return Ok(appointments);
         }
         
         [Authorize(Roles = "3")]
         [HttpGet("get-appointments-specialist")]
-        public async Task<ActionResult<IEnumerable<AppointmentDto>>> GetAppointmentsBySpecialist()
+        public async Task<ActionResult<IEnumerable<SpecialistAppointmentDto>>> GetAppointmentsBySpecialist()
         {
             var isSpecialist = await _service.IsSpecialist();
             if (!isSpecialist) return Unauthorized("The user with userId from token are not a valid specialist");
