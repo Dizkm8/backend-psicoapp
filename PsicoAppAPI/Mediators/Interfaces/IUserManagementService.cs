@@ -120,5 +120,11 @@ namespace PsicoAppAPI.Mediators.Interfaces
         /// </summary>
         /// <returns>IEnumerable with UserDtos</returns>
         public Task<IEnumerable<UserDto>> GetAllUsers();
+
+        /// <summary>
+        /// Get all the specialists in the system
+        /// </summary>
+        /// <returns>IEnumerable with SpecialistDto</returns>
+        public Task<IEnumerable<SpecialistDto>> GetAllSpecialists();
     }
 }

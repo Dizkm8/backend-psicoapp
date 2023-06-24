@@ -170,5 +170,10 @@ namespace PsicoAppAPI.Mediators
             var mappedUsers = _mapperService.MapToListOfUserDto(users);
             return mappedUsers;
         }
+
+        public Task<IEnumerable<SpecialistDto>> GetAllSpecialists()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

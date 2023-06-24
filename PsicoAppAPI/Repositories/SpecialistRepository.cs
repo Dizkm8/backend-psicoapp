@@ -46,5 +46,15 @@ namespace PsicoAppAPI.Repositories
                 .SingleOrDefaultAsync();
             return speciality;
         }
+
+        public async Task<List<Specialist>?> GetAllUsersSpecialist()
+        {
+            var users = await _context.Specialists
+                .Include(s => s.Speciality)
+                .Include(s => s.User)
+                .ThenInclude(u => u.Role)
+                .ToListAsync();
+            return users;
+        }
     }
 }

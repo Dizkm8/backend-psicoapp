@@ -87,6 +87,7 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// <param name="user">User to update</param>
         /// <returns>User updated. null if something gone wrong</returns>
         public Task<bool> UserCouldBeUpdatedUserAndSaveChanges(User user);
+
         /// <summary>
         /// Update a user
         /// </summary>
