@@ -10,14 +10,16 @@ public class AdminManagementService : IAdminManagementService
     private readonly IOpenAiService _openAiService;
     private readonly IUserService _userService;
     private readonly IMapperService _mapperService;
+    private readonly ISpecialistService _specialistService;
 
     public AdminManagementService(IAuthManagementService authService, IOpenAiService openAiService,
-        IUserService userService, IMapperService mapperService)
+        IUserService userService, IMapperService mapperService, ISpecialistService specialistService)
     {
         _authService = authService ?? throw new ArgumentNullException(nameof(authService));
         _openAiService = openAiService ?? throw new ArgumentNullException(nameof(openAiService));
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
+        _specialistService = specialistService ?? throw new ArgumentNullException(nameof(specialistService));
     }
 
 
@@ -56,7 +58,9 @@ public class AdminManagementService : IAdminManagementService
     public async Task<bool> AddSpecialist(RegisterSpecialistDto specialistDto)
     {
         var user = _mapperService.MapToUser(specialistDto);
-        var result = await _userService.AddClient(user);
+        // var speciality = _specialistService.
+        // TODO: Fix SpecialityId 
+        var result = await _userService.AddSpecialist(user, 2);
         return result;
     }
 }

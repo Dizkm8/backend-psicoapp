@@ -37,14 +37,20 @@ namespace PsicoAppAPI.Services
             return result;
         }
 
-        public async Task<bool> AddSpecialist(User? user)
+        public async Task<bool> AddSpecialist(User? user, int specialityId)
         {
             if (user is null) return false;
             user.RoleId = await GetIdOfSpecialistRole();
             var addUserResult = await AddUser(user);
-            
-            // TODO: insertion to specialist
-            return addUserResult;
+            if (!addUserResult) return false;
+
+            var specialist = new Specialist()
+            {
+                UserId = user.Id,
+                SpecialityId = specialityId,
+            };
+            var addSpecialistResult = await _unitOfWork.SpecialistRepository.AddSpecialistAndSaveChanges(specialist);
+            return addSpecialistResult;
         }
 
         public async Task<User?> GetUserByEmail(string? email)

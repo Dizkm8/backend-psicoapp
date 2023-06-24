@@ -19,13 +19,15 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="user">User to add</param>
         /// <returns>True if could be added, false if not</returns>
         public Task<bool> AddClient(User? user);
+
         /// <summary>
         /// Async add a new specialist to the system
         /// This creates both entities (user and specialist)
         /// </summary>
         /// <param name="user">User to add</param>
+        /// <param name="specialityId">Id of the speciality</param>
         /// <returns>True if could be added, false if not</returns>
-        public Task<bool> AddSpecialist(User? user);
+        public Task<bool> AddSpecialist(User? user, int specialityId);
         /// <summary>
         /// Asynchronously get a user by email
         /// </summary>

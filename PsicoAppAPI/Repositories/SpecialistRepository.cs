@@ -17,8 +17,7 @@ namespace PsicoAppAPI.Repositories
         public async Task<Specialist?> GetSpecialistById(string userId)
         {
             var specialist =
-                await _context.Specialists.
-                FirstOrDefaultAsync(specialist => specialist.UserId == userId);
+                await _context.Specialists.FirstOrDefaultAsync(specialist => specialist.UserId == userId);
             return specialist;
         }
 
@@ -28,9 +27,10 @@ namespace PsicoAppAPI.Repositories
             return specialist != null;
         }
 
-        public Task<bool> AddSpecialistAndSaveChanges(Specialist specialist)
+        public async Task<bool> AddSpecialistAndSaveChanges(Specialist specialist)
         {
-            throw new NotImplementedException();
+            _ = await _context.Specialists.AddAsync(specialist);
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }
