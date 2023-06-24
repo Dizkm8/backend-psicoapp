@@ -20,5 +20,11 @@ public interface IAppointmentManagementService
     /// </summary>
     /// <returns>true if match with the filters. otherwise false</returns>
     public Task<bool> IsAdminOrClient();
-    
+    /// <summary>
+    /// Cancel an appointment
+    /// It means the appointment is deleted and the avaialbility of specialist are restored to isAvailable = true
+    /// </summary>
+    /// <param name="appointmentId">Id of the appointment</param>
+    /// <returns>true if could be canceled. otherwise false</returns>
+    public Task<bool> CancelAppointment(int appointmentId);
 }
