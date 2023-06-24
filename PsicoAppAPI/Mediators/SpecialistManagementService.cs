@@ -14,13 +14,15 @@ namespace PsicoAppAPI.Mediators
         private readonly IUserManagementService _userManagementService;
 
         public SpecialistManagementService(ISpecialistService specialistService, IAuthManagementService authService,
-            IMapperService mapperService, ITimeZoneService timeZoneService, IUserManagementService userManagementService)
+            IMapperService mapperService, ITimeZoneService timeZoneService,
+            IUserManagementService userManagementService)
         {
             _specialistService = specialistService ?? throw new ArgumentNullException(nameof(specialistService));
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
             _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
             _timeZoneService = timeZoneService ?? throw new ArgumentNullException(nameof(timeZoneService));
-            _userManagementService = userManagementService ?? throw new ArgumentNullException(nameof(userManagementService));
+            _userManagementService =
+                userManagementService ?? throw new ArgumentNullException(nameof(userManagementService));
         }
 
         public async Task<IEnumerable<AvailabilitySlotDto>?> AddSpecialistAvailability(
@@ -61,6 +63,13 @@ namespace PsicoAppAPI.Mediators
             var result = availabilities.FirstOrDefault(x => x.StartTime.Hour is < 8 or > 20);
             // if result is null means that all the availabilities are in the range
             return result is null;
+        }
+
+        public async Task<IEnumerable<SpecialityDto>> GetAllSpecialities()
+        {
+            var specialities = await _specialistService.GetAllSpecialities();
+            var mappedSpecialities = _mapperService.MapToListOfSpecialityDto(specialities);
+            return mappedSpecialities;
         }
 
         public async Task<List<AvailabilitySlotDto>?> GetAvailabilitySlots(string userId)

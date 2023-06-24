@@ -53,5 +53,10 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="specialityId">Id of the speciality</param>
         /// <returns>Speciality if could be found. otherwise null</returns>
         public Task<Speciality?> GetSpecialityById(int specialityId);
+        /// <summary>
+        /// Get all the specialities of the system
+        /// </summary>
+        /// <returns>List with Speciality</returns>
+        public Task<List<Speciality>> GetAllSpecialities();
     }
 }
