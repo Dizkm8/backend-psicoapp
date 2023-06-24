@@ -59,8 +59,12 @@ public class AdminController : BaseApiController
 
         var existsId = await _service.CheckUserIdAvailability(specialistDto);
         if (existsId) ModelState.AddModelError("Id", "Id already exists");
-        // Return Id or Email duplicated error if exists
+
+        var existsSpeciality = await _service.ExistsSpeciality(specialistDto);
+        if (existsSpeciality) ModelState.AddModelError("SpecialityId", "Speciality Id do not exists");
+        // Return errors if exists  
         if (!ModelState.IsValid) return BadRequest(ModelState);
+
 
         var result = await _service.AddSpecialist(specialistDto);
         if (!result)

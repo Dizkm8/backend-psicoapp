@@ -58,9 +58,13 @@ public class AdminManagementService : IAdminManagementService
     public async Task<bool> AddSpecialist(RegisterSpecialistDto specialistDto)
     {
         var user = _mapperService.MapToUser(specialistDto);
-        // var speciality = _specialistService.
-        // TODO: Fix SpecialityId 
-        var result = await _userService.AddSpecialist(user, 2);
+        var result = await _userService.AddSpecialist(user, specialistDto.SpecialityId);
+        return result;
+    }
+
+    public async Task<bool> ExistsSpeciality(RegisterSpecialistDto specialistDto)
+    {
+        var result = await _specialistService.CheckSpecialityById(specialistDto.SpecialityId);
         return result;
     }
 }

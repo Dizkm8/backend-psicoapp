@@ -38,4 +38,10 @@ public interface IAdminManagementService
     /// <param name="specialistDto">Specialist to add</param>
     /// <returns>true if user could be added. otherwise false</returns>
     public Task<bool> AddSpecialist(RegisterSpecialistDto specialistDto);
+    /// <summary>
+    /// Check if the speciality Id from RegisterSpecialistDto match with any speciality in the system
+    /// </summary>
+    /// <param name="specialistDto">RegisterSpecialistDto to check</param>
+    /// <returns>true if exists. otherwise false</returns>
+    public Task<bool> ExistsSpeciality(RegisterSpecialistDto specialistDto);
 }
