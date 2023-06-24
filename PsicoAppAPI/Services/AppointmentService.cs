@@ -20,6 +20,12 @@ namespace PsicoAppAPI.Services
             return appointments ?? new List<Appointment>();
         }
 
+        public async Task<List<Appointment>> GetAppointmentsBySpecialist(string userId)
+        {
+            var appointments = await _unitOfWork.AppointmentRepository.GetAppointmentsBySpecialistOrderDesc(userId);
+            return appointments ?? new List<Appointment>();
+        }
+
         public async Task<bool> AddAppointment(string requestingUserId, string requestedUserId, DateTime bookedDate)
         {
             var bookedStatusId = (await

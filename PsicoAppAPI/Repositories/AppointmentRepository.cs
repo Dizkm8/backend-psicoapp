@@ -47,6 +47,18 @@ namespace PsicoAppAPI.Repositories
             return appointments;
         }
 
+        public async Task<List<Appointment>?> GetAppointmentsBySpecialistOrderDesc(string userId)
+        {
+            var appointments = await _context.Appointments
+                .Where(a => a.RequestedUserId == userId)
+                .Include(a => a.RequestingUser)
+                .Include(a => a.RequestedUser)
+                .Include(a => a.AppointmentStatus)
+                .OrderByDescending(a => a.BookedDate)
+                .ToListAsync();
+            return appointments;
+        }
+
         public async Task<bool> AddAppointmentAndSaveChanges(Appointment appointment)
         {
             await _context.Appointments.AddAsync(appointment);

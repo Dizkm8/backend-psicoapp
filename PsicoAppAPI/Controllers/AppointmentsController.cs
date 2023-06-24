@@ -49,17 +49,17 @@ namespace PsicoAppAPI.Controllers
             if (appointments is null) return Unauthorized("The user with userId from token are not a valid client");
             return Ok(appointments);
         }
-        
+
         [Authorize(Roles = "3")]
         [HttpGet("get-appointments-specialist")]
         public async Task<ActionResult<IEnumerable<SpecialistAppointmentDto>>> GetAppointmentsBySpecialist()
         {
             var isSpecialist = await _service.IsSpecialist();
             if (!isSpecialist) return Unauthorized("The user with userId from token are not a valid specialist");
-            
-            // var appointments
 
-            return Ok();
+            var appointments = await _service.GetAppointmentsBySpecialist();
+            if (appointments is null) return Unauthorized("The user with userId from token are not a valid specialist");
+            return Ok(appointments);
         }
 
         /// <summary>
