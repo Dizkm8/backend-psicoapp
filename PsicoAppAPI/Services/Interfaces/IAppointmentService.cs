@@ -6,7 +6,12 @@ namespace PsicoAppAPI.Services.Interfaces
 {
     public interface IAppointmentService
     {
-        Task<List<Appointment>> GetAppointmentsByUser(int userId);
+        /// <summary>
+        /// Get the appointments of an user based on their userId
+        /// </summary>
+        /// <param name="userId">Id of the user</param>
+        /// <returns>List with appointments</returns>
+        Task<List<Appointment>> GetAppointmentsByUser(string userId);
         /// <summary>
         /// Add an appointment to the database
         /// When an appointment is added, the status is set to "Booked"
