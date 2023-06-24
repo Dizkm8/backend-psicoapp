@@ -6,10 +6,11 @@ public class UserDto
     public string Name { get; set; } = null!;
     public string FirstLastName { get; set; } = null!;
     public string SecondLastName { get; set; } = null!;
+    public string FullName => $"{Name} {FirstLastName} {SecondLastName}";
+
     public string Email { get; set; } = null!;
     public string Gender { get; set; } = null!;
     public bool IsEnabled { get; set; }
     public int Phone { get; set; }
-    public string Password { get; set; } = null!;
     public string RoleName { get; set; } = null!;
 }
