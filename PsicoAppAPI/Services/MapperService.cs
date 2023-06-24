@@ -130,5 +130,12 @@ namespace PsicoAppAPI.Services
             var mappedAppointments = appointments?.Select(x => _mapper.Map<ClientAppointmentDto>(x)).ToList();
             return mappedAppointments ?? new List<ClientAppointmentDto>();
         }
+
+        public User? MapToUser(RegisterSpecialistDto? specialistDto)
+        {
+            if (specialistDto is null) return null;
+            var user = _mapper.Map<User>(specialistDto);
+            return user;
+        }
     }
 }

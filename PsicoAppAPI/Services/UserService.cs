@@ -37,6 +37,11 @@ namespace PsicoAppAPI.Services
             return result;
         }
 
+        public Task<bool> AddSpecialist(User? user)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<User?> GetUserByEmail(string? email)
         {
             if (email is null) return null;

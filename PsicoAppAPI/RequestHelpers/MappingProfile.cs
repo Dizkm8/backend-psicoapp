@@ -28,6 +28,8 @@ namespace PsicoAppAPI.RequestHelpers
             CreateMap<Appointment, AppointmentDto>();
             CreateMap<Appointment, SpecialistAppointmentDto>();
             CreateMap<Appointment, ClientAppointmentDto>();
+            CreateMap<User, RegisterSpecialistDto>();
+            CreateMap<RegisterSpecialistDto, User>();
         }
     }
 }

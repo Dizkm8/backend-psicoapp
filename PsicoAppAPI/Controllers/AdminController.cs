@@ -50,20 +50,22 @@ public class AdminController : BaseApiController
 
     [Authorize(Roles = "1")]
     [HttpPost("create-specialist")]
-    public async Task<ActionResult> CreateSpecialist([FromBody] RegisterSpecialistDto specialist)
+    public async Task<ActionResult> CreateSpecialist([FromBody] RegisterSpecialistDto specialistDto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var existsEmail = await _service.CheckEmailAvailability(specialist);
+        var existsEmail = await _service.CheckEmailAvailability(specialistDto);
         if (existsEmail) ModelState.AddModelError("Email", "Email already exists");
 
-        var existsId = await _service.CheckUserIdAvailability(specialist);
+        var existsId = await _service.CheckUserIdAvailability(specialistDto);
         if (existsId) ModelState.AddModelError("Id", "Id already exists");
         // Return Id or Email duplicated error if exists
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        
-        
 
+        var result = await _service.AddSpecialist(specialistDto);
+        if (!result)
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new { error = "Internal error creating a new specialist" });
         return Ok();
     }
 }

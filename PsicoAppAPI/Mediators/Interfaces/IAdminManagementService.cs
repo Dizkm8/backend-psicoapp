@@ -32,4 +32,10 @@ public interface IAdminManagementService
     /// <param name="specialistDto">User shape Dto to Id validation</param>
     /// <returns>True if exists, otherwise false</returns>
     public Task<bool> CheckUserIdAvailability(RegisterSpecialistDto specialistDto);
+    /// <summary>
+    /// Async add a new specialist in the system
+    /// </summary>
+    /// <param name="specialistDto">Specialist to add</param>
+    /// <returns>true if user could be added. otherwise false</returns>
+    public Task<bool> AddSpecialist(RegisterSpecialistDto specialistDto);
 }

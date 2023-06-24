@@ -125,5 +125,11 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="appointments">Appointments to map</param>
         /// <returns>List of mapped appointment</returns>
         public List<ClientAppointmentDto> MapToClientAppointmentDto(List<Appointment>? appointments);
+        /// <summary>
+        /// Map a RegisterSpecialistDto to User 
+        /// </summary>
+        /// <param name="specialistDto">Specialist to ma´</param>
+        /// <returns>Mapped user. null if cannot be mapped</returns>
+        public User? MapToUser(RegisterSpecialistDto? specialistDto);
     }
 }
