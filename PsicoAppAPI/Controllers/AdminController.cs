@@ -48,6 +48,27 @@ public class AdminController : BaseApiController
             new { error = "Internal error updating moderation rules" });
     }
 
+    /// <summary>
+    /// Create a new specialist
+    /// </summary>
+    /// <param name="specialistDto">
+    /// Id: User's identifier, must be unique and not null or empty
+    /// Name: User's name, must be not null and have at least 2 characters
+    /// FirstLastName: User's first last name, must be not null and have at least 2 characters
+    /// SecondLastName: User's second last name, must be not null and have at least 2 characters
+    /// Email: User's email, must be not null, have a valid email format and be unique
+    /// Gender: User's gender, must be not null or empty
+    /// Phone: User's phone, must be not null and have 8 digits
+    /// Password: User's password, mut be not null and have a length between 10 and 15 characters
+    /// ConfirmPassword: User's password, mut be not null and have a length between 10 and 15 characters and the same as Password
+    /// SpecialityId: Id of the speciality of the specialist
+    /// </param>
+    /// <returns>
+    /// If the ModelState have errors based on params requirements, return a status code 400 with the errors.
+    /// If the Email exists, Id exists or specialityId do not exists, return a status code 400 with the errors (can return all of them at the same time).
+    /// If the user cannot be added to the database, return a status code 500 with a custom error.
+    /// If the user is added to the database, return a status code 200 with no message
+    /// </returns>
     [Authorize(Roles = "1")]
     [HttpPost("create-specialist")]
     public async Task<ActionResult> CreateSpecialist([FromBody] RegisterSpecialistDto specialistDto)
