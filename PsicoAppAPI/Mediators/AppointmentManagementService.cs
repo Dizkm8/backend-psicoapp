@@ -56,6 +56,12 @@ public class AppointmentManagementService : IAppointmentManagementService
         return false;
     }
 
+    public async Task<bool> IsSpecialist()
+    {
+        var user = await _authService.GetUserEnabledAndSpecialistFromToken();
+        return user is not null;
+    }
+
     /// <summary>
     /// Canceled an appointment from a client appointments
     /// </summary>
