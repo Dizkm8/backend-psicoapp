@@ -27,7 +27,7 @@ namespace PsicoAppAPI.Controllers
             var isClient = await _service.IsUserClient();
             if (!isClient) return Unauthorized("The user with userId from token are not a valid client");
 
-            var appointments = _service.GetAppointmentsByUser(userId);
+            var appointments = await _service.GetAppointmentsByUser(userId);
             return Ok(appointments);
         }
     }

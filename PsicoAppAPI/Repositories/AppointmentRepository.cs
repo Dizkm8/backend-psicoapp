@@ -2,8 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using PsicoAppAPI.Data;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Repositories.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace PsicoAppAPI.Repositories
 {

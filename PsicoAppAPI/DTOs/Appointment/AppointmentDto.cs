@@ -7,13 +7,13 @@ namespace PsicoAppAPI.DTOs.Appointment
         public int Id { get; set; }
         public DateTime BookedDate { get; set; }
         public string RequestingUserId { get; set; } = null!;
-        public string RequestingUserIdName { get; set; } = null!;
-        public string RequestingUserIdFirstLastName { get; set; } = null!;
-        public string RequestingUserIdSecondLastName { get; set; } = null!;
+        public string RequestingUserName { get; set; } = null!;
+        public string RequestingUserFirstLastName { get; set; } = null!;
+        public string RequestingUserSecondLastName { get; set; } = null!;
 
         public string FullName =>
-            $"{RequestingUserIdName} {RequestingUserIdFirstLastName} {RequestingUserIdSecondLastName}";
+            $"{RequestingUserName} {RequestingUserFirstLastName} {RequestingUserSecondLastName}";
 
-        public AppointmentStatusDto AppointmentStatusDto { get; set; } = null!;
+        public string AppointmentStatusName { get; set; } = null!;
     }
 }
