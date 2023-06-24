@@ -6,11 +6,10 @@ namespace PsicoAppAPI.Mediators.Interfaces;
 public interface IAppointmentManagementService
 {
     /// <summary>
-    /// Get the appointments of a user based on their userId
+    /// Get the appointments of a user based on the userId from token
     /// </summary>
-    /// <param name="userId">Id of the user</param>
-    /// <returns>IEnumerable with the Appointment as Dto</returns>
-    public Task<IEnumerable<AppointmentDto>> GetAppointmentsByUser(string userId);
+    /// <returns>IEnumerable with the Appointment as Dto. If something went wrong return null</returns>
+    public Task<IEnumerable<AppointmentDto>?> GetAppointmentsByUser();
     /// <summary>
     /// Check using the token if the userId match with an enabled user and if it is client
     /// </summary>

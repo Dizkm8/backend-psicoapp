@@ -21,13 +21,14 @@ namespace PsicoAppAPI.Controllers
         }
 
         [Authorize]
-        [HttpGet("get-appointment/{userId}")]
-        public async Task<ActionResult<IEnumerable<AppointmentDto>>> GetAppointmentByUser(string userId)
+        [HttpGet("get-appointments")]
+        public async Task<ActionResult<IEnumerable<AppointmentDto>>> GetAppointmentByUser()
         {
             var isClient = await _service.IsUserClient();
             if (!isClient) return Unauthorized("The user with userId from token are not a valid client");
 
-            var appointments = await _service.GetAppointmentsByUser(userId);
+            var appointments = await _service.GetAppointmentsByUser();
+            if (appointments is null) return Unauthorized("The user with userId from token are not a valid client");
             return Ok(appointments);
         }
     }

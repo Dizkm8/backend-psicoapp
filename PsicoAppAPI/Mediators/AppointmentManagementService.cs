@@ -19,8 +19,11 @@ public class AppointmentManagementService : IAppointmentManagementService
         _authService = authService ?? throw new ArgumentNullException(nameof(authService));
     }
 
-    public async Task<IEnumerable<AppointmentDto>> GetAppointmentsByUser(string userId)
+    public async Task<IEnumerable<AppointmentDto>?> GetAppointmentsByUser()
     {
+        var userId = _authService.GetUserIdFromToken();
+        if (userId is null) return null;
+
         var appointments = await _appointmentService.GetAppointmentsByUser(userId);
         var mappedAppointments = _mapperService.MapToAppointmentDto(appointments);
         return mappedAppointments;
