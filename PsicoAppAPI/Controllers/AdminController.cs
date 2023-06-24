@@ -97,7 +97,7 @@ public class AdminController : BaseApiController
 
     [Authorize(Roles = "1")]
     [HttpPost("update-user-availability/{userId}")]
-    public async Task<ActionResult> UpdateUserAvailability(string userId, [FromQuery] bool isEnabled)
+    public async Task<ActionResult> UpdateUserAvailability(string userId, [FromQuery][Required] bool isEnabled)
     {
         var isAdmin = await _service.IsUserAdmin();
         if (!isAdmin) return Unauthorized("The user with userId from token are not a valid admin");
