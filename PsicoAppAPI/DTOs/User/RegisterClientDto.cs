@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace PsicoAppAPI.DTOs
+namespace PsicoAppAPI.DTOs.User
 {
     public class RegisterClientDto
     {

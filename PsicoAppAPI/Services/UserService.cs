@@ -16,6 +16,7 @@ namespace PsicoAppAPI.Services
         }
 
         #region IUSERSERVICE_METHODS
+
         public async Task<User?> GetUserByCredentials(string userId, string password)
         {
             if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(password)) return null;
@@ -24,17 +25,32 @@ namespace PsicoAppAPI.Services
             return BCryptHelper.VerifyPassword(password, user.Password) ? user : null;
         }
 
-        public async Task<bool> AddUser(User? user)
+        private async Task<bool> AddUser(User user)
         {
-            if (user is null) return false;
             user.IsEnabled = true;
             // Hashes the password and check if it was successful
             var hashedPassword = BCryptHelper.HashPassword(user.Password);
             if (string.IsNullOrEmpty(hashedPassword)) return false;
-            // asigns to user
+            // assigns to user
             user.Password = hashedPassword;
             var result = await _unitOfWork.UserRepository.AddUserAndSaveChanges(user);
             return result;
+        }
+
+        public async Task<bool> AddSpecialist(User? user, int specialityId)
+        {
+            if (user is null) return false;
+            user.RoleId = await GetIdOfSpecialistRole();
+            var addUserResult = await AddUser(user);
+            if (!addUserResult) return false;
+
+            var specialist = new Specialist()
+            {
+                UserId = user.Id,
+                SpecialityId = specialityId,
+            };
+            var addSpecialistResult = await _unitOfWork.SpecialistRepository.AddSpecialistAndSaveChanges(specialist);
+            return addSpecialistResult;
         }
 
         public async Task<User?> GetUserByEmail(string? email)
@@ -72,7 +88,8 @@ namespace PsicoAppAPI.Services
             return result;
         }
 
-        public async Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser, string? userId, IMapperService mapperService)
+        public async Task<UpdateProfileInformationDto?> UpdateProfileInformation(UpdateProfileInformationDto newUser,
+            string? userId, IMapperService mapperService)
         {
             if (userId is null) return null;
             var user = await _unitOfWork.UserRepository.GetUserById(userId);
@@ -138,7 +155,7 @@ namespace PsicoAppAPI.Services
 
         public async Task<bool> AddClient(User? user)
         {
-            if(user is null) return false;
+            if (user is null) return false;
             user.RoleId = await GetIdOfClientRole();
             var result = await AddUser(user);
             return result;
@@ -146,10 +163,11 @@ namespace PsicoAppAPI.Services
 
         public bool UpdateUser(User? user)
         {
-            if(user is null) return false;
+            if (user is null) return false;
             var updatedUser = _unitOfWork.UserRepository.UpdateUserAndSaveChanges(user);
             return updatedUser is not null;
         }
+
         #endregion
     }
 }
