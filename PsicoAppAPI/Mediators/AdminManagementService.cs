@@ -56,8 +56,6 @@ public class AdminManagementService : IAdminManagementService
     public async Task<bool> AddSpecialist(RegisterSpecialistDto specialistDto)
     {
         var user = _mapperService.MapToUser(specialistDto);
-        if (user is null) return false;
-
         var result = await _userService.AddClient(user);
         return result;
     }

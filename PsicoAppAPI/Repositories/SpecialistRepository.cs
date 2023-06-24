@@ -27,5 +27,10 @@ namespace PsicoAppAPI.Repositories
             var specialist = await GetSpecialistById(userId);
             return specialist != null;
         }
+
+        public Task<bool> AddSpecialistAndSaveChanges(Specialist specialist)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

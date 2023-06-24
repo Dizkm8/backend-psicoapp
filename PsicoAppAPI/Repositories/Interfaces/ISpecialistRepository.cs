@@ -16,5 +16,11 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// <param name="userId">Respective userId in the Specialist entity</param>
         /// <returns>True if exists</returns>
         public Task<bool> SpecialistExists(string userId);
+        /// <summary>
+        /// Add a specialist to the database and save changes
+        /// </summary>
+        /// <param name="specialist">Specialist to add</param>
+        /// <returns>true if could be added. otherwise false</returns>
+        public Task<bool> AddSpecialistAndSaveChanges(Specialist specialist);
     }
 }
