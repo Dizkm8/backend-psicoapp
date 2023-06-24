@@ -1,11 +1,11 @@
 using AutoMapper;
-using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.Appointment;
 using PsicoAppAPI.DTOs.BasePosts;
 using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.DTOs.ForumPost;
 using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
+using PsicoAppAPI.DTOs.User;
 using PsicoAppAPI.Models;
 using PsicoAppAPI.Services.Interfaces;
 
@@ -129,6 +129,19 @@ namespace PsicoAppAPI.Services
         {
             var mappedAppointments = appointments?.Select(x => _mapper.Map<ClientAppointmentDto>(x)).ToList();
             return mappedAppointments ?? new List<ClientAppointmentDto>();
+        }
+
+        public User? MapToUser(RegisterSpecialistDto? specialistDto)
+        {
+            if (specialistDto is null) return null;
+            var user = _mapper.Map<User>(specialistDto);
+            return user;
+        }
+
+        public List<SpecialityDto> MapToListOfSpecialityDto(List<Speciality>? specialities)
+        {
+            var mappedSpecialities = specialities?.Select(x => _mapper.Map<SpecialityDto>(x)).ToList();
+            return mappedSpecialities ?? new List<SpecialityDto>();
         }
     }
 }

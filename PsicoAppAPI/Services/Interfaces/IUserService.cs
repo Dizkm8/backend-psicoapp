@@ -14,18 +14,20 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <returns>User if it was found, null if not</returns>
         public Task<User?> GetUserByCredentials(string userId, string password);
         /// <summary>
-        /// Async add a new user to the database based on User entity
-        /// and using the password previously hashed
-        /// </summary>
-        /// <param name="user">User to add</param>
-        /// <returns>True if could be added, false if not</returns>
-        public Task<bool> AddUser(User? user);
-        /// <summary>
         /// Async add a new user with role of client
         /// </summary>
         /// <param name="user">User to add</param>
         /// <returns>True if could be added, false if not</returns>
         public Task<bool> AddClient(User? user);
+
+        /// <summary>
+        /// Async add a new specialist to the system
+        /// This creates both entities (user and specialist)
+        /// </summary>
+        /// <param name="user">User to add</param>
+        /// <param name="specialityId">Id of the speciality</param>
+        /// <returns>True if could be added, false if not</returns>
+        public Task<bool> AddSpecialist(User? user, int specialityId);
         /// <summary>
         /// Asynchronously get a user by email
         /// </summary>

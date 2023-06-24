@@ -1,4 +1,4 @@
-namespace PsicoAppAPI.DTOs
+namespace PsicoAppAPI.DTOs.User
 {
     public class LoginUserDto
     {

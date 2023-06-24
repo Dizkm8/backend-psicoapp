@@ -41,5 +41,22 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="availabilityDate">Date of their availability</param>
         /// <returns>true if could be updated. otherwise false</returns>
         public Task<bool> DisableAvailability(string userId, DateTime availabilityDate);
+        /// <summary>
+        /// Check if a speciality exists by their Id
+        /// </summary>
+        /// <param name="specialityId">Id of the speciality</param>
+        /// <returns>true if exists. otherwise false</returns>
+        public Task<bool> CheckSpecialityById(int specialityId);
+        /// <summary>
+        /// Get a speciality by their Id
+        /// </summary>
+        /// <param name="specialityId">Id of the speciality</param>
+        /// <returns>Speciality if could be found. otherwise null</returns>
+        public Task<Speciality?> GetSpecialityById(int specialityId);
+        /// <summary>
+        /// Get all the specialities of the system
+        /// </summary>
+        /// <returns>List with Speciality</returns>
+        public Task<List<Speciality>> GetAllSpecialities();
     }
 }

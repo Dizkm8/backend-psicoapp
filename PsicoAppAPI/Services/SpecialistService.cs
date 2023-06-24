@@ -40,6 +40,24 @@ namespace PsicoAppAPI.Services
             return true;
         }
 
+        public async Task<bool> CheckSpecialityById(int specialityId)
+        {
+            var speciality = await GetSpecialityById(specialityId);
+            return speciality is not null;
+        }
+
+        public async Task<Speciality?> GetSpecialityById(int specialityId)
+        {
+            var speciality = await _unitOfWork.SpecialistRepository.GetSpecialityById(specialityId);
+            return speciality;
+        }
+
+        public async Task<List<Speciality>> GetAllSpecialities()
+        {
+            var specialities = await _unitOfWork.SpecialistRepository.GetAllSpecialities();
+            return specialities;
+        }
+
         public async Task<List<AvailabilitySlot>?> GetAllAvailability(string? userId)
         {
             if (userId is null) return null;
