@@ -8,6 +8,7 @@ namespace PsicoAppAPI.Services.Interfaces
     {
         /// <summary>
         /// Get the appointments of an user based on their userId
+        /// descending orderer by BookedDate attribute of Appointment
         /// </summary>
         /// <param name="userId">Id of the user</param>
         /// <returns>List with appointments</returns>

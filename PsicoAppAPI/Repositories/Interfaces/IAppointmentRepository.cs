@@ -18,6 +18,13 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// <returns>List with the Appointment</returns>
         Task<List<Appointment>?> GetAppointmentsByUser(string userId);
         /// <summary>
+        /// Get the appointments of a user based on their userId
+        /// descending orderer by bookedDate attribute of appointment
+        /// </summary>
+        /// <param name="userId">Id of the user</param>
+        /// <returns>List with the Appointment</returns>
+        Task<List<Appointment>?> GetAppointmentsByUserOrderDesc(string userId);
+        /// <summary>
         /// Add a new appointment to the database
         /// </summary>
         /// <param name="appointment">Appointment to add</param>
