@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
+using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.User;
 using PsicoAppAPI.Mediators.Interfaces;
 
@@ -101,6 +102,14 @@ public class AdminController : BaseApiController
         var isAdmin = await _service.IsUserAdmin();
         if (!isAdmin) return Unauthorized("The user with userId from token are not a valid admin");
 
-        return Ok();
+        var result = await _service.UpdateUserAvailability(userId, isEnabled);
+
+        return result switch
+        {
+            null => BadRequest("userId do not match with any user in the system"),
+            false => StatusCode(StatusCodes.Status500InternalServerError,
+                new ErrorModel { ErrorCode = 500, Message = "Internal error deleting the comment" }),
+            true => Ok()
+        };
     }
 }
