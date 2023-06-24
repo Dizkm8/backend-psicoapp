@@ -24,7 +24,7 @@ namespace PsicoAppAPI.Repositories
             return appointments;
         }
 
-        public async Task<List<Appointment>?> GetAppointmentsByUser(string userId)
+        public async Task<List<Appointment>?> GetAppointmentsByClient(string userId)
         {
             var appointments = await _context.Appointments
                 .Where(a => a.RequestingUserId == userId)
@@ -35,7 +35,7 @@ namespace PsicoAppAPI.Repositories
             return appointments;
         }
 
-        public async Task<List<Appointment>?> GetAppointmentsByUserOrderDesc(string userId)
+        public async Task<List<Appointment>?> GetAppointmentsByClientOrderDesc(string userId)
         {
             var appointments = await _context.Appointments
                 .Where(a => a.RequestingUserId == userId)

@@ -12,7 +12,7 @@ namespace PsicoAppAPI.Services.Interfaces
         /// </summary>
         /// <param name="userId">Id of the user</param>
         /// <returns>List with appointments</returns>
-        Task<List<Appointment>> GetAppointmentsByUser(string userId);
+        Task<List<Appointment>> GetAppointmentsByClient(string userId);
 
         /// <summary>
         /// Get the appointments of an specialist based on their userId
