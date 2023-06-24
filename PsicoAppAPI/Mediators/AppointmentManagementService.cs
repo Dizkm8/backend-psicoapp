@@ -84,9 +84,7 @@ public class AppointmentManagementService : IAppointmentManagementService
         var appoint = appointments.SingleOrDefault(a => a.Id == appointmentId);
         if (appoint is null) return false;
 
-        // Change utc 0 to utc-4 or utc-3 (Chile)
-        var utcAvailability = await _timeZoneService.ConvertToChileUTC(appoint.BookedDate);
-        if (utcAvailability is null) return null;
+        if (appoint.BookedDate >= DateTime.Now.AddHours(-24)) return null;
 
         var result = await _appointmentService.CancelAppointment(appointmentId);
         return result;
@@ -102,10 +100,6 @@ public class AppointmentManagementService : IAppointmentManagementService
         var appointments = await _appointmentService.GetAllAppointments();
         var appoint = appointments.SingleOrDefault(a => a.Id == appointmentId);
         if (appoint is null) return false;
-
-        // Change utc 0 to utc-4 or utc-3 (Chile)
-        var utcAvailability = await _timeZoneService.ConvertToChileUTC(appoint.BookedDate);
-        if (utcAvailability is null) return null;
 
         var result = await _appointmentService.CancelAppointment(appointmentId);
         return result;
