@@ -134,5 +134,11 @@ namespace PsicoAppAPI.Services.Interfaces
         /// </summary>
         /// <returns>List with Users</returns>
         public Task<List<User>> GetAllUsers();
+        
+        /// <summary>
+        /// Get all the specialists in the system
+        /// </summary>
+        /// <returns>List with Specialist</returns>
+        public Task<List<Specialist>> GetAllSpecialists();
     }
 }

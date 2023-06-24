@@ -171,9 +171,11 @@ namespace PsicoAppAPI.Mediators
             return mappedUsers;
         }
 
-        public Task<IEnumerable<SpecialistDto>> GetAllSpecialists()
+        public async Task<IEnumerable<SpecialistDto>> GetAllSpecialists()
         {
-            throw new NotImplementedException();
+            var specialists = await _userService.GetAllSpecialists();
+            var mappedSpecialists = _mapperService.MapToListOfSpecialistDto(specialists);
+            return mappedSpecialists;
         }
     }
 }
