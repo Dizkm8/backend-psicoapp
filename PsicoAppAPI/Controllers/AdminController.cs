@@ -17,6 +17,14 @@ public class AdminController : BaseApiController
         _service = service ?? throw new ArgumentNullException(nameof(service));
     }
 
+    /// <summary>
+    /// Get the current GPT moderation rules
+    /// </summary>
+    /// <returns>
+    /// If the user Id from the token doesn't match with a admin return 401 Unauthorized
+    /// If something went wrong updating the rules return status 500 internal server error with message
+    /// If everything goes well return a status 200 with the rule
+    /// </returns>
     [Authorize(Roles = "1")]
     [HttpGet]
     public async Task<ActionResult<string>> GetGptRules()
@@ -31,8 +39,17 @@ public class AdminController : BaseApiController
         return Ok(rule);
     }
 
+    /// <summary>
+    /// Update the rules of GPT moderation
+    /// </summary>
+    /// <param name="rules">Dto with the content of the rules</param>
+    /// <returns>
+    /// If the dto don't follow the requirements return the model state with errors
+    /// If the user Id from the token doesn't match with a admin return 401 Unauthorized
+    /// If something went wrong updating the rules return status 500 internal server error with message
+    /// If everything goes well return a status 200 with no message
+    /// </returns>
     [Authorize(Roles = "1")]
-    //TODO: Change to HttpPut
     [HttpPost("update-rules")]
     public async Task<ActionResult<string>> SetGptRules(
         [Required] [StringLength(800, ErrorMessage = "Rules cannot be larger than 255 characters.")]
@@ -44,7 +61,7 @@ public class AdminController : BaseApiController
         if (!isAdmin) return Unauthorized("The user with userId from token are not a valid admin");
 
         var result = await _service.SetModerationRules(rules);
-        if (result) return Ok(result);
+        if (result) return Ok();
         return StatusCode(StatusCodes.Status500InternalServerError,
             new { error = "Internal error updating moderation rules" });
     }
@@ -95,9 +112,20 @@ public class AdminController : BaseApiController
         return Ok();
     }
 
+    /// <summary>
+    /// Update the isEnabled attribute of a user by their userId and the new status (true or false)
+    /// </summary>
+    /// <param name="userId">Id of the user to update</param>
+    /// <param name="isEnabled">isEnabled status, true or false</param>
+    /// <returns>
+    /// If the user Id from the token doesn't match with a admin return 401 Unauthorized
+    /// If the user Id of the user to update do not match with any existing user return status 400 Bad Request with custom message
+    /// If something went wrong updating the user return status 500 Internal server error with custom message
+    /// If everything goes well return status 200 with no message
+    /// </returns>
     [Authorize(Roles = "1")]
     [HttpPost("update-user-availability/{userId}")]
-    public async Task<ActionResult> UpdateUserAvailability(string userId, [FromQuery][Required] bool isEnabled)
+    public async Task<ActionResult> UpdateUserAvailability(string userId, [FromQuery] [Required] bool isEnabled)
     {
         var isAdmin = await _service.IsUserAdmin();
         if (!isAdmin) return Unauthorized("The user with userId from token are not a valid admin");
