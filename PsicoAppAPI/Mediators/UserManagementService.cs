@@ -158,11 +158,11 @@ namespace PsicoAppAPI.Mediators
             return admin is not null || specialist is not null;
         }
 
-        public Task<IEnumerable<UserDto>> GetAllUsers()
+        public async Task<IEnumerable<UserDto>> GetAllUsers()
         {
-            
-            
-            throw new NotImplementedException();
+            var users = await _userService.GetAllUsers();
+            var mappedUsers = _mapperService.MapToListOfUserDto(users);
+            return mappedUsers;
         }
     }
 }

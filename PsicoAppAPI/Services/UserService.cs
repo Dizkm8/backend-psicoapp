@@ -168,9 +168,10 @@ namespace PsicoAppAPI.Services
             return updatedUser is not null;
         }
 
-        public Task<List<User>> GetAllUsers()
+        public async Task<List<User>> GetAllUsers()
         {
-            throw new NotImplementedException();
+            var users = await _unitOfWork.UserRepository.GetAllUsers();
+            return users;
         }
 
         #endregion

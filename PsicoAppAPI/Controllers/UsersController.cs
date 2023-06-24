@@ -84,7 +84,8 @@ namespace PsicoAppAPI.Controllers
             var isAdminOrSpecialist = await _service.IsAdminOrSpecialist();
             if (!isAdminOrSpecialist) return Unauthorized("The user with userId from token are not a valid user");
 
-            return Ok();
+            var users = await _service.GetAllUsers();
+            return Ok(users);
         }
     }
 }
