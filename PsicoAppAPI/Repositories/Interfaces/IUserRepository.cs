@@ -76,5 +76,10 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// <param name="user">User to update</param>
         /// <returns>User updated. null if something gone wrong</returns>
         public User UpdateUserAndSaveChanges(User user);
+        /// <summary>
+        /// Get all the users in the system
+        /// </summary>
+        /// <returns>List with Users</returns>
+        public Task<List<User>> GetAllUsers();
     }
 }

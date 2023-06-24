@@ -31,6 +31,7 @@ namespace PsicoAppAPI.RequestHelpers
             CreateMap<User, RegisterSpecialistDto>();
             CreateMap<RegisterSpecialistDto, User>();
             CreateMap<Speciality, SpecialityDto>();
+            CreateMap<User, UserDto>();
         }
     }
 }

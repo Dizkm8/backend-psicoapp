@@ -168,6 +168,12 @@ namespace PsicoAppAPI.Services
             return updatedUser is not null;
         }
 
+        public async Task<List<User>> GetAllUsers()
+        {
+            var users = await _unitOfWork.UserRepository.GetAllUsers();
+            return users;
+        }
+
         #endregion
     }
 }
