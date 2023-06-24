@@ -2,18 +2,19 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
+using PsicoAppAPI.DTOs.User;
 using PsicoAppAPI.Mediators.Interfaces;
 
 namespace PsicoAppAPI.Controllers
 {
     public class UsersController : BaseApiController
     {
-        private readonly IUserManagementService _userManagementService;
+        private readonly IUserManagementService _service;
 
         public UsersController(IUserManagementService userManagementService)
         {
-            _userManagementService = userManagementService ??
-                throw new ArgumentNullException(nameof(userManagementService));
+            _service = userManagementService ??
+                       throw new ArgumentNullException(nameof(userManagementService));
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace PsicoAppAPI.Controllers
         [HttpGet("profile-information")]
         public async Task<ActionResult<ProfileInformationDto>> GetProfileInformation()
         {
-            var profileInformationDto = await _userManagementService.GetUserProfileInformation();
+            var profileInformationDto = await _service.GetUserProfileInformation();
             if (profileInformationDto is null) return Unauthorized("JWT not provided or invalid");
             return Ok(profileInformationDto);
         }
@@ -56,21 +57,34 @@ namespace PsicoAppAPI.Controllers
         /// </returns>
         [Authorize]
         [HttpPut("profile-information")]
-        public async Task<ActionResult> UpdateProfileInformation([FromBody] UpdateProfileInformationDto updateProfileInformationDto)
+        public async Task<ActionResult> UpdateProfileInformation(
+            [FromBody] UpdateProfileInformationDto updateProfileInformationDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
             // Needs to validate if exists In Different users to avoid
             // rejecting the update if the user doesn't change the email
-            var existsEmail = await _userManagementService.CheckEmailUpdatingAvailability(updateProfileInformationDto);
+            var existsEmail = await _service.CheckEmailUpdatingAvailability(updateProfileInformationDto);
             if (existsEmail) return BadRequest(new { error = "Email already exists" });
 
-            var result = await _userManagementService.UpdateProfileInformation(updateProfileInformationDto);
-            if (result is null) return StatusCode(StatusCodes.Status500InternalServerError,
-                new { error = "Internal error updating User" });
+            var result = await _service.UpdateProfileInformation(updateProfileInformationDto);
+            if (result is null)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { error = "Internal error updating User" });
             return Ok(result);
+        }
+
+        [Authorize(Roles = "1, 3")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
+        {
+            var isAdminOrSpecialist = await _service.IsAdminOrSpecialist();
+            if (!isAdminOrSpecialist) return Unauthorized("The user with userId from token are not a valid user");
+
+            return Ok();
         }
     }
 }
