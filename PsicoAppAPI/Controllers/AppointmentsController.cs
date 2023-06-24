@@ -19,8 +19,12 @@ namespace PsicoAppAPI.Controllers
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
-
-        [Authorize]
+        
+        /// <summary>
+        /// Get all the appointmets of an client
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles="2")]
         [HttpGet("get-appointments")]
         public async Task<ActionResult<IEnumerable<AppointmentDto>>> GetAppointmentByUser()
         {
