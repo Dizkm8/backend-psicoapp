@@ -67,4 +67,14 @@ public class AdminManagementService : IAdminManagementService
         var result = await _specialistService.CheckSpecialityById(specialistDto.SpecialityId);
         return result;
     }
+
+    public async Task<bool?> UpdateUserAvailability(string userId, bool isEnabled)
+    {
+        var user = await _userService.GetUserById(userId);
+        if (user is null) return null;
+
+        user.IsEnabled = isEnabled;
+        var result = await _userService.CheckUpdateUser(user);
+        return result;
+    }
 }

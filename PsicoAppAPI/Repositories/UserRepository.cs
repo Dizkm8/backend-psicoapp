@@ -8,6 +8,7 @@ namespace PsicoAppAPI.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly DataContext _context;
+
         public UserRepository(DataContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -29,6 +30,12 @@ namespace PsicoAppAPI.Repositories
         {
             var result = await GetUserByIdOrEmail(id, email) != null;
             return result;
+        }
+
+        public async Task<bool> UserCouldBeUpdatedUserAndSaveChanges(User user)
+        {
+            _ = _context.Users.Update(user);
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> ExistsUserWithEmail(string email)
@@ -68,18 +75,25 @@ namespace PsicoAppAPI.Repositories
             return result;
         }
 
-        public User UpdateUserAndSaveChanges(User user)
+        public async Task<User> UpdateUserAndSaveChanges(User user)
         {
-            var result = _context.Update(user).Entity;
-            _context.SaveChanges();
-            return result;
+            var updatedUser = _context.Users.Update(user).Entity;
+            _ = await _context.SaveChangesAsync();
+            return updatedUser;
+        }
+
+        public async Task<List<User>> GetAllUsers()
+        {
+            var users = await _context.Users
+                .Include(u => u.Role)
+                .ToListAsync();
+            return users;
         }
 
         public async Task<bool> UserExists(string id)
         {
             var user = await _context.FindAsync<User>(id);
             return user != null;
-
         }
 
         public async Task<bool> UserExists(User user)
