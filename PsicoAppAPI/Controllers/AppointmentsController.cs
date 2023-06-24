@@ -44,10 +44,13 @@ namespace PsicoAppAPI.Controllers
             if (!isClientOrAdmin) return Unauthorized("The user with userId from token are not a valid user");
 
             var result = await _service.CancelAppointment(appointmentId);
-            if (!result)
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    new ErrorModel { ErrorCode = 500, Message = "Internal error deleting the comment" });
-            return Ok();
+            return result switch
+            {
+                null => BadRequest("Appointment only can be canceled at least 24 hours before"),
+                false => StatusCode(StatusCodes.Status500InternalServerError,
+                    new ErrorModel { ErrorCode = 500, Message = "Internal error deleting the comment" }),
+                true => Ok()
+            };
         }
     }
 }

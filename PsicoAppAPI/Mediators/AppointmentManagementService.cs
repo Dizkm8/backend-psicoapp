@@ -10,13 +10,15 @@ public class AppointmentManagementService : IAppointmentManagementService
     private readonly IAppointmentService _appointmentService;
     private readonly IAuthManagementService _authService;
     private readonly IMapperService _mapperService;
+    private readonly ITimeZoneService _timeZoneService;
 
     public AppointmentManagementService(IAppointmentService appointmentService, IAuthManagementService authService,
-        IMapperService mapperService)
+        IMapperService mapperService, ITimeZoneService timeZoneService)
     {
         _appointmentService = appointmentService ?? throw new ArgumentNullException(nameof(appointmentService));
         _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
         _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+        _timeZoneService = timeZoneService ?? throw new ArgumentNullException(nameof(timeZoneService));
     }
 
     public async Task<IEnumerable<AppointmentDto>?> GetAppointmentsByUser()
@@ -42,7 +44,7 @@ public class AppointmentManagementService : IAppointmentManagementService
         return admin is not null || client is not null;
     }
 
-    public async Task<bool> CancelAppointment(int appointmentId)
+    public async Task<bool?> CancelAppointment(int appointmentId)
     {
         var admin = await _authService.GetUserEnabledAndAdminFromToken();
         var client = await _authService.GetUserEnabledAndClientFromToken();
@@ -50,7 +52,7 @@ public class AppointmentManagementService : IAppointmentManagementService
         if (admin is not null) return await AdminCancelAppointment(appointmentId);
 
         if (client is not null) return await ClientCancelAppointment(client.Id, appointmentId);
-        
+
         return false;
     }
 
@@ -60,11 +62,15 @@ public class AppointmentManagementService : IAppointmentManagementService
     /// <param name="userId">Id of the client</param>
     /// <param name="appointmentId">Id of the appointment</param>
     /// <returns>true if could be canceled</returns>
-    private async Task<bool> ClientCancelAppointment(string userId, int appointmentId)
+    private async Task<bool?> ClientCancelAppointment(string userId, int appointmentId)
     {
         var appointments = await _appointmentService.GetAppointmentsByUser(userId);
         var appoint = appointments.SingleOrDefault(a => a.Id == appointmentId);
         if (appoint is null) return false;
+
+        // Change utc 0 to utc-4 or utc-3 (Chile)
+        var utcAvailability = await _timeZoneService.ConvertToChileUTC(appoint.BookedDate);
+        if (utcAvailability is null) return null;
 
         var result = await _appointmentService.CancelAppointment(appointmentId);
         return result;
@@ -75,11 +81,15 @@ public class AppointmentManagementService : IAppointmentManagementService
     /// </summary>
     /// <param name="appointmentId">Id of the appointment</param>
     /// <returns>true if could be canceled</returns>
-    private async Task<bool> AdminCancelAppointment(int appointmentId)
+    private async Task<bool?> AdminCancelAppointment(int appointmentId)
     {
         var appointments = await _appointmentService.GetAllAppointments();
         var appoint = appointments.SingleOrDefault(a => a.Id == appointmentId);
         if (appoint is null) return false;
+
+        // Change utc 0 to utc-4 or utc-3 (Chile)
+        var utcAvailability = await _timeZoneService.ConvertToChileUTC(appoint.BookedDate);
+        if (utcAvailability is null) return null;
 
         var result = await _appointmentService.CancelAppointment(appointmentId);
         return result;
