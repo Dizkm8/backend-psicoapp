@@ -76,7 +76,7 @@ namespace PsicoAppAPI.Controllers
                     new { error = "Internal error updating User" });
             return Ok(result);
         }
-
+        
         [Authorize(Roles = "1, 3")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()

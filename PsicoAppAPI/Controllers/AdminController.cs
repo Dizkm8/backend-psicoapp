@@ -93,4 +93,14 @@ public class AdminController : BaseApiController
                 new { error = "Internal error creating a new specialist" });
         return Ok();
     }
+
+    [Authorize(Roles = "1")]
+    [HttpPost("update-user-availability/{userId}")]
+    public async Task<ActionResult> UpdateUserAvailability(string userId, [FromQuery] bool isEnabled)
+    {
+        var isAdmin = await _service.IsUserAdmin();
+        if (!isAdmin) return Unauthorized("The user with userId from token are not a valid admin");
+
+        return Ok();
+    }
 }
