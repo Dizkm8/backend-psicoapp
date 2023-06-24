@@ -21,5 +21,16 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="bookedDate">date to book the appointment</param>
         /// <returns>true if could be added. otherwise false</returns>
         Task<bool> AddAppointment(string requestingUserId, string requestedUserId, DateTime bookedDate);
+        /// <summary>
+        /// Cancel the appointment by their ID
+        /// </summary>
+        /// <param name="appointmentId">Id of the appointment</param>
+        /// <returns>true if could be canceled. otherwise false</returns>
+        Task<bool> CancelAppointment(int appointmentId);
+        /// <summary>
+        /// Get all the appointments of the system
+        /// </summary>
+        /// <returns>List with appointments</returns>
+        Task<List<Appointment>> GetAllAppointments();
     }
 }

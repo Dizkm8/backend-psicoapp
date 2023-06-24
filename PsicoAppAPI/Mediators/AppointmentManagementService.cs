@@ -66,8 +66,8 @@ public class AppointmentManagementService : IAppointmentManagementService
         var appoint = appointments.SingleOrDefault(a => a.Id == appointmentId);
         if (appoint is null) return false;
 
-
-        throw new NotImplementedException();
+        var result = await _appointmentService.CancelAppointment(appointmentId);
+        return result;
     }
 
     /// <summary>
@@ -77,6 +77,11 @@ public class AppointmentManagementService : IAppointmentManagementService
     /// <returns>true if could be canceled</returns>
     private async Task<bool> AdminCancelAppointment(int appointmentId)
     {
-        throw new NotImplementedException();
+        var appointments = await _appointmentService.GetAllAppointments();
+        var appoint = appointments.SingleOrDefault(a => a.Id == appointmentId);
+        if (appoint is null) return false;
+
+        var result = await _appointmentService.CancelAppointment(appointmentId);
+        return result;
     }
 }

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
+using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.Appointment;
 using PsicoAppAPI.Mediators.Interfaces;
 
@@ -41,9 +42,11 @@ namespace PsicoAppAPI.Controllers
         {
             var isClientOrAdmin = await _service.IsAdminOrClient();
             if (!isClientOrAdmin) return Unauthorized("The user with userId from token are not a valid user");
-            
-            
-            
+
+            var result = await _service.CancelAppointment(appointmentId);
+            if (!result)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ErrorModel { ErrorCode = 500, Message = "Internal error deleting the comment" });
             return Ok();
         }
     }
