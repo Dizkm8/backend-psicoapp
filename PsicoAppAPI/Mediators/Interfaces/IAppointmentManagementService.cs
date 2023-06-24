@@ -15,4 +15,9 @@ public interface IAppointmentManagementService
     /// </summary>
     /// <returns>true if match with the filters. otherwise false</returns>
     public Task<bool> IsUserClient();
+    /// <summary>
+    /// Check using the token if the userId match with an enabled user and if it is client or admin
+    /// </summary>
+    /// <returns>true if match with the filters. otherwise false</returns>
+    public Task<bool> IsAdminOrClient();
 }

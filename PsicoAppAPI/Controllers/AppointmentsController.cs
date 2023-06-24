@@ -19,7 +19,7 @@ namespace PsicoAppAPI.Controllers
         {
             _service = service ?? throw new ArgumentNullException(nameof(service));
         }
-        
+
         /// <summary>
         /// Get all the appointmets of an client
         /// </summary>
@@ -28,7 +28,7 @@ namespace PsicoAppAPI.Controllers
         /// If the user has no appointments return status 200 with empty list
         /// If everything goes well return a List with the appointments with status 200 
         /// </returns>
-        [Authorize(Roles="2")]
+        [Authorize(Roles = "2")]
         [HttpGet("get-appointments")]
         public async Task<ActionResult<IEnumerable<AppointmentDto>>> GetAppointmentByUser()
         {
@@ -38,6 +38,18 @@ namespace PsicoAppAPI.Controllers
             var appointments = await _service.GetAppointmentsByUser();
             if (appointments is null) return Unauthorized("The user with userId from token are not a valid client");
             return Ok(appointments);
+        }
+
+        [Authorize(Roles = "1, 2")]
+        [HttpDelete("cancel-appointment")]
+        public async Task<ActionResult> CancelAppointment()
+        {
+            var isClientOrAdmin = await _service.IsAdminOrClient();
+            if (!isClientOrAdmin) return Unauthorized("The user with userId from token are not a valid user");
+            
+            
+            
+            return Ok();
         }
     }
 }

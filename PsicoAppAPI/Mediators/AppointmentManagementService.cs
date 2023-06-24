@@ -34,4 +34,11 @@ public class AppointmentManagementService : IAppointmentManagementService
         var user = await _authService.GetUserEnabledAndClientFromToken();
         return user is not null;
     }
+
+    public async Task<bool> IsAdminOrClient()
+    {
+        var admin = await _authService.GetUserEnabledAndAdminFromToken();
+        var client = await _authService.GetUserEnabledAndClientFromToken();
+        return admin is not null || client is not null;
+    }
 }
