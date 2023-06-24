@@ -75,6 +75,14 @@ namespace PsicoAppAPI.Repositories
             return result;
         }
 
+        public async Task<List<User>> GetAllUsers()
+        {
+            var users = await _context.Users
+                .Include(u => u.Role)
+                .ToListAsync();
+            return users;
+        }
+
         public async Task<bool> UserExists(string id)
         {
             var user = await _context.FindAsync<User>(id);

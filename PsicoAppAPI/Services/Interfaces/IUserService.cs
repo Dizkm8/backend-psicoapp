@@ -107,5 +107,10 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="user">User to update</param>
         /// <returns>True if could be updated. otherwise false</returns>
         public bool UpdateUser(User? user);
+        /// <summary>
+        /// Get all the users in the system
+        /// </summary>
+        /// <returns>List with Users</returns>
+        public Task<List<User>> GetAllUsers();
     }
 }

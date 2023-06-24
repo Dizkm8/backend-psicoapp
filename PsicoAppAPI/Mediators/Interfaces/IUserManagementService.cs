@@ -94,5 +94,10 @@ namespace PsicoAppAPI.Mediators.Interfaces
         /// </summary>
         /// <returns>True if match the filters. otherwise false</returns>
         public Task<bool> IsAdminOrSpecialist();
+        /// <summary>
+        /// Get all the users in the system
+        /// </summary>
+        /// <returns>IEnumerable with UserDtos</returns>
+        public Task<IEnumerable<UserDto>> GetAllUsers();
     }
 }

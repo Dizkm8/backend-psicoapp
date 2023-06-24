@@ -11,8 +11,5 @@ public class UserDto
     public bool IsEnabled { get; set; }
     public int Phone { get; set; }
     public string Password { get; set; } = null!;
-    public int RoleId { get; set; }
     public string RoleName { get; set; } = null!;
-    public int SpecialityId { get; set; }
-    public string SpecialityName { get; set; } = null!;
 }

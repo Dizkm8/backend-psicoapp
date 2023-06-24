@@ -168,6 +168,11 @@ namespace PsicoAppAPI.Services
             return updatedUser is not null;
         }
 
+        public Task<List<User>> GetAllUsers()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
