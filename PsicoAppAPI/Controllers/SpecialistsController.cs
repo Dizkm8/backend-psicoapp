@@ -1,3 +1,4 @@
+using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -96,6 +97,13 @@ namespace PsicoAppAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new { error = "Internal error adding availabilities" });
             return Ok(result);
+        }
+        
+        [Authorize]
+        [HttpGet("get-specialities")]
+        public async Task<ActionResult<IEnumerable<SpecialityDto>>> GetAllSpecialities()
+        {
+            return Ok();
         }
     }
 }
