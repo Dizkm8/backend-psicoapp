@@ -23,7 +23,11 @@ namespace PsicoAppAPI.Controllers
         /// <summary>
         /// Get all the appointmets of an client
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        /// If the userId in the token are not a client and enabled user return status code 401 Unauthorized
+        /// If the user has no appointments return status 200 with empty list
+        /// If everything goes well return a List with the appointments with status 200 
+        /// </returns>
         [Authorize(Roles="2")]
         [HttpGet("get-appointments")]
         public async Task<ActionResult<IEnumerable<AppointmentDto>>> GetAppointmentByUser()
