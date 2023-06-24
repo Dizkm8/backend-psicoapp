@@ -18,6 +18,13 @@ public interface IAppointmentManagementService
     public Task<IEnumerable<SpecialistAppointmentDto>?> GetAppointmentsBySpecialist();
 
     /// <summary>
+    /// Get the appointments of a specialist based on their userId provided
+    /// </summary>
+    /// <param name="specialistUserId">user Id of the specialist</param>
+    /// <returns>IEnumerable with the Appointment as Dto. If something went wrong return null</returns>
+    public Task<IEnumerable<SpecialistAppointmentDto>?> GetAppointmentsBySpecialist(string specialistUserId);
+
+    /// <summary>
     /// Check using the token if the userId match with an enabled user and if it is client
     /// </summary>
     /// <returns>true if match with the filters. otherwise false</returns>

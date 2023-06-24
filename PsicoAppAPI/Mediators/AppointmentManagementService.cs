@@ -41,6 +41,13 @@ public class AppointmentManagementService : IAppointmentManagementService
         return mappedAppointments;
     }
 
+    public async Task<IEnumerable<SpecialistAppointmentDto>?> GetAppointmentsBySpecialist(string specialistUserId)
+    {
+        var appointments = await _appointmentService.GetAppointmentsBySpecialist(specialistUserId);
+        var mappedAppointments = _mapperService.MapToSpecialistAppointmentDto(appointments);
+        return mappedAppointments;
+    }
+
     public async Task<bool> IsUserClient()
     {
         var user = await _authService.GetUserEnabledAndClientFromToken();
