@@ -95,7 +95,7 @@ namespace PsicoAppAPI.Services
             var user = await _unitOfWork.UserRepository.GetUserById(userId);
             if (user is null) return null;
             var updateUser = mapperService.MapAttributesToUser(newUser, user);
-            var savedUser = _unitOfWork.UserRepository.UpdateUserAndSaveChanges(updateUser);
+            var savedUser = await _unitOfWork.UserRepository.UpdateUserAndSaveChanges(updateUser);
             var mappedDto = mapperService.MapToUpdatedProfileInformationDto(savedUser);
             return mappedDto;
         }
@@ -161,11 +161,18 @@ namespace PsicoAppAPI.Services
             return result;
         }
 
-        public bool UpdateUser(User? user)
+        public async Task<User?> UpdateUser(User? user)
+        {
+            if (user is null) return null;
+            var updatedUser = await _unitOfWork.UserRepository.UpdateUserAndSaveChanges(user);
+            return updatedUser;
+        }
+
+        public async Task<bool> CheckUpdateUser(User? user)
         {
             if (user is null) return false;
-            var updatedUser = _unitOfWork.UserRepository.UpdateUserAndSaveChanges(user);
-            return updatedUser is not null;
+            var result = await _unitOfWork.UserRepository.UserCouldBeUpdatedUserAndSaveChanges(user);
+            return result;
         }
 
         public async Task<List<User>> GetAllUsers()

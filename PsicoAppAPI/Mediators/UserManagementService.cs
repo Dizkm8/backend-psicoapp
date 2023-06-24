@@ -120,8 +120,8 @@ namespace PsicoAppAPI.Mediators
             if (user is null) return null;
 
             var mappedUser = _mapperService.MapAttributesToUser(newUser, user);
-            var result = _userService.UpdateUser(mappedUser);
-            if (!result) return null;
+            var result = await _userService.UpdateUser(mappedUser);
+            if (result is null) return null;
             return _mapperService.MapToUpdatedProfileInformationDto(mappedUser);
         }
 

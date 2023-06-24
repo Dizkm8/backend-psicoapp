@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
+using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.User;
 using PsicoAppAPI.Mediators.Interfaces;
 
@@ -92,5 +93,23 @@ public class AdminController : BaseApiController
             return StatusCode(StatusCodes.Status500InternalServerError,
                 new { error = "Internal error creating a new specialist" });
         return Ok();
+    }
+
+    [Authorize(Roles = "1")]
+    [HttpPost("update-user-availability/{userId}")]
+    public async Task<ActionResult> UpdateUserAvailability(string userId, [FromQuery][Required] bool isEnabled)
+    {
+        var isAdmin = await _service.IsUserAdmin();
+        if (!isAdmin) return Unauthorized("The user with userId from token are not a valid admin");
+
+        var result = await _service.UpdateUserAvailability(userId, isEnabled);
+
+        return result switch
+        {
+            null => BadRequest("userId do not match with any user in the system"),
+            false => StatusCode(StatusCodes.Status500InternalServerError,
+                new ErrorModel { ErrorCode = 500, Message = "Internal error deleting the comment" }),
+            true => Ok()
+        };
     }
 }
