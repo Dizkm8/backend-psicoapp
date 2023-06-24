@@ -42,4 +42,10 @@ public interface IAppointmentManagementService
     /// </summary>
     /// <returns>true if match with the filters. otherwise false</returns>
     public Task<bool> IsSpecialist();
+
+    /// <summary>
+    /// Check using the token if the userId match with an enabled user and if it is admin
+    /// </summary>
+    /// <returns>true if match with the filters. otherwise false</returns>
+    public Task<bool> IsAdmin();
 }

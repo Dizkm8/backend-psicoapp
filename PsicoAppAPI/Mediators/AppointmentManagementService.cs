@@ -72,6 +72,12 @@ public class AppointmentManagementService : IAppointmentManagementService
         return user is not null;
     }
 
+    public async Task<bool> IsAdmin()
+    {
+        var user = await _authService.GetUserEnabledAndAdminFromToken();
+        return user is not null;
+    }
+
     /// <summary>
     /// Canceled an appointment from a client appointments
     /// </summary>
