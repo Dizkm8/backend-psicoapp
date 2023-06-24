@@ -35,5 +35,17 @@ namespace PsicoAppAPI.Services
             var result = await _unitOfWork.AppointmentRepository.AddAppointmentAndSaveChanges(appointment);
             return result;
         }
+
+        public async Task<bool> CancelAppointment(int appointmentId)
+        {
+            var result = await _unitOfWork.AppointmentRepository.CancelAppointmentAndSaveChanges(appointmentId);
+            return result;
+        }
+
+        public async Task<List<Appointment>> GetAllAppointments()
+        {
+            var result = await _unitOfWork.AppointmentRepository.GetAllAppointments();
+            return result ?? new List<Appointment>();
+        }
     }
 }
