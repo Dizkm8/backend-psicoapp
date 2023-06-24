@@ -27,7 +27,7 @@ namespace PsicoAppAPI.DTOs.User
         public string? Gender { get; set; }
 
         [Required(ErrorMessage = "Phone is required")]
-        [Range(10000000, 99999999, ErrorMessage = "Phone number must be an 8-digit number.")]
+        [Range(1000, 99999999999, ErrorMessage = "Phone number must be 4 digits minimum and 11 maximum")]
         public int Phone { get; set; }
 
         [Required(ErrorMessage = "New password is required")]
