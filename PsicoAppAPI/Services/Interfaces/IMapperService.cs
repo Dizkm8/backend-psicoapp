@@ -1,4 +1,5 @@
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.Appointment;
 using PsicoAppAPI.DTOs.BasePosts;
 using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.DTOs.ForumPost;
@@ -111,5 +112,11 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="posts">Posts to map</param>
         /// <returns>List of mapped posts</returns>
         public List<FeedPostDto> MapToFeedPostDto(List<FeedPost>? posts);
+        /// <summary>
+        /// Map list of Appointment to list of AppointmentDto
+        /// </summary>
+        /// <param name="appointments">Appointments to map</param>
+        /// <returns>List of mapped appointment</returns>
+        public List<AppointmentDto> MapToAppointmentDto(List<Appointment>? appointments);
     }
 }

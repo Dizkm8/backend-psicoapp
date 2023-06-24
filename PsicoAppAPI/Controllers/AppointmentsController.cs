@@ -6,60 +6,38 @@ using PsicoAppAPI.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using PsicoAppAPI.DTOs.Appointment;
+using PsicoAppAPI.Mediators.Interfaces;
 
 namespace PsicoAppAPI.Controllers
 {
     public class AppointmentsController : BaseApiController
     {
-        private readonly IAppointmentService _appointmentService;
+        private readonly IAppointmentManagementService _service;
 
-        public AppointmentsController(IAppointmentService appointmentService)
+        public AppointmentsController(IAppointmentManagementService service)
         {
-            _appointmentService = appointmentService ?? throw new ArgumentNullException(nameof(appointmentService));
+            _service = service ?? throw new ArgumentNullException(nameof(service));
         }
-
-        [Authorize]
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<AppointmentDto>>> GetAppointmentsByUser(int userId)
+        
+        /// <summary>
+        /// Get all the appointmets of an client
+        /// </summary>
+        /// <returns>
+        /// If the userId in the token are not a client and enabled user return status code 401 Unauthorized
+        /// If the user has no appointments return status 200 with empty list
+        /// If everything goes well return a List with the appointments with status 200 
+        /// </returns>
+        [Authorize(Roles="2")]
+        [HttpGet("get-appointments")]
+        public async Task<ActionResult<IEnumerable<AppointmentDto>>> GetAppointmentByUser()
         {
-            var appointments = await _appointmentService.GetAppointmentsByUser(userId);
-            var appointmentDtos = MapAppointmentsToDtos(appointments);
-            return Ok(appointmentDtos);
-        }
+            var isClient = await _service.IsUserClient();
+            if (!isClient) return Unauthorized("The user with userId from token are not a valid client");
 
-        private IEnumerable<AppointmentDto> MapAppointmentsToDtos(IEnumerable<Models.Appointment> appointments)
-        {
-            var appointmentDtos = new List<AppointmentDto>();
-            foreach (var appointment in appointments)
-            {
-                var appointmentDto = new AppointmentDto
-                {
-                    Id = appointment.Id,
-                    UserId = appointment.RequestingUserId,
-                    SpecialistId = appointment.RequestedUserId,
-                    BookedDate = appointment.BookedDate,
-                    Status = GetAppointmentStatusName(appointment.AppointmentStatusId) // Agrega el nombre del estado de la cita
-                };
-
-                appointmentDtos.Add(appointmentDto);
-            }
-
-            return appointmentDtos;
-        }
-
-        private string GetAppointmentStatusName(int appointmentStatusId)
-        {
-            switch (appointmentStatusId)
-            {
-                case 1:
-                    return "Done";
-                case 2:
-                    return "Booked";
-                case 3:
-                    return "Rejected";
-                default:
-                    return "Unknown";
-            }
+            var appointments = await _service.GetAppointmentsByUser();
+            if (appointments is null) return Unauthorized("The user with userId from token are not a valid client");
+            return Ok(appointments);
         }
     }
 }

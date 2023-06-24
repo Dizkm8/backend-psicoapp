@@ -1,5 +1,6 @@
 using AutoMapper;
 using PsicoAppAPI.DTOs;
+using PsicoAppAPI.DTOs.Appointment;
 using PsicoAppAPI.DTOs.BasePosts;
 using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.DTOs.ForumPost;
@@ -116,6 +117,12 @@ namespace PsicoAppAPI.Services
         {
             var mappedPosts = posts?.Select(x => _mapper.Map<FeedPostDto>(x)).ToList();
             return mappedPosts ?? new List<FeedPostDto>();
+        }
+
+        public List<AppointmentDto> MapToAppointmentDto(List<Appointment>? appointments)
+        {
+            var mappedAppointments = appointments?.Select(x => _mapper.Map<AppointmentDto>(x)).ToList();
+            return mappedAppointments ?? new List<AppointmentDto>();
         }
     }
 }
