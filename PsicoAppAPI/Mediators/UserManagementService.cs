@@ -184,5 +184,11 @@ namespace PsicoAppAPI.Mediators
             var client = await _authService.GetUserEnabledAndClientFromToken();
             return admin is not null || client is not null;
         }
+
+        public async Task<SpecialistDto> GetSpecialistByUserId(string userId)
+        {
+            var specialist = await _userService.GetSpecialistByUserId(userId);
+            throw new NotImplementedException();
+        }
     }
 }

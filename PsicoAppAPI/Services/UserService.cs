@@ -187,6 +187,11 @@ namespace PsicoAppAPI.Services
             return specialists ?? new List<Specialist>();
         }
 
+        public Task<Specialist> GetSpecialistByUserId(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }
