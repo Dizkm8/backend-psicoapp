@@ -12,5 +12,6 @@ public class ForumPostDto
     public string UserSecondLastName { get; set; } = null!;
     public string FullName => $"{UserName} {UserFirstLastName} {UserSecondLastName}";
     public string TagName { get; set; } = null!;
+    public int CommentsQuantity => Comments.Count;
     public List<CommentDto> Comments { get; set; } = new();
 }
