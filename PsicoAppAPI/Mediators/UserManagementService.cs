@@ -189,8 +189,7 @@ namespace PsicoAppAPI.Mediators
         {
             var specialist = await _userService.GetSpecialistByUserId(userId);
             if (specialist is null) return null;
-            
-            throw new NotImplementedException();
+            return _mapperService.MapToSpecialistDto(specialist);
         }
     }
 }
