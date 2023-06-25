@@ -98,10 +98,12 @@ namespace PsicoAppAPI.Extensions
         {
             services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+                string connectionString = config.GetConnectionString("DefaultConnection") ?? string.Empty;
+                opt.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             });
             return services;
         }
+
 
         private static IServiceCollection AddAuthentication(IServiceCollection services, IConfiguration config)
         {
