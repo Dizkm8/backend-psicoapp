@@ -137,7 +137,7 @@ namespace PsicoAppAPI.Mediators.Interfaces
         /// Get a specialist by their userId
         /// </summary>
         /// <param name="userId">Userid of the specialist</param>
-        /// <returns>SpecialistDto</returns>
-        public Task<SpecialistDto> GetSpecialistByUserId(string userId);
+        /// <returns>SpecialistDto if could be found. otherwise false</returns>
+        public Task<SpecialistDto?> GetSpecialistByUserId(string userId);
     }
 }

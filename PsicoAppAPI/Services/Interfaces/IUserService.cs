@@ -144,7 +144,7 @@ namespace PsicoAppAPI.Services.Interfaces
         /// Get a specialist by their userId
         /// </summary>
         /// <param name="userId">Userid of the specialist</param>
-        /// <returns>Specialist</returns>
-        public Task<Specialist> GetSpecialistByUserId(string userId);
+        /// <returns>Specialist if could be found. otherwise false</returns>
+        public Task<Specialist?> GetSpecialistByUserId(string userId);
     }
 }

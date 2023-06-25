@@ -187,9 +187,10 @@ namespace PsicoAppAPI.Services
             return specialists ?? new List<Specialist>();
         }
 
-        public Task<Specialist> GetSpecialistByUserId(string userId)
+        public async Task<Specialist?> GetSpecialistByUserId(string userId)
         {
-            throw new NotImplementedException();
+            var user = await _unitOfWork.SpecialistRepository.GetSpecialistByUserId(userId);
+            return user;
         }
 
         #endregion
