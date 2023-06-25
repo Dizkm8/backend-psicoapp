@@ -22,10 +22,8 @@ GPT_API_KEY=YOUR_API_KEY
 TIMEZONE_API_KEY=YOUR_API_KEY
 ```
 Where YOUR_API_KEY is the key that you can get from the following links:
-<a href="https://platform.openai.com/account/api-keys">GPT_API_KEY</a>
-<p></p>
-<a href="https://developers.google.com/maps/documentation/timezone/get-api-key">TIMEZONE_API_KEY</a>
-
+<p><a href="https://platform.openai.com/account/api-keys">GPT_API_KEY</a></p>
+<p><a href="https://developers.google.com/maps/documentation/timezone/get-api-key">TIMEZONE_API_KEY</a></p>
 6. After that you need to setup the database, we recommend to use mariaDB in a docker container for simplicity. To achieve that you need to create a new container with the following command:
 ```bash
 docker run --detach --name psicoapp-db -p 3306:3306 --env MARIADB_USER=root --env MARIADB_PASSWORD=my-secret --env MARIADB_ROOT_PASSWORD=my-secret --env MARIADB_DATABASE=psicoapp mariadb:latest
