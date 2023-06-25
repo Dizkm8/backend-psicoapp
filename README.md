@@ -56,8 +56,11 @@ docker start psicoapp-db
 }
 ```
 <p>You need to change the <b>Uid</b> and <b>Pwd</b> to match the credentials that you used to create the container. If you do not changed the credentials in the container, you can leave it as it is.</p>
+<p>If you also changed the database name in the docker creating command you need to match with the variable <b>Database</b></p>
 
-9.  Finally, you can start the project executing the command
+9. The last step is open the connect to database, we highly recommend use any IDE like **Datagrip** or **SQL Workbench**, anyways, if you want use CLI you need to follow the mariaDB docs: <a href="https://mariadb.com/kb/en/connecting-to-mariadb/" target="_blank">Connecting to MariaDB</a> The credentials and port are the same you used to create the container.
+
+10.   Finally, you can start the project executing the command
 ```cs
 dotnet run
 ```
