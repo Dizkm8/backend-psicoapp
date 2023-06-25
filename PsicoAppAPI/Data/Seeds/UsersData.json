@@ -8,7 +8,6 @@
 {"Id":"06237773","Name":"Hedvig","FirstLastName":"Breede","SecondLastName":"Inns","Email":"hinns7@netvibes.com","Gender":"Female","IsEnabled":true,"Phone":40256804,"Password":"KIeQWUl","RoleId":3},
 {"Id":"11790746","Name":"Marillin","FirstLastName":"Greenroyd","SecondLastName":"Jakubowsky","Email":"mjakubowsky8@360.cn","Gender":"Female","IsEnabled":true,"Phone":70475488,"Password":"j5bOUWf","RoleId":3},
 {"Id":"77101173","Name":"Teri","FirstLastName":"Tolerton","SecondLastName":"Dot","Email":"tdot9@arstechnica.com","Gender":"Female","IsEnabled":false,"Phone":91796994,"Password":"5dJ5SBI8MfFP","RoleId":3},
-{"Id":"207676918","Name":"David Nahum","FirstLastName":"Araya","SecondLastName":"Cádiz","Email":"davidnahumac@gmail.com","Gender":"Male","IsEnabled":true,"Phone":74113387,"Password":"davidaraya","RoleId":3},
 
 {"Id":"31247514","Name":"Nerita","FirstLastName":"Kilsby","SecondLastName":"Seeks","Email":"nseeksa@google.co.jp","Gender":"Female","IsEnabled":false,"Phone":47308497,"Password":"CMf5y0g","RoleId":1},
 
@@ -18,6 +17,11 @@
 {"Id":"51521339","Name":"Dodi","FirstLastName":"Linklet","SecondLastName":"McRorie","Email":"dmcroriee@time.com","Gender":"Female","IsEnabled":true,"Phone":88747543,"Password":"hsyL9WpyZc","RoleId":2},
 {"Id":"70115373","Name":"Locke","FirstLastName":"Dofty","SecondLastName":"Bottleson","Email":"lbottlesonf@plala.or.jp","Gender":"Male","IsEnabled":true,"Phone":69550543,"Password":"evBvXA","RoleId":2},
 {"Id":"70925144","Name":"Pepito","FirstLastName":"Baggalley","SecondLastName":"Durrad","Email":"pdurradg@usda.gov","Gender":"Male","IsEnabled":false,"Phone":94379029,"Password":"1JnoQvoGg4","RoleId":2},
-{"Id":"79011379","Name":"Mikkel","FirstLastName":"Momford","SecondLastName":"Darrel","Email":"mdarrelh@google.it","Gender":"Male","IsEnabled":false,"Phone":43848431,"Password":"WqJ0mX7JyNm","RoleId":2},
+{"Id":"79011379","Name":"Mikkel","FirstLastName":"Momford","SecondLastName":"Darrel","Email":"mdarrelh@google.it","Gender":"Male","IsEnabled":true,"Phone":43848431,"Password":"WqJ0mX7JyNm","RoleId":2},
 
-{"Id":"32373818","Name":"Laural","FirstLastName":"Chambers","SecondLastName":"Dyball","Email":"ldyballi@fotki.com","Gender":"Female","IsEnabled":false,"Phone":53478075,"Password":"e81Otd","RoleId":1}]
+{"Id":"32373818","Name":"Laural","FirstLastName":"Chambers","SecondLastName":"Dyball","Email":"ldyballi@fotki.com","Gender":"Female","IsEnabled":false,"Phone":53478075,"Password":"e81Otd","RoleId":1},
+
+
+{"Id":"207676918","Name":"David Nahum","FirstLastName":"Araya","SecondLastName":"Cádiz","Email":"davidnahumac@gmail.com","Gender":"Male","IsEnabled":true,"Phone":74113387,"Password":"davidaraya","RoleId":3},
+{"Id":"207785296","Name":"Ignacia Yaritsa","FirstLastName":"Rivas","SecondLastName":"Figueroa","Email":"ignacia.rivas@alumnos.ucn.cl","Gender":"Female","IsEnabled":true,"Phone":74113387,"Password":"ignaciarivas","RoleId":1},
+{"Id":"103661455","Name":"Mauricio David","FirstLastName":"Araya","SecondLastName":"Serrano","Email":"mdaraya@gmail.com","Gender":"Male","IsEnabled":true,"Phone":74113387,"Password":"mauricioaraya","RoleId":2}]

@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
-using PsicoAppAPI.Services.Mediators.Interfaces;
+using PsicoAppAPI.DTOs.User;
+using PsicoAppAPI.Mediators.Interfaces;
 
 namespace PsicoAppAPI.Controllers
 {
@@ -14,7 +15,7 @@ namespace PsicoAppAPI.Controllers
         public AuthController(IUserManagementService userManagementService)
         {
             _userManagementService = userManagementService ??
-                throw new ArgumentNullException(nameof(userManagementService));
+                                     throw new ArgumentNullException(nameof(userManagementService));
         }
 
         /// <summary>
@@ -38,8 +39,8 @@ namespace PsicoAppAPI.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] LoginUserDto loginUserDto)
         {
-            var CheckCredentials = await _userManagementService.CheckCredentials(loginUserDto);
-            if (!CheckCredentials) return BadRequest("Invalid credentials");
+            var checkCredentials = await _userManagementService.CheckCredentials(loginUserDto);
+            if (!checkCredentials) return BadRequest("Invalid credentials");
 
             var checkEnabled = await _userManagementService.CheckUserEnabled(loginUserDto);
             if (!checkEnabled) return BadRequest("User is not enabled, please contact support");
@@ -50,6 +51,7 @@ namespace PsicoAppAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new ErrorModel { ErrorCode = 500, Message = "Token generation failed" });
             }
+
             return Ok(new { Token = token });
         }
 
@@ -74,7 +76,8 @@ namespace PsicoAppAPI.Controllers
         /// </returns>
         [AllowAnonymous]
         [HttpPost("register-client")]
-        public async Task<ActionResult<RegisterClientDto>> RegisterClient([FromBody] RegisterClientDto registerClientDto)
+        public async Task<ActionResult<RegisterClientDto>> RegisterClient(
+            [FromBody] RegisterClientDto registerClientDto)
         {
             if (!ModelState.IsValid)
             {
@@ -90,8 +93,9 @@ namespace PsicoAppAPI.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var clientAdded = await _userManagementService.AddClient(registerClientDto);
-            if (clientAdded is null) return StatusCode(StatusCodes.Status500InternalServerError,
-                new ErrorModel { ErrorCode = 500, Message = "Internal error adding User" });
+            if (clientAdded is null)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ErrorModel { ErrorCode = 500, Message = "Internal error adding User" });
 
             return Ok(clientAdded);
         }
@@ -122,6 +126,7 @@ namespace PsicoAppAPI.Controllers
                 var errors = ModelState.Values.SelectMany(v => v.Errors);
                 return BadRequest(new { errors });
             }
+
             // Check if user exists based on the JWT provided
             var existUser = await _userManagementService.CheckUserInToken();
             if (!existUser) return BadRequest(new { error = "User not found" });
@@ -131,8 +136,9 @@ namespace PsicoAppAPI.Controllers
             if (!isPasswordCorrect) return BadRequest(new { error = "Current password is incorrect" });
             // Tries to update the password
             var result = await _userManagementService.UpdateUserPassword(updatePasswordDto);
-            if (!result) return StatusCode(StatusCodes.Status500InternalServerError,
-                new { error = "Internal error updating User" });
+            if (!result)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { error = "Internal error updating User" });
             // No info is returned if the password was updated successfully
             // because the user is logged out after the password is updated
             return Ok();

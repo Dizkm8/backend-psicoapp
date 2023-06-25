@@ -2,18 +2,19 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
-using PsicoAppAPI.Services.Mediators.Interfaces;
+using PsicoAppAPI.DTOs.User;
+using PsicoAppAPI.Mediators.Interfaces;
 
 namespace PsicoAppAPI.Controllers
 {
     public class UsersController : BaseApiController
     {
-        private readonly IUserManagementService _userManagementService;
+        private readonly IUserManagementService _service;
 
         public UsersController(IUserManagementService userManagementService)
         {
-            _userManagementService = userManagementService ??
-                throw new ArgumentNullException(nameof(userManagementService));
+            _service = userManagementService ??
+                       throw new ArgumentNullException(nameof(userManagementService));
         }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace PsicoAppAPI.Controllers
         [HttpGet("profile-information")]
         public async Task<ActionResult<ProfileInformationDto>> GetProfileInformation()
         {
-            var profileInformationDto = await _userManagementService.GetUserProfileInformation();
+            var profileInformationDto = await _service.GetUserProfileInformation();
             if (profileInformationDto is null) return Unauthorized("JWT not provided or invalid");
             return Ok(profileInformationDto);
         }
@@ -56,21 +57,129 @@ namespace PsicoAppAPI.Controllers
         /// </returns>
         [Authorize]
         [HttpPut("profile-information")]
-        public async Task<ActionResult> UpdateProfileInformation([FromBody] UpdateProfileInformationDto updateProfileInformationDto)
+        public async Task<ActionResult> UpdateProfileInformation(
+            [FromBody] UpdateProfileInformationDto updateProfileInformationDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
             // Needs to validate if exists In Different users to avoid
             // rejecting the update if the user doesn't change the email
-            var existsEmail = await _userManagementService.CheckEmailUpdatingAvailability(updateProfileInformationDto);
+            var existsEmail = await _service.CheckEmailUpdatingAvailability(updateProfileInformationDto);
             if (existsEmail) return BadRequest(new { error = "Email already exists" });
 
-            var result = await _userManagementService.UpdateProfileInformation(updateProfileInformationDto);
-            if (result is null) return StatusCode(StatusCodes.Status500InternalServerError,
-                new { error = "Internal error updating User" });
+            var result = await _service.UpdateProfileInformation(updateProfileInformationDto);
+            if (result is null)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { error = "Internal error updating User" });
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Get all the users in the system
+        /// </summary>
+        /// <returns>
+        /// If the user Id from the token doesn't match with an admin or specialist return 401 Unauthorized
+        /// If the system have no users return an empty list
+        /// If the system have users return a list with UserDto, this have the following structure:
+        /// Id: User's identifier
+        /// IsEnable: boolean about if it is enabled
+        /// RoleName: Name of the role the user have
+        /// Email: User's email, must be not null
+        /// Gender: User's gender, must be not null and have 8 digits
+        /// 
+        /// The next three attributes are used to show the user's full name
+        /// I suggest threat like "private" stuff, so they are not used in the client side
+        /// use fullName attribute instead
+        /// UserName: Post's user name 
+        /// UserFirstLastName: Post's user first last name
+        /// UserSecondLastName: Post's user second last name
+        /// 
+        /// FullName: Name, first last name and second last name of the user
+        /// </returns>
+        [Authorize(Roles = "1, 3")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers()
+        {
+            var isAdminOrSpecialist = await _service.IsAdminOrSpecialist();
+            if (!isAdminOrSpecialist) return Unauthorized("The user with userId from token are not a valid user");
+
+            var users = await _service.GetAllUsers();
+            return Ok(users);
+        }
+
+        /// <summary>
+        /// Get all the users in the system
+        /// </summary>
+        /// <returns>
+        /// If the user Id from the token doesn't match with an admin or client return 401 Unauthorized
+        /// If the system have no users return an empty list
+        /// If the system have specialist users return a list with SpecialistDto, this have the following structure:
+        /// UserId: User's identifier
+        /// UserIsEnable: boolean about if it is enabled
+        /// UserRoleName: Name of the role the user have
+        /// UserEmail: User's email, must be not null
+        /// UserGender: User's gender, must be not null and have 8 digits
+        /// 
+        /// The next three attributes are used to show the user's full name
+        /// I suggest threat like "private" stuff, so they are not used in the client side
+        /// use fullName attribute instead
+        /// UserName: Post's user name 
+        /// UserFirstLastName: Post's user first last name
+        /// UserSecondLastName: Post's user second last name
+        /// 
+        /// UserFullName: Name, first last name and second last name of the user
+        /// SpecialityName: Name of the speciality of the specialist
+        /// </returns>
+        [Authorize(Roles = "1, 2")]
+        [HttpGet("get-all-specialists")]
+        public async Task<ActionResult<IEnumerable<SpecialistDto>>> GetAllSpecialists()
+        {
+            var isAdminOrClient = await _service.IsAdminOrClient();
+            if (!isAdminOrClient)
+                return Unauthorized("The user with userId from token are not a valid admin or client");
+
+            var specialists = await _service.GetAllSpecialists();
+            return Ok(specialists);
+        }
+
+        /// <summary>
+        /// Get a specialist by their UserId
+        /// </summary>
+        /// <param name="userId">UserId of the specialist</param>
+        /// <returns>
+        /// If the user Id from the token doesn't match with an admin or client return 401 Unauthorized
+        /// If the system have no user with the provided user Id return status code 400 BadRequest with custom message
+        /// If the system have specialist user return a SpecialistDto with the follow structure:
+        /// UserId: User's identifier
+        /// UserIsEnable: boolean about if it is enabled
+        /// UserRoleName: Name of the role the user have
+        /// UserEmail: User's email, must be not null
+        /// UserGender: User's gender, must be not null and have 8 digits
+        /// 
+        /// The next three attributes are used to show the user's full name
+        /// I suggest threat like "private" stuff, so they are not used in the client side
+        /// use fullName attribute instead
+        /// UserName: Post's user name 
+        /// UserFirstLastName: Post's user first last name
+        /// UserSecondLastName: Post's user second last name
+        /// 
+        /// UserFullName: Name, first last name and second last name of the user
+        /// SpecialityName: Name of the speciality of the specialist
+        /// </returns>
+        [Authorize(Roles = "1, 2")]
+        [HttpGet("get-specialist/{userId}")]
+        public async Task<ActionResult<SpecialistDto>> GetSpecialistByUserId(string userId)
+        {
+            var isAdminOrClient = await _service.IsAdminOrClient();
+            if (!isAdminOrClient)
+                return Unauthorized("The user with userId from token are not a valid admin or client");
+
+            var specialist = await _service.GetSpecialistByUserId(userId);
+            if (specialist is null) return BadRequest($"The specialist with userId = {userId} do not exists");
+            return Ok(specialist);
         }
     }
 }

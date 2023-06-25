@@ -6,6 +6,7 @@ namespace PsicoAppAPI.Models
     {
         #region CLASS_ATTRIBUTES
         [Key]
+        [MaxLength(36)]
         public string Id { get; set; } = null!;
         public string Name { get; set; } = null!;
         public string FirstLastName { get; set; } = null!;

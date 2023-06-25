@@ -1,23 +1,24 @@
+using System;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PsicoAppAPI.Data;
+using PsicoAppAPI.Mediators;
+using PsicoAppAPI.Mediators.Interfaces;
 using PsicoAppAPI.Repositories;
 using PsicoAppAPI.Repositories.Interfaces;
 using PsicoAppAPI.Services;
 using PsicoAppAPI.Services.Interfaces;
-using PsicoAppAPI.Services.Mediators;
-using PsicoAppAPI.Services.Mediators.Interfaces;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace PsicoAppAPI.Extensions
 {
     public static class AppServiceExtensions
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services,
-        IConfiguration config)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
             services = AddSwaggerGen(services);
             services = AddAutoMapper(services);
@@ -62,14 +63,17 @@ namespace PsicoAppAPI.Extensions
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IFeedPostService, FeedPostService>();
+            services.AddScoped<IForumPostService, ForumPostService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<ISpecialistService, SpecialistService>();
+            services.AddScoped<IAppointmentService, AppointmentService>();
+            services.AddScoped<IAppointmentStatusesService, AppointmentStatusesService>();
             return services;
         }
 
         private static IServiceCollection AddHelperServices(IServiceCollection services)
         {
-            services.AddScoped<IOpenAIService, OpenAIService>();
+            services.AddScoped<IOpenAiService, OpenAiService>();
             services.AddScoped<IMapperService, MapperService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITimeZoneService, TimeZoneService>();
@@ -80,8 +84,13 @@ namespace PsicoAppAPI.Extensions
         {
             services.AddScoped<IUserManagementService, UserManagementService>();
             services.AddScoped<IFeedPostManagementService, FeedPostManagementService>();
+            services.AddScoped<IForumPostManagementService, ForumPostManagementService>();
             services.AddScoped<ISpecialistManagementService, SpecialistManagementService>();
             services.AddScoped<ITagManagementService, TagManagementService>();
+            services.AddScoped<IAuthManagementService, AuthManagementService>();
+            services.AddScoped<IClientManagementService, ClientManagementService>();
+            services.AddScoped<IAdminManagementService, AdminManagementService>();
+            services.AddScoped<IAppointmentManagementService, AppointmentManagementService>();
             return services;
         }
 
@@ -89,10 +98,12 @@ namespace PsicoAppAPI.Extensions
         {
             services.AddDbContext<DataContext>(opt =>
             {
-                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+                string connectionString = config.GetConnectionString("DefaultConnection") ?? string.Empty;
+                opt.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             });
             return services;
         }
+
 
         private static IServiceCollection AddAuthentication(IServiceCollection services, IConfiguration config)
         {
@@ -116,8 +127,5 @@ namespace PsicoAppAPI.Extensions
             services.AddHttpContextAccessor();
             return services;
         }
-
-
-
     }
 }
