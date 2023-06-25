@@ -144,5 +144,12 @@ namespace PsicoAppAPI.Controllers
             var specialists = await _service.GetAllSpecialists();
             return Ok(specialists);
         }
+        
+        [Authorize]
+        [HttpGet("get-specialist/{userId}")]
+        public async Task<ActionResult<SpecialistDto>> GetSpecialistByUserId(string userId)
+        {
+            return Ok();
+        }
     }
 }
