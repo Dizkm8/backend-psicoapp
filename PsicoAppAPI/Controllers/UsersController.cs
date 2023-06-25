@@ -114,7 +114,7 @@ namespace PsicoAppAPI.Controllers
         /// Get all the users in the system
         /// </summary>
         /// <returns>
-        /// If the user Id from the token doesn't match with an admin return 401 Unauthorized
+        /// If the user Id from the token doesn't match with an admin or client return 401 Unauthorized
         /// If the system have no users return an empty list
         /// If the system have specialist users return a list with SpecialistDto, this have the following structure:
         /// UserId: User's identifier
@@ -133,15 +133,53 @@ namespace PsicoAppAPI.Controllers
         /// UserFullName: Name, first last name and second last name of the user
         /// SpecialityName: Name of the speciality of the specialist
         /// </returns>
-        [Authorize(Roles = "1")]
+        [Authorize(Roles = "1, 2")]
         [HttpGet("get-all-specialists")]
         public async Task<ActionResult<IEnumerable<SpecialistDto>>> GetAllSpecialists()
         {
-            var isAdmin = await _service.IsAdmin();
-            if (!isAdmin) return Unauthorized("The user with userId from token are not a valid admin");
+            var isAdminOrClient = await _service.IsAdminOrClient();
+            if (!isAdminOrClient)
+                return Unauthorized("The user with userId from token are not a valid admin or client");
 
             var specialists = await _service.GetAllSpecialists();
             return Ok(specialists);
+        }
+
+        /// <summary>
+        /// Get a specialist by their UserId
+        /// </summary>
+        /// <param name="userId">UserId of the specialist</param>
+        /// <returns>
+        /// If the user Id from the token doesn't match with an admin or client return 401 Unauthorized
+        /// If the system have no user with the provided user Id return status code 400 BadRequest with custom message
+        /// If the system have specialist user return a SpecialistDto with the follow structure:
+        /// UserId: User's identifier
+        /// UserIsEnable: boolean about if it is enabled
+        /// UserRoleName: Name of the role the user have
+        /// UserEmail: User's email, must be not null
+        /// UserGender: User's gender, must be not null and have 8 digits
+        /// 
+        /// The next three attributes are used to show the user's full name
+        /// I suggest threat like "private" stuff, so they are not used in the client side
+        /// use fullName attribute instead
+        /// UserName: Post's user name 
+        /// UserFirstLastName: Post's user first last name
+        /// UserSecondLastName: Post's user second last name
+        /// 
+        /// UserFullName: Name, first last name and second last name of the user
+        /// SpecialityName: Name of the speciality of the specialist
+        /// </returns>
+        [Authorize(Roles = "1, 2")]
+        [HttpGet("get-specialist/{userId}")]
+        public async Task<ActionResult<SpecialistDto>> GetSpecialistByUserId(string userId)
+        {
+            var isAdminOrClient = await _service.IsAdminOrClient();
+            if (!isAdminOrClient)
+                return Unauthorized("The user with userId from token are not a valid admin or client");
+
+            var specialist = await _service.GetSpecialistByUserId(userId);
+            if (specialist is null) return BadRequest($"The specialist with userId = {userId} do not exists");
+            return Ok(specialist);
         }
     }
 }

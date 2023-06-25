@@ -155,5 +155,11 @@ namespace PsicoAppAPI.Services
             var mappedSpecialists = specialists?.Select(x => _mapper.Map<SpecialistDto>(x)).ToList();
             return mappedSpecialists ?? new List<SpecialistDto>();
         }
+
+        public SpecialistDto? MapToSpecialistDto(Specialist? specialist)
+        {
+            if (specialist is null) return null;
+            return _mapper.Map<SpecialistDto>(specialist);
+        }
     }
 }

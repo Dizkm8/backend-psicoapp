@@ -177,5 +177,19 @@ namespace PsicoAppAPI.Mediators
             var mappedSpecialists = _mapperService.MapToListOfSpecialistDto(specialists);
             return mappedSpecialists;
         }
+
+        public async Task<bool> IsAdminOrClient()
+        {
+            var admin = await _authService.GetUserEnabledAndAdminFromToken();
+            var client = await _authService.GetUserEnabledAndClientFromToken();
+            return admin is not null || client is not null;
+        }
+
+        public async Task<SpecialistDto?> GetSpecialistByUserId(string userId)
+        {
+            var specialist = await _userService.GetSpecialistByUserId(userId);
+            if (specialist is null) return null;
+            return _mapperService.MapToSpecialistDto(specialist);
+        }
     }
 }
