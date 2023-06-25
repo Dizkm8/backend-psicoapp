@@ -39,5 +39,11 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// </summary>
         /// <returns>List with Users. null if the role cannot be got in the database</returns>
         public Task<List<Specialist>?> GetAllUsersSpecialist();
+        /// <summary>
+        /// Get a specialist by their userId
+        /// </summary>
+        /// <param name="userId">Userid of the specialist</param>
+        /// <returns>Specialist if could be found. otherwise null</returns>
+        public Task<Specialist?> GetSpecialistByUserId(string userId);
     }
 }
