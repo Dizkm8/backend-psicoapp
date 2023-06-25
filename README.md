@@ -24,7 +24,8 @@ TIMEZONE_API_KEY=YOUR_API_KEY
 Where YOUR_API_KEY is the key that you can get from the following links:
 <p><a href="https://platform.openai.com/account/api-keys" target="_blank">GPT_API_KEY</a></p>
 <p><a href="https://developers.google.com/maps/documentation/timezone/get-api-key" target="_blank">TIMEZONE_API_KEY</a></p>
-6. After that you need to setup the database, we recommend to use mariaDB in a docker container for simplicity. To achieve that you need to create a new container with the following command:
+6. After that you need to setup the database, we recommend to use mariaDB in a docker container for simplicity. First of all you need to install docker from the offical page <a href="https://www.docker.com/products/docker-desktop" target="_blank">Docker Desktop</a>
+7. Then, you need to create a container with mariaDB image. To achieve that run the following command:
 ```bash
 docker run --detach --name psicoapp-db -p 3306:3306 --env MARIADB_USER=root --env MARIADB_PASSWORD=my-secret --env MARIADB_ROOT_PASSWORD=my-secret --env MARIADB_DATABASE=psicoapp mariadb:latest
 ```
@@ -33,11 +34,11 @@ docker run --detach --name psicoapp-db -p 3306:3306 --env MARIADB_USER=root --en
 <p>The <b>3306</b> is the port that the container will use to connect to the database, we suggest to keep it as it is.</p>
 <p>The <b>psicoapp</b>is the name of the database. We recommend to not change it.</p>
 
-7. After that you need to run the container, so execute the following command:
+1. After that you need to run the container, so execute the following command:
 ```bash
 docker start psicoapp-db
 ```
-8. In order to match the database credentials with the project you need to create a file called **appsettings.json** inside the PsicoAppAPI folder. Inside them paste this:
+1. In order to match the database credentials with the project you need to create a file called **appsettings.json** inside the PsicoAppAPI folder. Inside them paste this:
 ```json
 {
   "Logging": {
@@ -58,9 +59,9 @@ docker start psicoapp-db
 <p>You need to change the <b>Uid</b> and <b>Pwd</b> to match the credentials that you used to create the container. If you do not changed the credentials in the container, you can leave it as it is.</p>
 <p>If you also changed the database name in the docker creating command you need to match with the variable <b>Database</b></p>
 
-9. The last step is open the connect to database, we highly recommend use any IDE like **Datagrip** or **SQL Workbench**, anyways, if you want use CLI you need to follow the mariaDB docs: <a href="https://mariadb.com/kb/en/connecting-to-mariadb/" target="_blank">Connecting to MariaDB</a> The credentials and port are the same you used to create the container.
+1. The last step is open the connect to database, we highly recommend use any IDE like **Datagrip** or **SQL Workbench**, anyways, if you want use CLI you need to follow the mariaDB docs: <a href="https://mariadb.com/kb/en/connecting-to-mariadb/" target="_blank">Connecting to MariaDB</a> The credentials and port are the same you used to create the container.
 
-10.   Finally, you can start the project executing the command
+2.    Finally, you can start the project executing the command
 ```cs
 dotnet run
 ```
