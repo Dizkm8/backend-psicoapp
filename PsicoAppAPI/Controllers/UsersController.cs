@@ -109,5 +109,39 @@ namespace PsicoAppAPI.Controllers
             var users = await _service.GetAllUsers();
             return Ok(users);
         }
+
+        /// <summary>
+        /// Get all the users in the system
+        /// </summary>
+        /// <returns>
+        /// If the user Id from the token doesn't match with an admin return 401 Unauthorized
+        /// If the system have no users return an empty list
+        /// If the system have specialist users return a list with SpecialistDto, this have the following structure:
+        /// UserId: User's identifier
+        /// UserIsEnable: boolean about if it is enabled
+        /// UserRoleName: Name of the role the user have
+        /// UserEmail: User's email, must be not null
+        /// UserGender: User's gender, must be not null and have 8 digits
+        /// 
+        /// The next three attributes are used to show the user's full name
+        /// I suggest threat like "private" stuff, so they are not used in the client side
+        /// use fullName attribute instead
+        /// UserName: Post's user name 
+        /// UserFirstLastName: Post's user first last name
+        /// UserSecondLastName: Post's user second last name
+        /// 
+        /// UserFullName: Name, first last name and second last name of the user
+        /// SpecialityName: Name of the speciality of the specialist
+        /// </returns>
+        [Authorize(Roles = "1")]
+        [HttpGet("get-all-specialists")]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAllSpecialists()
+        {
+            var isAdmin = await _service.IsAdmin();
+            if (!isAdmin) return Unauthorized("The user with userId from token are not a valid admin");
+
+            var specialists = await _service.GetAllSpecialists();
+            return Ok(specialists);
+        }
     }
 }
