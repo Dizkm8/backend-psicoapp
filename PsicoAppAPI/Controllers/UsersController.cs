@@ -133,12 +133,13 @@ namespace PsicoAppAPI.Controllers
         /// UserFullName: Name, first last name and second last name of the user
         /// SpecialityName: Name of the speciality of the specialist
         /// </returns>
-        [Authorize(Roles = "1")]
+        [Authorize(Roles = "1, 2")]
         [HttpGet("get-all-specialists")]
         public async Task<ActionResult<IEnumerable<SpecialistDto>>> GetAllSpecialists()
         {
-            var isAdmin = await _service.IsAdmin();
-            if (!isAdmin) return Unauthorized("The user with userId from token are not a valid admin");
+            var isAdminOrClient = await _service.IsAdminOrClient();
+            if (!isAdminOrClient)
+                return Unauthorized("The user with userId from token are not a valid admin or client");
 
             var specialists = await _service.GetAllSpecialists();
             return Ok(specialists);

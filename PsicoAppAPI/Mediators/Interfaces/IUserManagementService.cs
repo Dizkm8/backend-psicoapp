@@ -126,5 +126,11 @@ namespace PsicoAppAPI.Mediators.Interfaces
         /// </summary>
         /// <returns>IEnumerable with SpecialistDto</returns>
         public Task<IEnumerable<SpecialistDto>> GetAllSpecialists();
+        
+        /// <summary>
+        /// Check if the userId from the token match with an enabled admin or client
+        /// </summary>
+        /// <returns>True if match the filters. otherwise false</returns>
+        public Task<bool> IsAdminOrClient();
     }
 }
