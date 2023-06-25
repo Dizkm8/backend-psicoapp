@@ -6,11 +6,11 @@ This is a project powered by **.NET 7** and uses **mariaDB** to store data, to r
 ```cs
 dotnet help
 ```
-Install if you don´t have it.
+<p>Install if you don´t have it.</p>
 
 2. Open a git bash (or terminal) into a custom folder and clone the repository inside them.
 
-3. after that, go inside the project folder called PsicoAppAPI and run
+3. After that, go inside the project folder called PsicoAppAPI and run
 ```cs
 dotnet restore
 ```
@@ -28,10 +28,10 @@ Where YOUR_API_KEY is the key that you can get from the following links:
 ```bash
 docker run --detach --name psicoapp-db -p 3306:3306 --env MARIADB_USER=root --env MARIADB_PASSWORD=my-secret --env MARIADB_ROOT_PASSWORD=my-secret --env MARIADB_DATABASE=psicoapp mariadb:latest
 ```
-Where the **MARIADB_USER** and **MARIADB_PASSWORD** are the credentials to access the database and **MARIADB_ROOT_PASSWORD** is the password to access the root user.
-The **psicoapp-db** is the name of the container, you can change it if you want.
-The **3306** is the port that the container will use to connect to the database, we suggest to keep it as it is.
-The **psicoapp** is the name of the database. We recommend to not change it.
+<p>Where the <b>MARIADB_USER</b> and <b>MARIADB_PASSWORD</b> are the credentials to access the database and <b>MARIADB_ROOT_PASSWORD</b> is the password to access the root user.</p>
+<p>The <b>psicoapp-db</b> is the name of the container, you can change it if you want.</p>
+<p>The <b>3306</b> is the port that the container will use to connect to the database, we suggest to keep it as it is.</p>
+<p>The <b>psicoapp</b>is the name of the database. We recommend to not change it.</p>
 
 7. After that you need to run the container, so execute the following command:
 ```bash
@@ -55,7 +55,7 @@ docker start psicoapp-db
   }
 }
 ```
-You need to change the **Uid** and **Pwd** to match the credentials that you used to create the container. If you do not changed the credentials in the container, you can leave it as it is.
+<p>You need to change the <b>Uid</b> and <b>Pwd</b> to match the credentials that you used to create the container. If you do not changed the credentials in the container, you can leave it as it is.</p>
 
 9.  Finally, you can start the project executing the command
 ```cs
