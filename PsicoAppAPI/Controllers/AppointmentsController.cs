@@ -52,7 +52,7 @@ namespace PsicoAppAPI.Controllers
 
         [Authorize(Roles = "1")]
         [HttpGet("get-appointments-specialist/{specialistUserId}")]
-        public async Task<ActionResult<IEnumerable<ClientAppointmentDto>>> GetAppointmentBySpecialist(
+        public async Task<ActionResult<IEnumerable<SpecialistAppointmentDto>>> GetAppointmentBySpecialist(
             string specialistUserId)
         {
             var isAdmin = await _service.IsAdmin();
