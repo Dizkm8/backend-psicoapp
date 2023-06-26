@@ -12,5 +12,5 @@ public class UserDto
     public string Gender { get; set; } = null!;
     public bool IsEnabled { get; set; }
     public int Phone { get; set; }
-    public string UserRoleName { get; set; } = null!;
+    public string RoleName { get; set; } = null!;
 }
