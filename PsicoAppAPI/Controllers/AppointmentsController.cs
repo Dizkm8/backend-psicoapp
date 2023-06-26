@@ -134,9 +134,11 @@ namespace PsicoAppAPI.Controllers
             var isAdmin = await _service.IsAdmin();
             if (!isAdmin) return Unauthorized("The user with userId from token are not a valid admin");
 
-            
-            
-            return Ok();
+            var statistics = await _service.GetAppointmentStatistics();
+            if (statistics is null)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new ErrorModel { ErrorCode = 500, Message = "Internal error getting statistics" });
+            return Ok(statistics);
         }
     }
 }
