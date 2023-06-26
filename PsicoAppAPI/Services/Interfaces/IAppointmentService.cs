@@ -44,5 +44,21 @@ namespace PsicoAppAPI.Services.Interfaces
         /// </summary>
         /// <returns>List with appointments</returns>
         Task<List<Appointment>> GetAllAppointments();
+        /// <summary>
+        /// Get the quantity of canceled appointments in the system
+        /// </summary>
+        /// <returns>Canceled amount. null if cannot be obtained</returns>
+        Task<int?> GetCanceledAppointmentsQuantity();
+        
+        /// <summary>
+        /// Get the quantity of booked appointments in the system
+        /// </summary>
+        /// <returns>Booked amount. null if cannot be obtained</returns>
+        Task<int?> GetBookedAppointmentsQuantity();
+        /// <summary>
+        /// Get the quantity of done appointments in the system
+        /// </summary>
+        /// <returns>Done amount. null if cannot be obtained</returns>
+        Task<int?> GetDoneAppointmentsQuantity();
     }
 }

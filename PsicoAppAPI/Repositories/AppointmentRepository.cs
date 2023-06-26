@@ -94,5 +94,13 @@ namespace PsicoAppAPI.Repositories
             _context.AvailabilitySlots.Update(availability);
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<int> GetAppointmentsQuantityByStatus(int statusId)
+        {
+            var appointments = await _context.Appointments
+                .Where(a => a.AppointmentStatusId == statusId)
+                .ToListAsync();
+            return appointments.Count;
+        }
     }
 }
