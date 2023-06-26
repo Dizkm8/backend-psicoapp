@@ -53,5 +53,20 @@ namespace PsicoAppAPI.Services
             var result = await _unitOfWork.AppointmentRepository.GetAllAppointments();
             return result ?? new List<Appointment>();
         }
+
+        public Task<int> GetCanceledAppointmentsQuantity()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> GetBookedAppointmentsQuantity()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> GetDoneAppointmentsQuantity()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

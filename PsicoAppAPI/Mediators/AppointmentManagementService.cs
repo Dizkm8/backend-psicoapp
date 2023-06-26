@@ -85,6 +85,12 @@ public class AppointmentManagementService : IAppointmentManagementService
         return user is not null;
     }
 
+    public Task<AppointmentStatisticsDto> GetAppointmentStatistics()
+    {
+        
+        throw new NotImplementedException();
+    }
+
     /// <summary>
     /// Canceled an appointment from a client appointments
     /// </summary>
