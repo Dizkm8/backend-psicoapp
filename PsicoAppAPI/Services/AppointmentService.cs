@@ -29,7 +29,7 @@ namespace PsicoAppAPI.Services
         public async Task<bool> AddAppointment(string requestingUserId, string requestedUserId, DateTime bookedDate)
         {
             var bookedStatusId = (await
-                _unitOfWork.AppointmentStatusesRepository.GetAppointmentByName(Booked))?.Id;
+                _unitOfWork.AppointmentStatusesRepository.GetStatusByName(Booked))?.Id;
             if (bookedStatusId is null) return false;
             var appointment = new Appointment()
             {
@@ -52,6 +52,33 @@ namespace PsicoAppAPI.Services
         {
             var result = await _unitOfWork.AppointmentRepository.GetAllAppointments();
             return result ?? new List<Appointment>();
+        }
+
+        public async Task<int?> GetCanceledAppointmentsQuantity()
+        {
+            var status = await _unitOfWork.AppointmentStatusesRepository.GetStatusByName("canceled");
+            if (status is null) return null;
+
+            var amount = await _unitOfWork.AppointmentRepository.GetAppointmentsQuantityByStatus(status.Id);
+            return amount;
+        }
+
+        public async Task<int?> GetBookedAppointmentsQuantity()
+        {
+            var status = await _unitOfWork.AppointmentStatusesRepository.GetStatusByName("booked");
+            if (status is null) return null;
+
+            var amount = await _unitOfWork.AppointmentRepository.GetAppointmentsQuantityByStatus(status.Id);
+            return amount;
+        }
+
+        public async Task<int?> GetDoneAppointmentsQuantity()
+        {
+            var status = await _unitOfWork.AppointmentStatusesRepository.GetStatusByName("done");
+            if (status is null) return null;
+
+            var amount = await _unitOfWork.AppointmentRepository.GetAppointmentsQuantityByStatus(status.Id);
+            return amount;
         }
     }
 }

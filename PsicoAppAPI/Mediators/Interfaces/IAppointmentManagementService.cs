@@ -55,4 +55,9 @@ public interface IAppointmentManagementService
     /// </summary>
     /// <returns>true if match with the filters. otherwise false</returns>
     public Task<bool> IsAdmin();
+    /// <summary>
+    /// Get all the appointments statistics relative to AppointmentStatisticsDto
+    /// </summary>
+    /// <returns>AppointmentStatisticsDto with statistics. Null if cannot obtain the quantities</returns>
+    public Task<AppointmentStatisticsDto?> GetAppointmentStatistics();
 }
