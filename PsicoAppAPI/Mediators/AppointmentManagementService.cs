@@ -85,6 +85,20 @@ public class AppointmentManagementService : IAppointmentManagementService
         return user is not null;
     }
 
+    public async Task<AppointmentStatisticsDto?> GetAppointmentStatistics()
+    {
+        var doneAmount = await _appointmentService.GetDoneAppointmentsQuantity();
+        var canceledAmount = await _appointmentService.GetCanceledAppointmentsQuantity();
+        var bookedAmount = await _appointmentService.GetBookedAppointmentsQuantity();
+        if (doneAmount is null || canceledAmount is null || bookedAmount is null) return null;
+        return new AppointmentStatisticsDto
+        {
+            CanceledAppointmentQuantity = (int)canceledAmount,
+            BookedAppointmentQuantity = (int)bookedAmount,
+            DoneAppointmentQuantity = (int)doneAmount
+        };
+    }
+
     /// <summary>
     /// Canceled an appointment from a client appointments
     /// </summary>
