@@ -22,8 +22,7 @@ public class AppointmentStatusesRepository : IAppointmentStatusesRepository
 
     public async Task<AppointmentStatus?> GetStatusByName(string name)
     {
-        var status = await _context.AppointmentStatuses.FirstOrDefaultAsync(a =>
-            string.Equals(a.Name, name, StringComparison.CurrentCultureIgnoreCase));
+        var status = await _context.AppointmentStatuses.FirstOrDefaultAsync(a => a.Name.ToLower() == name.ToLower());
         return status;
     }
 
