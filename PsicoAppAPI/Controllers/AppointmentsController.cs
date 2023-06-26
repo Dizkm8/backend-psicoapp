@@ -126,7 +126,18 @@ namespace PsicoAppAPI.Controllers
                 true => Ok()
             };
         }
-
+        
+        /// <summary>
+        /// Get a statistics with the amount of done, booked and canceled appointments in the system
+        /// </summary>
+        /// <returns>
+        /// If the user is not admin return status code 401 Unauthorized with custom message
+        /// If something went wrong obtaining the statistics return status code 500 internal server error with custom message
+        /// If everything goes well return a Dto with the statistics, the Dto have the following structure:
+        /// CanceledAppointmentQuantity: Int with the amount of canceled appointments
+        /// BookedAppointmentQuantity: Int with the amount of booked appointments
+        /// DoneAppointmentQuantity: Int with the amount of done appointments
+        /// </returns>
         [Authorize(Roles = "1")]
         [HttpGet("get-statistics")]
         public async Task<ActionResult<AppointmentStatisticsDto>> GetAppointmentStatistics()
