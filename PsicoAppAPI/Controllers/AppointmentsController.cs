@@ -126,5 +126,17 @@ namespace PsicoAppAPI.Controllers
                 true => Ok()
             };
         }
+
+        [Authorize(Roles = "1")]
+        [HttpGet("get-statistics")]
+        public async Task<ActionResult<AppointmentStatisticsDto>> GetAppointmentStatistics()
+        {
+            var isAdmin = await _service.IsAdmin();
+            if (!isAdmin) return Unauthorized("The user with userId from token are not a valid admin");
+
+            
+            
+            return Ok();
+        }
     }
 }
