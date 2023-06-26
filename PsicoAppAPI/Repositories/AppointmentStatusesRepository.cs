@@ -14,19 +14,20 @@ public class AppointmentStatusesRepository : IAppointmentStatusesRepository
         _context = context;
     }
 
-    public async Task<AppointmentStatus?> GetAppointmentById(int id)
+    public async Task<AppointmentStatus?> GetStatusById(int id)
     {
         var status = await _context.AppointmentStatuses.FindAsync(id);
         return status;
     }
 
-    public async Task<AppointmentStatus?> GetAppointmentByName(string name)
+    public async Task<AppointmentStatus?> GetStatusByName(string name)
     {
-        var status = await _context.AppointmentStatuses.FirstOrDefaultAsync(a => a.Name == name);
+        var status = await _context.AppointmentStatuses.FirstOrDefaultAsync(a =>
+            string.Equals(a.Name, name, StringComparison.CurrentCultureIgnoreCase));
         return status;
     }
 
-    public async Task<IEnumerable<AppointmentStatus>?> GetTags()
+    public async Task<IEnumerable<AppointmentStatus>?> GetAll()
     {
         // The design of the applications uses a small data for statuses
         // so it's not necessary to use pagination or other techniques

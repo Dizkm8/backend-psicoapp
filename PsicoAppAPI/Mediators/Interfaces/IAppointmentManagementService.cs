@@ -58,6 +58,6 @@ public interface IAppointmentManagementService
     /// <summary>
     /// Get all the appointments statistics relative to AppointmentStatisticsDto
     /// </summary>
-    /// <returns>AppointmentStatisticsDto with statistics</returns>
-    public Task<AppointmentStatisticsDto> GetAppointmentStatistics();
+    /// <returns>AppointmentStatisticsDto with statistics. Null if cannot obtain the quantities</returns>
+    public Task<AppointmentStatisticsDto?> GetAppointmentStatistics();
 }

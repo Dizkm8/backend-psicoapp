@@ -29,7 +29,7 @@ namespace PsicoAppAPI.Services
         public async Task<bool> AddAppointment(string requestingUserId, string requestedUserId, DateTime bookedDate)
         {
             var bookedStatusId = (await
-                _unitOfWork.AppointmentStatusesRepository.GetAppointmentByName(Booked))?.Id;
+                _unitOfWork.AppointmentStatusesRepository.GetStatusByName(Booked))?.Id;
             if (bookedStatusId is null) return false;
             var appointment = new Appointment()
             {
@@ -54,19 +54,31 @@ namespace PsicoAppAPI.Services
             return result ?? new List<Appointment>();
         }
 
-        public Task<int> GetCanceledAppointmentsQuantity()
+        public async Task<int?> GetCanceledAppointmentsQuantity()
         {
-            throw new NotImplementedException();
+            var status = await _unitOfWork.AppointmentStatusesRepository.GetStatusByName("canceled");
+            if (status is null) return null;
+
+            var amount = await _unitOfWork.AppointmentRepository.GetAppointmentsQuantityByStatus(status.Id);
+            return amount;
         }
 
-        public Task<int> GetBookedAppointmentsQuantity()
+        public async Task<int?> GetBookedAppointmentsQuantity()
         {
-            throw new NotImplementedException();
+            var status = await _unitOfWork.AppointmentStatusesRepository.GetStatusByName("booked");
+            if (status is null) return null;
+
+            var amount = await _unitOfWork.AppointmentRepository.GetAppointmentsQuantityByStatus(status.Id);
+            return amount;
         }
 
-        public Task<int> GetDoneAppointmentsQuantity()
+        public async Task<int?> GetDoneAppointmentsQuantity()
         {
-            throw new NotImplementedException();
+            var status = await _unitOfWork.AppointmentStatusesRepository.GetStatusByName("done");
+            if (status is null) return null;
+
+            var amount = await _unitOfWork.AppointmentRepository.GetAppointmentsQuantityByStatus(status.Id);
+            return amount;
         }
     }
 }
