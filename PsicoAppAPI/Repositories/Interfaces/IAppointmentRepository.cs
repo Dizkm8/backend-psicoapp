@@ -55,6 +55,6 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// </summary>
         /// <param name="statusId">AppointmentStatusId of the appointment</param>
         /// <returns>amount</returns>
-        Task<int> GetDoneAppointmentsQuantity(int statusId);
+        Task<int> GetAppointmentsQuantityByStatus(int statusId);
     }
 }

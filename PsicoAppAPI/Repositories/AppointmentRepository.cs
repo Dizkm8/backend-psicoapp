@@ -95,7 +95,7 @@ namespace PsicoAppAPI.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<int> GetDoneAppointmentsQuantity(int statusId)
+        public async Task<int> GetAppointmentsQuantityByStatus(int statusId)
         {
             var appointments = await _context.Appointments
                 .Where(a => a.AppointmentStatusId == statusId)
