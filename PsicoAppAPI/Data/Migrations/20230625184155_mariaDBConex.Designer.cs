@@ -301,7 +301,7 @@ namespace PsicoAppAPI.Data.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<int>("Phone")
-                        .HasColumnType("int");
+                        .HasColumnType("varchar(30)");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
