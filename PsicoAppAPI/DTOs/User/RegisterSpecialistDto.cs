@@ -27,7 +27,6 @@ public class RegisterSpecialistDto
     public string? Gender { get; set; }
 
     [Required(ErrorMessage = "Phone is required")]
-    //[Range(1000, 99999999999, ErrorMessage = "Phone number must be 4 digits minimum and 11 maximum")]
     public string? Phone { get; set; }
 
     [Required(ErrorMessage = "Speciality Id is required")]
