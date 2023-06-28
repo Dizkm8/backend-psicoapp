@@ -24,7 +24,6 @@ namespace PsicoAppAPI.DTOs.UpdateProfileInformation
         public string Gender { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Phone is required")]
-        [Range(10000000, 99999999, ErrorMessage = "Phone number must be an 8-digit number.")]
-        public int Phone { get; set; }
+        public string Phone { get; set; } = string.Empty;
     }
 }
