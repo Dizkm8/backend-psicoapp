@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
+using PsicoAppAPI.DTOs.Chat;
 using PsicoAppAPI.DTOs.Validations;
 using PsicoAppAPI.Mediators.Interfaces;
 
@@ -42,5 +43,12 @@ public class ClientsController : BaseApiController
         if (result) return Ok("Appointment successfully added");
         return StatusCode(StatusCodes.Status500InternalServerError,
             new { error = "Internal error adding appointment" });
+    }
+    
+    [Authorize]
+    [HttpPost("chat")]
+    public async Task<ActionResult> ChatWithBoth([FromBody] SendMessageDto message)
+    {
+        return Ok();
     }
 }
