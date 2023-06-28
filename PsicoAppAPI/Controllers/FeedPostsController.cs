@@ -79,6 +79,16 @@ namespace PsicoAppAPI.Controllers
             return Ok(posts);
         }
 
+        [Authorize]
+        [HttpGet("get-post/{postId:int}")]
+        public async Task<ActionResult<FeedPostDto>> GetForumPostById(int postId)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var post = await _service.GetPostById(postId);
+            if (post is null) return BadRequest($"The post with Id: {postId} do not exists");
+            return Ok(post);
+        }
+
         /// <summary>
         /// Delete a post by their post Id
         /// </summary>
