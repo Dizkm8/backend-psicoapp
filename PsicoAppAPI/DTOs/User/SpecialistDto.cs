@@ -11,6 +11,6 @@ public class SpecialistDto
     public string UserEmail { get; set; } = null!;
     public string UserGender { get; set; } = null!;
     public bool UserIsEnabled { get; set; }
-    public int UserPhone { get; set; }
+    public string UserPhone { get; set; } = null!;
     public string UserRoleName { get; set; } = null!;
 }

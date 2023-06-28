@@ -27,7 +27,7 @@ namespace PsicoAppAPI.DTOs.User
         public string? Gender { get; set; }
 
         [Required(ErrorMessage = "Phone is required")]
-        public int Phone { get; set; }
+        public string? Phone { get; set; }
 
         [Required(ErrorMessage = "New password is required")]
         [StringLength(15, MinimumLength = 10,
