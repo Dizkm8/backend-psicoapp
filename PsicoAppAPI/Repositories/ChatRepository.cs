@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PsicoAppAPI.Data;
 using PsicoAppAPI.Models.Mobile;
 using PsicoAppAPI.Repositories.Interfaces;
@@ -13,8 +14,26 @@ public class ChatRepository : IChatRepository
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    public Task<List<ChatMessage>?> GetListOfMessagesByUserId(string userId)
+    public async Task<List<ChatMessage>> GetListOfMessagesByUserId(string userId)
     {
-        throw new NotImplementedException();
+        var messages = await _context.Messages
+            .Where(m => m.UserId == userId)
+            .Include(m => m.User)
+            .ToListAsync();
+        return messages;
+    }
+
+    public async Task<ChatMessage?> AddChatMessage(ChatMessage message)
+    {
+        _ = await _context.AddAsync(message);
+        var result = await _context.SaveChangesAsync() > 0;
+        return result ? message : null;
+    }
+
+    public async Task<List<ChatMessage>?> AddListOfChatMessages(List<ChatMessage> messages)
+    {
+        await _context.AddRangeAsync(messages);
+        var result = await _context.SaveChangesAsync() > 0;
+        return result ? messages : null;
     }
 }
