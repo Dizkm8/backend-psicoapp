@@ -79,6 +79,13 @@ namespace PsicoAppAPI.Controllers
             return Ok(posts);
         }
 
+        [Authorize]
+        [HttpGet("get-post/{postId:int}")]
+        public async Task<ActionResult<FeedPostDto>> GetForumPostById(int postId)
+        {
+            return Ok();
+        }
+
         /// <summary>
         /// Delete a post by their post Id
         /// </summary>

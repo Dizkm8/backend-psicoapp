@@ -65,5 +65,10 @@ namespace PsicoAppAPI.Mediators
             var post = await _feedPostService.GetPostById(postId);
             return post is not null;
         }
+
+        public Task<FeedPostDto?> GetPostById(int postId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
