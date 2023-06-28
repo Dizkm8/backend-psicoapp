@@ -16,7 +16,7 @@ public class ClientsController : BaseApiController
     {
         _service = service ?? throw new ArgumentNullException(nameof(service));
     }
-    
+
     //TODO: Update this to Roles = "2"
     [Authorize(Roles = "2")]
     [HttpPost("add-appointment/{specialistUserId}")]
@@ -44,11 +44,17 @@ public class ClientsController : BaseApiController
         return StatusCode(StatusCodes.Status500InternalServerError,
             new { error = "Internal error adding appointment" });
     }
-    
+
     [Authorize]
     [HttpPost("chat")]
-    public async Task<ActionResult> ChatWithBoth([FromBody] SendMessageDto message)
+    public async Task<ActionResult> ChatWithBoth([FromBody] SimpleMessageDto message)
     {
+        if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        var isEnabled = await _service.IsUserEnabled();
+        if (!isEnabled) return BadRequest("The user do not exists or are not enabled");
+
+
         return Ok();
     }
 }
