@@ -11,8 +11,8 @@ using PsicoAppAPI.Data;
 namespace PsicoAppAPI.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230625184155_mariaDBConex")]
-    partial class mariaDBConex
+    [Migration("20230628131245_ChatEntity")]
+    partial class ChatEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -301,7 +301,8 @@ namespace PsicoAppAPI.Data.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("varchar(30)");
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
