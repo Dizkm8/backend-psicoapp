@@ -27,6 +27,7 @@ public class RegisterSpecialistDto
     public string? Gender { get; set; }
 
     [Required(ErrorMessage = "Phone is required")]
+    [StringLength(30, MinimumLength = 4, ErrorMessage = "Phone must have a lenght between 4 and 30 characters.")]
     public string? Phone { get; set; }
 
     [Required(ErrorMessage = "Speciality Id is required")]
