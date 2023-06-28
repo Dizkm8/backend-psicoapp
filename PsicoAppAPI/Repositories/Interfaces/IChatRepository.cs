@@ -9,5 +9,5 @@ public interface IChatRepository
     /// </summary>
     /// <param name="userId">Id of the user</param>
     /// <returns>List with chats. null if userId do not exists</returns>
-    public Task<List<Chat>?> GetListOfMessagesByUserId(string userId);
+    public Task<List<ChatMessage>?> GetListOfMessagesByUserId(string userId);
 }

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PsicoAppAPI.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class ChatEntity : Migration
+    public partial class MessageChatEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

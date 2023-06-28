@@ -11,8 +11,8 @@ using PsicoAppAPI.Data;
 namespace PsicoAppAPI.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230628131245_ChatEntity")]
-    partial class ChatEntity
+    [Migration("20230628131846_MessageChatEntity")]
+    partial class MessageChatEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

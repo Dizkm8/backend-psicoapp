@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PsicoAppAPI.Models.Mobile;
 
-public class Chat
+public class ChatMessage
 {
     [Key] public int Id { get; set; }
 

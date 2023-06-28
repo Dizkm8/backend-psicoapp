@@ -13,7 +13,7 @@ public class ChatRepository : IChatRepository
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    public Task<List<Chat>?> GetListOfMessagesByUserId(string userId)
+    public Task<List<ChatMessage>?> GetListOfMessagesByUserId(string userId)
     {
         throw new NotImplementedException();
     }
