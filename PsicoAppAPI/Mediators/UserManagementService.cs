@@ -48,7 +48,6 @@ namespace PsicoAppAPI.Mediators
         {
             var userId = loginUserDto.Id;
             if (string.IsNullOrEmpty(userId)) return null;
-            //TODO: Fix order of roleId and getUser here
             var roleId = await _userService.GetRoleIdInUser(userId);
             var user = await _userService.GetUserById(userId);
             if (user is null) return null;
