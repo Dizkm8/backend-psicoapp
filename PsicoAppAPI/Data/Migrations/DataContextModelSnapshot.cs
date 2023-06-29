@@ -201,6 +201,33 @@ namespace PsicoAppAPI.Data.Migrations
                     b.ToTable("GptRules");
                 });
 
+            modelBuilder.Entity("PsicoAppAPI.Models.Mobile.ChatMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsBotAnswer")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("SendOn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("PsicoAppAPI.Models.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -298,7 +325,8 @@ namespace PsicoAppAPI.Data.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("varchar(30)");
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
@@ -405,6 +433,17 @@ namespace PsicoAppAPI.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Tag");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PsicoAppAPI.Models.Mobile.ChatMessage", b =>
+                {
+                    b.HasOne("PsicoAppAPI.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

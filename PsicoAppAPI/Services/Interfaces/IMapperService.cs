@@ -1,12 +1,14 @@
 using PsicoAppAPI.DTOs;
 using PsicoAppAPI.DTOs.Appointment;
 using PsicoAppAPI.DTOs.BasePosts;
+using PsicoAppAPI.DTOs.Chat;
 using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.DTOs.ForumPost;
 using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.DTOs.User;
 using PsicoAppAPI.Models;
+using PsicoAppAPI.Models.Mobile;
 
 namespace PsicoAppAPI.Services.Interfaces
 {
@@ -176,5 +178,11 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="specialist">Specialist to map</param>
         /// <returns>SpecialistDto</returns>
         public SpecialistDto? MapToSpecialistDto(Specialist? specialist);
+        /// <summary>
+        /// Map to SimpleMessageDto
+        /// </summary>
+        /// <param name="message">ChatMessage to map</param>
+        /// <returns>SimpleMessageDto</returns>
+        public SimpleMessageDto MapToSimpleMessageDto(ChatMessage message);
     }
 }

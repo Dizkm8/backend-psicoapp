@@ -65,5 +65,10 @@ namespace PsicoAppAPI.Repositories.Interfaces
         /// </summary>
         /// <value>ICommentRepository</value>
         public ICommentRepository CommentRepository { get; }
+        /// <summary>
+        /// Get the IChatRepository
+        /// </summary>
+        /// <value>IChatRepository</value>
+        public IChatRepository ChatRepository { get; }
     }
 }
