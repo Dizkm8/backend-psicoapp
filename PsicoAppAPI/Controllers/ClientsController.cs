@@ -60,4 +60,15 @@ public class ClientsController : BaseApiController
                 new { error = "Internal error chatting" });
         return Ok(response);
     }
+
+    [Authorize]
+    [HttpGet("get-chat")]
+    public async Task<ActionResult<IEnumerable<MessageDto>>> GetAllChatMessages()
+    {
+        var isEnabled = await _service.IsUserEnabled();
+        if (!isEnabled) return BadRequest("The user do not exists or are not enabled");
+
+
+        return Ok();
+    }
 }
