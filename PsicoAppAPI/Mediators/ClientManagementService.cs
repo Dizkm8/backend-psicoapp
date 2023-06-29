@@ -16,11 +16,13 @@ public class ClientManagementService : IClientManagementService
     private readonly IAppointmentService _appointmentService;
     private readonly IChatService _chatService;
     private readonly IOpenAiService _openAiService;
+    private readonly IMapperService _mapperService;
 
     public ClientManagementService(IUserService userService, ISpecialistService specialistService,
         ISpecialistManagementService specialistManagementService, ITimeZoneService timeZoneService,
         IUserManagementService userMediator, IAuthManagementService authMediator,
-        IAppointmentService appointmentService, IChatService chatService, IOpenAiService openAiService)
+        IAppointmentService appointmentService, IChatService chatService, IOpenAiService openAiService,
+        IMapperService mapperService)
     {
         _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         _specialistService = specialistService ?? throw new ArgumentNullException(nameof(specialistService));
@@ -32,6 +34,7 @@ public class ClientManagementService : IClientManagementService
         _appointmentService = appointmentService ?? throw new ArgumentNullException(nameof(appointmentService));
         _chatService = chatService ?? throw new ArgumentNullException(nameof(chatService));
         _openAiService = openAiService ?? throw new ArgumentNullException(nameof(openAiService));
+        _mapperService = mapperService ?? throw new ArgumentNullException(nameof(mapperService));
     }
 
     public async Task<bool> IsSpecialistAvailable(string specialistUserId, DateTime availability)
@@ -86,6 +89,15 @@ public class ClientManagementService : IClientManagementService
         // call twice the AddChatMessage method
         var userId = _authMediator.GetUserIdFromToken();
         if (userId is null) return null;
+        // I create this message outside the list construction to use in the return, the userMessage
+        // created inside the list will not be returned
+        var botResponse = new ChatMessage
+        {
+            UserId = userId,
+            Content = response,
+            SendOn = DateTime.Now,
+            IsBotAnswer = true
+        };
         var messages = new List<ChatMessage>
         {
             // User message
@@ -96,17 +108,10 @@ public class ClientManagementService : IClientManagementService
                 SendOn = DateTime.Now,
                 IsBotAnswer = false
             },
-            // Bot message
-            new ChatMessage
-            {
-                UserId = userId,
-                Content = response,
-                SendOn = DateTime.Now,
-                IsBotAnswer = true
-            }
+            botResponse
         };
         var result = await _chatService.AddListOfChatMessages(messages);
         if (result is null) return null;
-        throw new ArgumentNullException();
+        return _mapperService.MapToSimpleMessageDto(botResponse);
     }
 }

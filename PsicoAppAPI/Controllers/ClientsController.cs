@@ -58,7 +58,6 @@ public class ClientsController : BaseApiController
         if (response is null)
             return StatusCode(StatusCodes.Status500InternalServerError,
                 new { error = "Internal error chatting" });
-
-        return Ok();
+        return Ok(response);
     }
 }

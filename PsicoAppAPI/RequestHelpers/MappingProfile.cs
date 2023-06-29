@@ -1,12 +1,14 @@
 using AutoMapper;
 using PsicoAppAPI.DTOs.Appointment;
 using PsicoAppAPI.DTOs.BasePosts;
+using PsicoAppAPI.DTOs.Chat;
 using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.DTOs.ForumPost;
 using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.DTOs.User;
 using PsicoAppAPI.Models;
+using PsicoAppAPI.Models.Mobile;
 
 namespace PsicoAppAPI.RequestHelpers
 {
@@ -33,6 +35,7 @@ namespace PsicoAppAPI.RequestHelpers
             CreateMap<Speciality, SpecialityDto>();
             CreateMap<User, UserDto>();
             CreateMap<Specialist, SpecialistDto>();
+            CreateMap<ChatMessage, SimpleMessageDto>();
         }
     }
 }
