@@ -68,7 +68,10 @@ public class ClientsController : BaseApiController
         var isEnabled = await _service.IsUserEnabled();
         if (!isEnabled) return BadRequest("The user do not exists or are not enabled");
 
-
-        return Ok();
+        var chat = await _service.GetChat();
+        if (chat is null)
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new { error = "Internal error getting chat" });
+        return Ok(chat);
     }
 }
