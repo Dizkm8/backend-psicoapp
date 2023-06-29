@@ -31,7 +31,7 @@ namespace PsicoAppAPI.Controllers
         /// If something went wrong adding the post return 500 Internal server error
         /// If the tag id does not exist return 404 Not found
         /// </returns>
-        [Authorize(Roles = "3")]
+        [Authorize(Roles = "1, 3")]
         [HttpPost("create-post")]
         public async Task<ActionResult> AddFeedPost(AddFeedPostDto addFeedPost)
         {
