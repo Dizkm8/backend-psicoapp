@@ -54,6 +54,10 @@ public class ClientsController : BaseApiController
         var isEnabled = await _service.IsUserEnabled();
         if (!isEnabled) return BadRequest("The user do not exists or are not enabled");
 
+        var response = await _service.ChatWithBot(message);
+        if (response is null)
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new { error = "Internal error chatting" });
 
         return Ok();
     }
