@@ -22,7 +22,7 @@ namespace PsicoAppAPI.Controllers
         /// </summary>
         /// <param name="addFeedPost">
         /// Title: Post's title, must be not null or empty
-        /// Content: Post's content, must be not null or empty and less than 255 characters
+        /// Content: Post's content, must be not null or empty and less than 2500 characters
         /// TagId: Post's tag id, must be not null and exist in the database
         /// </param>
         /// <returns>
@@ -31,7 +31,7 @@ namespace PsicoAppAPI.Controllers
         /// If something went wrong adding the post return 500 Internal server error
         /// If the tag id does not exist return 404 Not found
         /// </returns>
-        [Authorize(Roles = "3")]
+        [Authorize(Roles = "1, 3")]
         [HttpPost("create-post")]
         public async Task<ActionResult> AddFeedPost(AddFeedPostDto addFeedPost)
         {

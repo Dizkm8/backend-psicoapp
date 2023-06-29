@@ -52,7 +52,7 @@ public class AdminController : BaseApiController
     [Authorize(Roles = "1")]
     [HttpPost("update-rules")]
     public async Task<ActionResult<string>> SetGptRules(
-        [Required] [StringLength(800, ErrorMessage = "Rules cannot be larger than 255 characters.")]
+        [Required] [StringLength(1200, ErrorMessage = "Rules cannot be larger than 1200 characters.")]
         string rules)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);

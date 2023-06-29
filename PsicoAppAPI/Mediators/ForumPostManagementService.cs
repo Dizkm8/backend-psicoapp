@@ -52,7 +52,14 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
         var content = post.Content;
         var title = post.Title;
         if (content is null || title is null) return false;
-        var result = await _openAiService.CheckPsychologyContent(new List<string> { content, title });
+
+        var contentMap = new Dictionary<string, string>
+        {
+            { "Título", title },
+            { "Contenido", content }
+        };
+
+        var result = await _openAiService.CheckPsychologyContent(contentMap);
         return result;
     }
 

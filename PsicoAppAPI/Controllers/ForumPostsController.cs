@@ -22,7 +22,7 @@ public class ForumPostsController : BaseApiController
     /// </summary>
     /// <param name="addForumPost">
     /// Title: Post's title, must be not null or empty
-    /// Content: Post's content, must be not null or empty and less than 255 characters
+    /// Content: Post's content, must be not null or empty and less than 2500 characters
     /// TagId: Post's tag id, must be not null and exist in the database
     /// </param>
     /// <returns>
@@ -33,7 +33,7 @@ public class ForumPostsController : BaseApiController
     /// If something went wrong adding the post return 500 Internal server error
     /// If the tag id does not exist return 404 Not found
     /// </returns>
-    [Authorize(Roles = "2")]
+    [Authorize]
     [HttpPost("create-post")]
     public async Task<ActionResult> AddForumPost(AddForumPostDto addForumPost)
     {
@@ -109,7 +109,7 @@ public class ForumPostsController : BaseApiController
     /// If something went wrong adding the comment to the forum return a error status 500 internal error server
     /// If everything goes well return a 200 status code with no message
     /// </returns>
-    [Authorize(Roles = "3")]
+    [Authorize(Roles = "1, 3")]
     [HttpPost("add-comment/{postId:int}")]
     public async Task<ActionResult> CommentForumPost(int postId, [FromBody] AddCommentDto comment)
     {

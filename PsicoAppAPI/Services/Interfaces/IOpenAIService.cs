@@ -21,7 +21,7 @@ namespace PsicoAppAPI.Services.Interfaces
         /// </summary>
         /// <param name="args">array with content to check</param>
         /// <returns>True if it's valid. otherwise false</returns>
-        public Task<bool> CheckPsychologyContent(IEnumerable<string> args);
+        public Task<bool> CheckPsychologyContent(Dictionary<string, string> contentMap);
 
         /// <summary>
         /// Get the rules to gpt moderation from repository
