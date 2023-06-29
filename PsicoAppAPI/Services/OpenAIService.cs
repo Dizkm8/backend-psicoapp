@@ -63,7 +63,7 @@ namespace PsicoAppAPI.Services
             };
 
             var jsonString = JsonConvert.SerializeObject(data);
-            var content = new StringContent(jsonString, Encoding.UTF8, "applicatio›n/json");
+            var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
             var response = await _client.PostAsync(Endpoint, content);
             var responseContent = await response.Content.ReadAsStringAsync();
