@@ -62,31 +62,33 @@ namespace PsicoAppAPI.Services
             return apiResponse;
         }
 
-        public async Task<bool> CheckPsychologyContent(IEnumerable<string> args)
+        public async Task<bool> CheckPsychologyContent(Dictionary<string, string> contentMap)
         {
             var rules = await GetRules();
             if (rules is null) return false;
 
-            foreach (var item in args)
+            if (contentMap == null || contentMap.Count == 0)
+                return false;
+
+            var queryBuilder = new StringBuilder();
+
+            foreach (var item in contentMap)
             {
-                if (string.IsNullOrEmpty(item)) return false;
+                var tag = item.Key;
+                var value = item.Value;
 
-                var query = _rules + "\n\n" + item;
-                var response = await GetRequest(query);
-                if (response is null) return false;
+                if (string.IsNullOrEmpty(value))
+                    return false;
 
-                // GPT-3.5-Turbo model can return an inexpected response
-                // with the expected true or false response. To avoid
-                // reject a valid post, we check if the response contains
-                // the expected response. Also sets the response to lowercase
-                // to avoid case sensitive problems
-                var result = response.ToLower().Contains("true");
-
-                // If any response is false, the post is invalid
-                if (!result) return false;
+                queryBuilder.Append($"{tag}: '{value}';");
             }
 
-            return true;
+            var query = rules + " " + queryBuilder.ToString();
+            var response = await GetRequest(query);
+            if (response is null) return false;
+
+            var result = response.ToLower().Contains("true");
+            return result;
         }
 
         public async Task<string?> GetRules()
