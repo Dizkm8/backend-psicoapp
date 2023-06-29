@@ -22,7 +22,7 @@ namespace PsicoAppAPI.Controllers
         /// </summary>
         /// <param name="addFeedPost">
         /// Title: Post's title, must be not null or empty
-        /// Content: Post's content, must be not null or empty and less than 255 characters
+        /// Content: Post's content, must be not null or empty and less than 2500 characters
         /// TagId: Post's tag id, must be not null and exist in the database
         /// </param>
         /// <returns>
