@@ -89,8 +89,22 @@ public class ClientManagementService : IClientManagementService
         // call twice the AddChatMessage method
         var userId = _authMediator.GetUserIdFromToken();
         if (userId is null) return null;
-        // I create this message outside the list construction to use in the return, the userMessage
-        // created inside the list will not be returned
+
+        // I create this message outside the list construction to use in the return
+        // and also manage the creation SendOn order
+        // The order is really important, if userMessage is created first could 
+        // create unexpected behaviour when client request for all chat messages
+        var userMessage = new ChatMessage
+        {
+            UserId = userId,
+            Content = query,
+            SendOn = DateTime.Now,
+            IsBotAnswer = false
+        };
+        // I do this to avoid (and assurance 100%)
+        // the userMessage will have an older SendOn DateTime than
+        // the botResponse
+        Thread.Sleep(100);
         var botResponse = new ChatMessage
         {
             UserId = userId,
@@ -100,15 +114,8 @@ public class ClientManagementService : IClientManagementService
         };
         var messages = new List<ChatMessage>
         {
-            // User message
-            new ChatMessage
-            {
-                UserId = userId,
-                Content = query,
-                SendOn = DateTime.Now,
-                IsBotAnswer = false
-            },
-            botResponse
+            // This order do not matter
+            userMessage, botResponse
         };
         var result = await _chatService.AddListOfChatMessages(messages);
         if (result is null) return null;

@@ -19,6 +19,7 @@ public class ChatRepository : IChatRepository
         var messages = await _context.Messages
             .Where(m => m.UserId == userId)
             .Include(m => m.User)
+            .OrderBy(m => m.SendOn)
             .ToListAsync();
         return messages;
     }
