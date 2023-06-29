@@ -36,6 +36,7 @@ namespace PsicoAppAPI.RequestHelpers
             CreateMap<User, UserDto>();
             CreateMap<Specialist, SpecialistDto>();
             CreateMap<ChatMessage, SimpleMessageDto>();
+            CreateMap<ChatMessage, MessageDto>();
         }
     }
 }

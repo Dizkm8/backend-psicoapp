@@ -168,5 +168,16 @@ namespace PsicoAppAPI.Services
         {
             return _mapper.Map<SimpleMessageDto>(message);
         }
+
+        public MessageDto MapToMessageDto(ChatMessage message)
+        {
+            return _mapper.Map<MessageDto>(message);
+        }
+
+        public List<MessageDto> MapToListOfMessageDto(List<ChatMessage> messages)
+        {
+            var mappedMessages = messages.Select(x => _mapper.Map<MessageDto>(x));
+            return mappedMessages.ToList();
+        }
     }
 }

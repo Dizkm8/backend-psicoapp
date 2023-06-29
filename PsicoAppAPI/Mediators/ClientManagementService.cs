@@ -114,4 +114,13 @@ public class ClientManagementService : IClientManagementService
         if (result is null) return null;
         return _mapperService.MapToSimpleMessageDto(botResponse);
     }
+
+    public async Task<List<MessageDto>?> GetChat()
+    {
+        var userId = _authMediator.GetUserIdFromToken();
+        var messages = await _chatService.GetListOfMessagesByUserId(userId);
+        if (messages is null) return null;
+        var mappedMessages = _mapperService.MapToListOfMessageDto(messages);
+        return mappedMessages;
+    }
 }

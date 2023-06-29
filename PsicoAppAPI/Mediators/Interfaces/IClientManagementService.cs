@@ -39,4 +39,10 @@ public interface IClientManagementService
     /// <param name="sentMessage">Content of the message</param>
     /// <returns>Message with response, null if something went wrong</returns>
     public Task<SimpleMessageDto?> ChatWithBot(SimpleMessageDto sentMessage);
+
+    /// <summary>
+    /// Get all the messages from User chat identified by their userId in token
+    /// </summary>
+    /// <returns>List with messagesDto. null if something went wrong</returns>
+    public Task<List<MessageDto>?> GetChat();
 }
