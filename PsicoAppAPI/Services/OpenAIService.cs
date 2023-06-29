@@ -36,7 +36,18 @@ namespace PsicoAppAPI.Services
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public async Task<string?> GetRequest(string? query)
+        /// <summary>
+        /// Get a request from OpenAI API
+        /// This provides a GPT-3.5-Turbo model response
+        /// with max 5 tokens.
+        /// The APIKey is stored in the environment variable
+        /// If its null the program will throw an exception
+        /// </summary>
+        /// <param name="query">Query to request</param>
+        /// <returns>The response of openAI
+        /// return null if cannot connect to gpt or query is null
+        /// </returns>
+        private async Task<string?> GetRequest(string? query)
         {
             var messages = new[]
             {
@@ -104,7 +115,15 @@ namespace PsicoAppAPI.Services
                 Id = 1,
                 Rules = newRules
             });
+            // Update the rules to avoid request to Db constantly
+            if (result) _rules = newRules;
             return result;
+        }
+
+        public async Task<string?> ChatWithGpt(string message)
+        {
+            var response = await GetRequest(message);
+            return response;
         }
     }
 }
