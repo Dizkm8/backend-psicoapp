@@ -1,12 +1,14 @@
 using AutoMapper;
 using PsicoAppAPI.DTOs.Appointment;
 using PsicoAppAPI.DTOs.BasePosts;
+using PsicoAppAPI.DTOs.Chat;
 using PsicoAppAPI.DTOs.FeedPost;
 using PsicoAppAPI.DTOs.ForumPost;
 using PsicoAppAPI.DTOs.Specialist;
 using PsicoAppAPI.DTOs.UpdateProfileInformation;
 using PsicoAppAPI.DTOs.User;
 using PsicoAppAPI.Models;
+using PsicoAppAPI.Models.Mobile;
 using PsicoAppAPI.Services.Interfaces;
 
 namespace PsicoAppAPI.Services
@@ -160,6 +162,22 @@ namespace PsicoAppAPI.Services
         {
             if (specialist is null) return null;
             return _mapper.Map<SpecialistDto>(specialist);
+        }
+
+        public SimpleMessageDto MapToSimpleMessageDto(ChatMessage message)
+        {
+            return _mapper.Map<SimpleMessageDto>(message);
+        }
+
+        public MessageDto MapToMessageDto(ChatMessage message)
+        {
+            return _mapper.Map<MessageDto>(message);
+        }
+
+        public List<MessageDto> MapToListOfMessageDto(List<ChatMessage> messages)
+        {
+            var mappedMessages = messages.Select(x => _mapper.Map<MessageDto>(x));
+            return mappedMessages.ToList();
         }
     }
 }
