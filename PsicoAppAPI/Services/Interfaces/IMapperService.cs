@@ -184,5 +184,20 @@ namespace PsicoAppAPI.Services.Interfaces
         /// <param name="message">ChatMessage to map</param>
         /// <returns>SimpleMessageDto</returns>
         public SimpleMessageDto MapToSimpleMessageDto(ChatMessage message);
+        
+        /// <summary>
+        /// Map to MessageDto
+        /// </summary>
+        /// <param name="message">ChatMessage to map</param>
+        /// <returns>MapToMessageDto</returns>
+        public MessageDto MapToMessageDto(ChatMessage message);
+
+        /// <summary>
+        /// Map to list of MessageDto
+        /// </summary>
+        /// <param name="messages"></param>
+        /// <returns></returns>
+        public List<MessageDto> MapToListOfMessageDto(List<ChatMessage> messages);
+
     }
 }
