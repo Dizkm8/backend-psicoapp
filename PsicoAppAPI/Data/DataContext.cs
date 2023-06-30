@@ -1,21 +1,27 @@
 using Microsoft.EntityFrameworkCore;
 using PsicoAppAPI.Models;
+using PsicoAppAPI.Models.Mobile;
 
 namespace PsicoAppAPI.Data
 {
     public class DataContext : DbContext
     {
-        
         #region CLASS_ATTRIBUTES
+
         /// <summary>
         /// Tables that don't depend on other tables
         /// </summary>
+
         #region INDEPENDENT_TABLES
+
         public DbSet<Speciality> Specialities { get; set; } = null!;
+
         public DbSet<Role> Roles { get; set; } = null!;
         public DbSet<Tag> Tags { get; set; } = null!;
         public DbSet<AppointmentStatus> AppointmentStatuses { get; set; } = null!;
         public DbSet<GptRules> GptRules { get; set; } = null!;
+        public DbSet<ChatMessage> Messages { get; set; } = null!;
+
         #endregion
 
         /// <summary>
@@ -24,35 +30,47 @@ namespace PsicoAppAPI.Data
         /// dependency, it means the type of their
         /// dependency are a independent table
         /// </summary>
+
         #region SINGLE_DEPENDENCY_TABLES
+
         public DbSet<User> Users { get; set; } = null!;
+
         #endregion
 
         /// <summary>
         /// Tables that depend on tables that depend on other tables/// </summary>
         /// </summary>
+
         #region DOUBLE_DEPENDENCY_TABLES
+
         public DbSet<Specialist> Specialists { get; set; } = null!;
+
         public DbSet<FeedPost> FeedPosts { get; set; } = null!;
         public DbSet<ForumPost> ForumPosts { get; set; } = null!;
         public DbSet<Appointment> Appointments { get; set; } = null!;
+
         #endregion
 
         /// <summary>
         /// Tables that depend on tables that depend on other tables, etc.
         /// </summary>
+
         #region MULTI_DEPENDENCY_TABLES
+
         public DbSet<AvailabilitySlot> AvailabilitySlots { get; set; } = null!;
+
         public DbSet<Comment> Comments { get; set; } = null!;
+
         #endregion
 
         #endregion
 
         #region CLASS_METHODS
+
         public DataContext(DbContextOptions options) : base(options)
         {
         }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Appointment>()
@@ -71,6 +89,7 @@ namespace PsicoAppAPI.Data
 
             base.OnModelCreating(modelBuilder);
         }
+
         #endregion
     }
 }

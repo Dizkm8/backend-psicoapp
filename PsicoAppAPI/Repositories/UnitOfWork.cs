@@ -19,6 +19,7 @@ namespace PsicoAppAPI.Repositories
         private IForumPostRepository? _forumPostRepository;
         private IGptRulesRepository? _gptRulesRepository;
         private ICommentRepository? _commentRepository;
+        private IChatRepository? _chatRepository;
 
         public UnitOfWork(DataContext context)
         {
@@ -121,6 +122,15 @@ namespace PsicoAppAPI.Repositories
             {
                 _commentRepository ??= new CommentRepository(_context);
                 return _commentRepository;
+            }
+        }
+
+        public IChatRepository ChatRepository
+        {
+            get
+            {
+                _chatRepository ??= new ChatRepository(_context);
+                return _chatRepository;
             }
         }
     }

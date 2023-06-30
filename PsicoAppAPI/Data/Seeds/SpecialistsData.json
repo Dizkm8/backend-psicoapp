@@ -1,46 +1,54 @@
 [
-    {
-        "UserId" : "75366560",
-        "SpecialityId" : 1
-    },
-    {
-        "UserId" : "37765652",
-        "SpecialityId" : 2
-    },
-    {
-        "UserId" : "76321699",
-        "SpecialityId" : 3
-    },
-    {
-        "UserId" : "11887984",
-        "SpecialityId" : 4
-    },
-    {
-        "UserId" : "84884879",
-        "SpecialityId" : 5
-    },
-    {
-        "UserId" : "81500204",
-        "SpecialityId" : 6
-    },
-    {
-        "UserId" : "28093464",
-        "SpecialityId" : 7
-    },
-    {
-        "UserId" : "06237773",
-        "SpecialityId" : 2
-    },
-    {
-        "UserId" : "11790746",
-        "SpecialityId" : 4
-    },
-    {
-        "UserId" : "77101173",
-        "SpecialityId" : 8
-    },
-    {
-        "UserId" : "207676918",
-        "SpecialityId" : 4
-    }
+  {
+    "UserId": "75366560",
+    "SpecialityId": 1
+  },
+  {
+    "UserId": "37765652",
+    "SpecialityId": 2
+  },
+  {
+    "UserId": "76321699",
+    "SpecialityId": 3
+  },
+  {
+    "UserId": "11887984",
+    "SpecialityId": 4
+  },
+  {
+    "UserId": "84884879",
+    "SpecialityId": 5
+  },
+  {
+    "UserId": "81500204",
+    "SpecialityId": 6
+  },
+  {
+    "UserId": "28093464",
+    "SpecialityId": 7
+  },
+  {
+    "UserId": "06237773",
+    "SpecialityId": 2
+  },
+  {
+    "UserId": "11790746",
+    "SpecialityId": 4
+  },
+  {
+    "UserId": "77101173",
+    "SpecialityId": 8
+  },
+  {
+    "UserId": "207676918",
+    "SpecialityId": 4
+  },
+  {
+    "UserId": "208810332",
+    "SpecialityId": 2
+  },
+  {
+    "UserId": "204166994",
+    "SpecialityId": 1
+  }
 ]

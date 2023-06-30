@@ -27,8 +27,8 @@ namespace PsicoAppAPI.DTOs.User
         public string? Gender { get; set; }
 
         [Required(ErrorMessage = "Phone is required")]
-        [Range(1000, 99999999999, ErrorMessage = "Phone number must be 4 digits minimum and 11 maximum")]
-        public int Phone { get; set; }
+        [StringLength(30, MinimumLength = 4, ErrorMessage = "Phone must have a lenght between 4 and 30 characters.")]
+        public string? Phone { get; set; }
 
         [Required(ErrorMessage = "New password is required")]
         [StringLength(15, MinimumLength = 10,

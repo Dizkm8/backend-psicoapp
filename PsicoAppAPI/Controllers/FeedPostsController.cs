@@ -22,7 +22,7 @@ namespace PsicoAppAPI.Controllers
         /// </summary>
         /// <param name="addFeedPost">
         /// Title: Post's title, must be not null or empty
-        /// Content: Post's content, must be not null or empty and less than 255 characters
+        /// Content: Post's content, must be not null or empty and less than 2500 characters
         /// TagId: Post's tag id, must be not null and exist in the database
         /// </param>
         /// <returns>
@@ -31,7 +31,7 @@ namespace PsicoAppAPI.Controllers
         /// If something went wrong adding the post return 500 Internal server error
         /// If the tag id does not exist return 404 Not found
         /// </returns>
-        [Authorize(Roles = "3")]
+        [Authorize(Roles = "1, 3")]
         [HttpPost("create-post")]
         public async Task<ActionResult> AddFeedPost(AddFeedPostDto addFeedPost)
         {
@@ -77,6 +77,16 @@ namespace PsicoAppAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new ErrorModel { ErrorCode = 500, Message = "Internal error fetching all forum posts" });
             return Ok(posts);
+        }
+
+        [Authorize]
+        [HttpGet("get-post/{postId:int}")]
+        public async Task<ActionResult<FeedPostDto>> GetForumPostById(int postId)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var post = await _service.GetPostById(postId);
+            if (post is null) return BadRequest($"The post with Id: {postId} do not exists");
+            return Ok(post);
         }
 
         /// <summary>
