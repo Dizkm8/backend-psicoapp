@@ -167,9 +167,6 @@ public class ForumPostsController : BaseApiController
     [HttpGet("get-post/{postId:int}")]
     public async Task<ActionResult<ForumPostDto>> GetForumPost(int postId)
     {
-        var isSpecialist = await _service.IsUserSpecialist();
-        if (!isSpecialist) return Unauthorized("The user with userId from token are not a valid specialist");
-
         var post = await _service.GetPost(postId);
         if (post is null) return BadRequest("Post Id do not match with any existing post");
         return Ok(post);
