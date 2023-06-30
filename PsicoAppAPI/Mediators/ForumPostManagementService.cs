@@ -27,7 +27,7 @@ public class ForumPostManagementService : PostManagementService, IForumPostManag
 
     public async Task<ForumPostDto?> AddForumPost(AddForumPostDto forumPostDto)
     {
-        var user = await _authService.GetUserEnabledAndClientFromToken();
+        var user = await _authService.GetUserEnabledFromToken();
         if (user is null) return null;
         var userId = user.Id;
 
