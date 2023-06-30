@@ -1,7 +1,19 @@
 [
   {
     "BookedDate": "2023-06-28T19:00:00Z",
+    "RequestingUserId": "207236683",
+    "RequestedUserId": "207676918",
+    "AppointmentStatusId": 3
+  },
+  {
+    "BookedDate": "2023-06-28T19:00:00Z",
     "RequestingUserId": "209674327",
+    "RequestedUserId": "207676918",
+    "AppointmentStatusId": 3
+  },
+  {
+    "BookedDate": "2023-06-28T19:00:00Z",
+    "RequestingUserId": "103661455",
     "RequestedUserId": "207676918",
     "AppointmentStatusId": 3
   },
@@ -32,6 +44,12 @@
   {
     "BookedDate": "2023-07-05T18:00:00Z",
     "RequestingUserId": "207236683",
+    "RequestedUserId": "204166994",
+    "AppointmentStatusId": 2
+  },
+  {
+    "BookedDate": "2023-07-03T18:00:00Z",
+    "RequestingUserId": "103661455",
     "RequestedUserId": "204166994",
     "AppointmentStatusId": 2
   },

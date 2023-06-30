@@ -116,7 +116,7 @@
   {
     "StartTime": "2023-07-03T18:00:00Z",
     "EndTime": "2023-07-03T19:00:00Z",
-    "IsAvailableOverride": true,
+    "IsAvailableOverride": false,
     "UserId": "204166994"
   },
   {
