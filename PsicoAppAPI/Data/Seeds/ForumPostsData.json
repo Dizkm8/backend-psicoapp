@@ -1,2 +1,72 @@
-[{"Title":"Sample post","Content":"Content for a sample post","PublishedOn":"2023-06-20","UserId":"207785296","TagId":4},
-{"Title":"Second sample post","Content":"Content for a second sample post","PublishedOn":"2023-06-15","UserId":"207785296","TagId":3}]
+[
+  {
+    "Title": "No puedo dejar de pensar en mi trabajo",
+    "Content": "Ultimamente estoy todo el día pensando en el Jumbo Cencosud del sector sur de antofagasta, es normal?? Quisiera que alguien me responda...",
+    "PublishedOn": "2023-06-20",
+    "UserId": "207236683",
+    "TagId": 3
+  },
+  {
+    "Title": "Sigo soñando en bajo nivel!!",
+    "Content": "Me explico: soy programador fullstack de low level (simuproc, instrucciones de procesador, etc) y aunque parezca tonto, no puedo dejar de pensar en 0 y 1. Ayuda!!!010101",
+    "PublishedOn": "2023-06-15",
+    "UserId": "209674327",
+    "TagId": 2
+  },
+  {
+    "Title": "¿Me cuentan como llevan su vida?",
+    "Content": "Me gustaría que nos tomaramos el tiempo de chatear entre nosotros y contar un poco que tal nuestras vidas... Saludos!",
+    "PublishedOn": "2023-06-02",
+    "UserId": "103661455",
+    "TagId": 4
+  },
+  {
+    "Title": "Ayuda con medicamentos",
+    "Content": "Hola, no sé si este es el sitio adecuado para poner esto (quizá lo podéis reubicar?), pero la cosa es que con mi psiquiatra actual no se me resuelve mi problema de insomnio. Estoy tomando 3 pastillas de fluoxetina de 20 mg y 1 de invega de 9 por la mañana, y 1 de 2,5 de zyprexa por la noche, y lo que me pasa es que no me cuesta demasiado (sólo un pelín) dormirme, pero desde hace tres días me despierto dos horas antes de que suene el despertador y no soy capaz de volver a dormirme, y por tanto sólo duermo 6 hrs. La cosa es que estoy estudiando oposiciones y lo de dormir poco pues no me ayuda...",
+    "PublishedOn": "2023-06-30",
+    "UserId": "207236683",
+    "TagId": 7
+  },
+  {
+    "Title": "Estoy soñando en bajo nivel",
+    "Content": "Me explico: soy programador fullstack de low level (simuproc, instrucciones de procesador, etc) y aunque parezca tonto, no puedo dejar de pensar en 0 y 1. Ayuda!!!010101",
+    "PublishedOn": "2023-05-20",
+    "UserId": "209674327",
+    "TagId": 5
+  },
+  {
+    "Title": "Pasamos la fase covid",
+    "Content": "Me ha llamado la atención que el seguimiento de las estadísticas sea ahora forzoso distinto.\n\nAntes era acostar la curva del covid.\n\nHoy , al menos en canarias, sólo preocupan las estadísticas sobre dotaciones asistenciales.\n\nTengo que ir a buscar las estadísticas más actuales a otras webs.\n\nLo cierto es que los contagiados han disminuido y los muertos también.",
+    "PublishedOn": "2023-05-12",
+    "UserId": "207236683",
+    "TagId": 4
+  },
+  {
+    "Title": "Chantaje emocional entre niños",
+    "Content": "Buenos días.\n\nNecesitaría ayuda para afrontar esta situación: En la clase de mi hija tienen un protocolo llamado FELICITO/CAMBIARIA en el cual el niñ@ que quiera puede escribir en una tarjeta de manera secreta/confidencial el nombre de un compañer@ y decir POR QUÉ LO FELICITA o QUÉ CAMBIARÍA DE ÉL/ELLA ... por ejemplo: FELICITO A LUCÍA PORQUE AYUDA A LOS QUE NO SE HAN ENTERADO DE ALGO o CAMBIARÍA DE LUCÍA QUE, COMO NO RECOJE SU PARTE DE MESA, LA MESA QUE COMPARTIMOS ENTRE 4 NO SE QUEDA TOTALMENTE LIMPIA.",
+    "PublishedOn": "2023-04-03",
+    "UserId": "209674327",
+    "TagId": 9
+  },
+  {
+    "Title": "No confío en mi madre",
+    "Content": "Hola, el tema es que mi madre es horrible porque desde pequeña me compara con los demás (incluido con mi hermano y primos), me dice que doy asco porque estoy delgada, que soy rara, que todo lo que le pasa a ella es culpa mia y como ella me cuidó de pequeña ahora tengo que mantenerla porque se lo debo, me dice que seré amargada y estaré sola (y esto último se está cumpliendo porque no tengo amigos), me dice que no soy detallista pero tampoco sabe que quiere que le regale, me dice que tengo mania persecutoria (esquizofrenia paranoide), y también me echa la culpa de que los hospitales se colapsan por gente como yo y un largo etc... ",
+    "PublishedOn": "2023-06-20",
+    "UserId": "207236683",
+    "TagId": 2
+  },
+  {
+    "Title": "Mi hijo me ignora",
+    "Content": "Buenos días, estoy viviendo el suplicio mas grande de mi vida. Estoy divorciado y tengo un hijo de 22 años. Últimamente lo llamo mil veces y no me contesta y no contesta a mis wasap. Cuando puedo contactar con él me dice que no le pasa nada pero no hace nada por contactar conmigo, sólo cuando le hace falta dinero o algo que necesite. Me habla muy despectivamente y cada vez estoy más hundido y estoy viendo que estoy cayendo en una depresión.\n\nQué hago? dejo de llamarlo? dejo de ser insistente con él como me dicen mis amistades?",
+    "PublishedOn": "2023-06-29",
+    "UserId": "209674327",
+    "TagId": 5
+  },
+  {
+    "Title": "Mamá enferma",
+    "Content": "Mi mamá se enfermo de esquizofrenia cuando yo era muy chica, recuerdo que nos hablaba de brujas y de demonios, que nos iban a matar. Le daban crisis muy fuertes cuando mis hermanos y yo jugábamos y gritábamos. Esto siempre lo vivíamos mis hermanos y yo solos. Mi papá se iba a trabajar y nos quedamos con ella, había buenos días y malos. Pero un día ellos pelearon y ella se fue de la casa.",
+    "PublishedOn": "2023-04-29",
+    "UserId": "209674327",
+    "TagId": 1
+  }
+]
