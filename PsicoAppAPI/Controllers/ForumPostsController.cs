@@ -87,7 +87,7 @@ public class ForumPostsController : BaseApiController
     /// 
     ///    FullName: Comment's user full name
     /// </returns>
-    [Authorize]
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ForumPostDto>>> GetAllForumPosts()
     {
@@ -163,7 +163,7 @@ public class ForumPostsController : BaseApiController
     /// 
     ///    FullName: Comment's user full name
     /// </returns>
-    [Authorize]
+    [AllowAnonymous]
     [HttpGet("get-post/{postId:int}")]
     public async Task<ActionResult<ForumPostDto>> GetForumPost(int postId)
     {

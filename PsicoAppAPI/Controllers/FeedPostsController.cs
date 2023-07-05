@@ -68,7 +68,7 @@ namespace PsicoAppAPI.Controllers
         /// FullName: Post's user full name
         /// TagName: Post's tag name
         /// </returns>
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FeedPostDto>>> GetAllForumPosts()
         {
@@ -79,7 +79,7 @@ namespace PsicoAppAPI.Controllers
             return Ok(posts);
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet("get-post/{postId:int}")]
         public async Task<ActionResult<FeedPostDto>> GetForumPostById(int postId)
         {
