@@ -8,6 +8,7 @@ public class Comment
     [Key]
     public int Id { get; set; }
     public string Content { get; set; } = null!;
+    public DateTime PublishedOn { get; set; } = DateTime.MinValue;
     #endregion
 
     #region MODEL_RELATIONSHIPS

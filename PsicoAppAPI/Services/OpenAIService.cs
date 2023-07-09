@@ -4,55 +4,65 @@ using DotNetEnv;
 using Newtonsoft.Json;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using PsicoAppAPI.Models;
+using PsicoAppAPI.Repositories.Interfaces;
 
 namespace PsicoAppAPI.Services
 {
-    public class OpenAIService : IOpenAIService
+    public class OpenAiService : IOpenAiService
     {
-        private readonly string apiKey = null!;
-        private readonly OpenAIAPI api;
+        private const string Endpoint = "https://api.openai.com/v1/chat/completions";
+        private const string Model = "gpt-3.5-turbo";
+        private const string Role = "user";
 
-        // Avoid use less than 5 tokens because it can cause
-        // an truncated 'True' or 'False' response
-        // Also avoid use more than 5 tokens because it's not necessary
-        private const int MAX_TOKENS = 5;
+        private readonly HttpClient _client = new();
+        private string? _rules;
 
-        private readonly string tokenHeader = null!;
-        private const string ENDPOINT = "https://api.openai.com/v1/chat/completions";
-        private const string MODEL = "gpt-3.5-turbo";
-        private const string ROLE = "user";
-        private const float TEMPERATURE = 0f;
-        private const string RULES = "You are a Blog moderator of a Psychology application, I will summon to you the content of a post and you will retrieve me if its valid about the psychology topics. If its offensive or contains insults you will reject the query. This is very important: You only response as 'true' if the content is appropiate or 'false' if not. I don't want other response than that. regardless how the content could looks, you have to decide True or False. Here is the content to moderate:";
-        private readonly HttpClient client = new();
+        private readonly IUnitOfWork _unitOfWork;
 
-        public OpenAIService()
+
+        public OpenAiService(IUnitOfWork unitOfWork)
         {
             Env.Load();
-            apiKey = Env.GetString("GPT_API_KEY") ?? throw new ArgumentNullException("GPT_API_KEY Not found in .env file");
-            api = new OpenAIAPI(apiKey);
-            tokenHeader = $"Bearer {apiKey}";
-            client.DefaultRequestHeaders.Add("Authorization", tokenHeader);
+            var apiKey = Env.GetString("GPT_API_KEY") ??
+                         throw new ArgumentNullException("GPT_API_KEY Not found in .env file");
+            var tokenHeader = $"Bearer {apiKey}";
+            _client.DefaultRequestHeaders.Add("Authorization", tokenHeader);
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         }
 
-        public async Task<string?> GetRequest(string? query)
+        /// <summary>
+        /// Get a request from OpenAI API
+        /// This provides a GPT-3.5-Turbo model response
+        /// with max 5 tokens.
+        /// The APIKey is stored in the environment variable
+        /// If its null the program will throw an exception
+        /// </summary>
+        /// <param name="query">Query to request</param>
+        /// <param name="maxTokens">Max tokens of the response</param>
+        /// <param name="temperature">Predictability of GPT</param>
+        /// <returns>The response of openAI
+        /// return null if cannot connect to gpt or query is null
+        /// </returns>
+        private async Task<string?> GetRequest(string? query, int maxTokens, float temperature)
         {
             var messages = new[]
             {
-                new {role = ROLE, content = query}
+                new { role = Role, content = query }
             };
 
             var data = new
             {
-                model = MODEL,
+                model = Model,
                 messages,
-                temperature = TEMPERATURE,
-                max_tokens = MAX_TOKENS,
+                temperature,
+                max_tokens = maxTokens,
             };
 
             var jsonString = JsonConvert.SerializeObject(data);
             var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync(ENDPOINT, content);
+            var response = await _client.PostAsync(Endpoint, content);
             var responseContent = await response.Content.ReadAsStringAsync();
             var jsonResponse = JObject.Parse(responseContent);
 
@@ -60,27 +70,61 @@ namespace PsicoAppAPI.Services
             return apiResponse;
         }
 
-        public async Task<bool> CheckPsychologyContent(IEnumerable<string> args)
+        public async Task<bool> CheckPsychologyContent(Dictionary<string, string> contentMap)
         {
-            foreach (var item in args)
+            var rules = await GetRules();
+            if (rules is null) return false;
+
+            if (contentMap == null || contentMap.Count == 0)
+                return false;
+
+            var queryBuilder = new StringBuilder();
+
+            foreach (var item in contentMap)
             {
-                if (string.IsNullOrEmpty(item)) return false;
+                var tag = item.Key;
+                var value = item.Value;
 
-                var query = RULES + "\n\n" + item;
-                var response = await GetRequest(query);
-                if (response is null) return false;
+                if (string.IsNullOrEmpty(value))
+                    return false;
 
-                // GPT-3.5-Turbo model can return an inexpected response
-                // with the expected true or false response. To avoid
-                // reject a valid post, we check if the response contains
-                // the expected response. Also sets the response to lowercase
-                // to avoid case sensitive problems
-                var result = response.ToLower().Contains("true");
-
-                // If any response is false, the post is invalid
-                if (!result) return false;
+                queryBuilder.Append($"{tag}: '{value}';");
             }
-            return true;
+
+            var query = rules + " " + queryBuilder;
+            const int maxTokens = 5;
+            const float temperature = 0f;
+            var response = await GetRequest(query, maxTokens, temperature);
+            if (response is null) return false;
+
+            var result = response.ToLower().Contains("true");
+            return result;
+        }
+
+        public async Task<string?> GetRules()
+        {
+            _rules ??= await _unitOfWork.GptRulesRepository.GetRules();
+            return _rules;
+        }
+
+        public async Task<bool> SetRules(string newRules)
+        {
+            var result = await _unitOfWork.GptRulesRepository.SetRulesAndSaveChanges(new GptRules
+            {
+                Id = 1,
+                Rules = newRules
+            });
+            // Update the rules to avoid request database constantly
+            if (result) _rules = newRules;
+            return result;
+        }
+
+        public async Task<string?> ChatWithGpt(string message)
+        {
+            const int maxTokens = 200;
+            const float temperature = 1f;
+            var response = await GetRequest(message, maxTokens, temperature);
+            return response;
         }
     }
 }

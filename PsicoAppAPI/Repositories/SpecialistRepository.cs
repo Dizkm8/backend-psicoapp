@@ -17,8 +17,7 @@ namespace PsicoAppAPI.Repositories
         public async Task<Specialist?> GetSpecialistById(string userId)
         {
             var specialist =
-                await _context.Specialists.
-                FirstOrDefaultAsync(specialist => specialist.UserId == userId);
+                await _context.Specialists.FirstOrDefaultAsync(specialist => specialist.UserId == userId);
             return specialist;
         }
 
@@ -26,6 +25,47 @@ namespace PsicoAppAPI.Repositories
         {
             var specialist = await GetSpecialistById(userId);
             return specialist != null;
+        }
+
+        public async Task<bool> AddSpecialistAndSaveChanges(Specialist specialist)
+        {
+            _ = await _context.Specialists.AddAsync(specialist);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<List<Speciality>> GetAllSpecialities()
+        {
+            var specialities = await _context.Specialities.ToListAsync();
+            return specialities;
+        }
+
+        public async Task<Speciality?> GetSpecialityById(int specialityId)
+        {
+            var speciality = await _context.Specialities
+                .Where(s => s.Id == specialityId)
+                .SingleOrDefaultAsync();
+            return speciality;
+        }
+
+        public async Task<List<Specialist>?> GetAllUsersSpecialist()
+        {
+            var users = await _context.Specialists
+                .Include(s => s.Speciality)
+                .Include(s => s.User)
+                .ThenInclude(u => u.Role)
+                .ToListAsync();
+            return users;
+        }
+
+        public async Task<Specialist?> GetSpecialistByUserId(string userId)
+        {
+            var user = await _context.Specialists
+                .Where(s => s.UserId == userId)
+                .Include(s => s.Speciality)
+                .Include(s => s.User)
+                .ThenInclude(u => u.Role)
+                .SingleOrDefaultAsync();
+            return user;
         }
     }
 }

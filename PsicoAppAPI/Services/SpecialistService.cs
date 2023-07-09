@@ -23,9 +23,39 @@ namespace PsicoAppAPI.Services
         {
             var availabilities = await _unitOfWork.AvailabilitySlotRepository.GetAvailabilitySlotsByUserId(userId);
             if (availabilities is null) return false;
-            
+
             var availability = availabilities.FirstOrDefault(x => x.StartTime == startTime);
             return availability is not null;
+        }
+
+        public async Task<bool> DisableAvailability(string userId, DateTime availabilityDate)
+        {
+            var availabilities = await _unitOfWork.AvailabilitySlotRepository.GetAvailabilitySlotsByUserId(userId);
+            var availability = availabilities?.FirstOrDefault(x => x.StartTime == availabilityDate && x.IsAvailable);
+            if (availability is null) return false;
+
+            availability.IsAvailableOverride = false;
+            var result =
+                await _unitOfWork.AvailabilitySlotRepository.UpdateAvailabilityToUserAndSaveChanges(availability);
+            return true;
+        }
+
+        public async Task<bool> CheckSpecialityById(int specialityId)
+        {
+            var speciality = await GetSpecialityById(specialityId);
+            return speciality is not null;
+        }
+
+        public async Task<Speciality?> GetSpecialityById(int specialityId)
+        {
+            var speciality = await _unitOfWork.SpecialistRepository.GetSpecialityById(specialityId);
+            return speciality;
+        }
+
+        public async Task<List<Speciality>> GetAllSpecialities()
+        {
+            var specialities = await _unitOfWork.SpecialistRepository.GetAllSpecialities();
+            return specialities;
         }
 
         public async Task<List<AvailabilitySlot>?> GetAllAvailability(string? userId)
@@ -35,7 +65,8 @@ namespace PsicoAppAPI.Services
             return availabilitySlots;
         }
 
-        public async Task<List<AvailabilitySlot>?> GetAvailabilityByDate(string? userId, DateOnly StartDate, DateOnly EndDate)
+        public async Task<List<AvailabilitySlot>?> GetAvailabilityByDate(string? userId, DateOnly StartDate,
+            DateOnly EndDate)
         {
             if (userId is null) return null;
             if (StartDate > EndDate) return null;

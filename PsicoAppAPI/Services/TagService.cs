@@ -15,8 +15,8 @@ namespace PsicoAppAPI.Services
 
         public async Task<bool> ExistsTagById(int id)
         {
-            var tag = await _unitOfWork.TagRepository.GetTagById(id);
-            return tag is not null;
+            var result = await GetTagById(id);
+            return result is not null;
         }
 
         public async Task<bool> ExistsTagByName(string? name)
@@ -31,6 +31,12 @@ namespace PsicoAppAPI.Services
             var tags = await _unitOfWork.TagRepository.GetTags();
             // If tags is null, return an empty list to avoid validations in the mediator
             return tags is null ? new List<Tag>() : tags;
+        }
+
+        public async Task<Tag?> GetTagById(int id)
+        {
+            var tag = await _unitOfWork.TagRepository.GetTagById(id);
+            return tag;
         }
     }
 }

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PsicoAppAPI.Controllers.Base;
 using PsicoAppAPI.DTOs.BasePosts;
-using PsicoAppAPI.Services.Mediators.Interfaces;
+using PsicoAppAPI.Mediators.Interfaces;
 
 namespace PsicoAppAPI.Controllers
 {
