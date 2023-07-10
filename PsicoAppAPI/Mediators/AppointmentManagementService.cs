@@ -111,7 +111,7 @@ public class AppointmentManagementService : IAppointmentManagementService
         var appoint = appointments.SingleOrDefault(a => a.Id == appointmentId);
         if (appoint is null) return false;
 
-        if (appoint.BookedDate >= DateTime.Now.AddHours(-24)) return null;
+        if (appoint.BookedDate <= DateTime.Now.AddHours(+24)) return null;
 
         var result = await _appointmentService.CancelAppointment(appointmentId);
         return result;
