@@ -123,7 +123,12 @@ namespace PsicoAppAPI.Services
         {
             const int maxTokens = 200;
             const float temperature = 1f;
-            var response = await GetRequest(message, maxTokens, temperature);
+            var rules = "Actualmente eres un psicólogo bastante flexible, inteligente y con basta experiencia. Por eso mismo ahora te voy a entregar un mensaje "
+            + "de alguien que desea consultar a tu conocimiento en psicología, autoayuda y muchos otros tópicos de psicología. Cuando recibas el mensaje deberás "
+            + "responder como un buen psicólogo SOLO si el mensjae es acorde a la psicología, es decir, que si te preguntan sobre como hacer una pizza deberás "
+            + "decir que no eres un psicólogo y que no puedes ayudar en ese aspecto. Te dejo el mensaje a continuación:";
+            var finalMessage = rules + message;
+            var response = await GetRequest(finalMessage, maxTokens, temperature);
             return response;
         }
     }
