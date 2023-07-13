@@ -1,0 +1,1360 @@
+{
+	"info": {
+		"_postman_id": "18d9ab2c-7db5-4441-8ecd-ac9929d90e48",
+		"name": "PsicoAppAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26765746"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "Specialist Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const user = pm.response.json();",
+											"",
+											"pm.test(\"Has properties\", function () {",
+											"    pm.expect(user).to.have.property('email');",
+											"    pm.expect(user).to.have.property('token');",
+											"});",
+											"",
+											"if (pm.test(\"Has properties\")) {",
+											"    pm.globals.set('token', user.token);",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\" : \"207676918\",\n    \"password\" : \"davidaraya\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Admin Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const user = pm.response.json();",
+											"",
+											"pm.test(\"Has properties\", function () {",
+											"    pm.expect(user).to.have.property('email');",
+											"    pm.expect(user).to.have.property('token');",
+											"});",
+											"",
+											"if (pm.test(\"Has properties\")) {",
+											"    pm.globals.set('token', user.token);",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\" : \"207785296\",\n    \"password\" : \"ignaciarivas\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Client Login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const user = pm.response.json();",
+											"",
+											"pm.test(\"Has properties\", function () {",
+											"    pm.expect(user).to.have.property('email');",
+											"    pm.expect(user).to.have.property('token');",
+											"});",
+											"",
+											"if (pm.test(\"Has properties\")) {",
+											"    pm.globals.set('token', user.token);",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\" : \"103661455\",\n    \"password\" : \"mauricioaraya\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Client Login | Invalid Credentials",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\" : \"207676918\",\n    \"password\" : \"daviraya\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Client Login | Disabled",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\" : \"12009735\",\n    \"password\" : \"2U849q\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update Password",
+					"item": [
+						{
+							"name": "Update Password | No coinciden",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"CurrentPassword\" : \"davidaraya\",\n    \"NewPassword\" : \"davidarayaa\",\n    \"ConfirmNewPassword\" : \"davidaraya\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/update-password",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"update-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Password | Clave actual erronea",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"CurrentPassword\" : \"aaaa\",\n    \"NewPassword\" : \"nuevaclave12\",\n    \"ConfirmNewPassword\" : \"nuevaclave12\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/update-password",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"update-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Password",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"CurrentPassword\" : \"davidaraya\",\n    \"NewPassword\" : \"nuevaclave12\",\n    \"ConfirmNewPassword\" : \"nuevaclave12\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/update-password",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"update-password"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Register Client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Id\" : \"207676919\",\n    \"Name\" : \"Ricardo\",\n    \"FirstLastName\" : \"Urvina\",\n    \"SecondLastName\" : \"Cordova\",\n    \"Email\" : \"ricardo.urvina@alumnos.ucn.cl\",\n    \"Gender\" : \"male\",\n    \"Phone\" : \"36540278\",\n    \"Password\" : \"rickyricon\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register-client",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register-client"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Feed Posts",
+			"item": [
+				{
+					"name": "Create post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Autocuidado\",\n  \"content\": \"Consejos para una vida con buena salud mental?\",\n  \"tagId\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/FeedPosts/create-post",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"FeedPosts",
+								"create-post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create post | Obsceno",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"LOS ODIO A TODOS ESTUPIDOS\",\n  \"content\": \"Consejos para una vida con buena salud mental?\",\n  \"tagId\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/FeedPosts/create-post",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"FeedPosts",
+								"create-post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/feedposts/get-post/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"feedposts",
+								"get-post",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Forum Posts",
+			"item": [
+				{
+					"name": "Get all posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/forumposts/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"forumposts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Salud mental\",\n  \"content\": \"¿Como afrontar distintas situaciones de salud mental en esta vida? La respuesta a veces es tomar las cosas con calma\",\n  \"tagId\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/ForumPosts/create-post",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ForumPosts",
+								"create-post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment a Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\" : \"Hello world!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/forumposts/add-comment/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"forumposts",
+								"add-comment",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Forum Post",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/forumposts/get-post/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"forumposts",
+								"get-post",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/forumposts/delete-post/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"forumposts",
+								"delete-post",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/forumposts/delete-comment/2/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"forumposts",
+								"delete-comment",
+								"2",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Specialists",
+			"item": [
+				{
+					"name": "Availability",
+					"item": [
+						{
+							"name": "Get Availability / Currently",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Get the current date",
+											"var currentDate = new Date().toISOString();",
+											"",
+											"// Extract the date portion without time",
+											"var dateOnly = currentDate.split('T')[0];",
+											"",
+											"// Set the Postman variable with the current date",
+											"pm.variables.set(\"dateOnly\", dateOnly);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/specialists/availability/{{dateOnly}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"specialists",
+										"availability",
+										"{{dateOnly}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Availability / Older Date",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Set the specific date as a string",
+											"var dateOnly = '2023-05-04';",
+											"",
+											"// Set the Postman environment variable with the specific date",
+											"pm.environment.set(\"dateOnly\", dateOnly);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/specialists/availability/{{dateOnly}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"specialists",
+										"availability",
+										"{{dateOnly}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Availability / Future invalid Date",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Set the specific date as a string",
+											"var dateOnly = '2024-06-06';",
+											"",
+											"// Set the Postman environment variable with the specific date",
+											"pm.environment.set(\"dateOnly\", dateOnly);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/specialists/availability/{{dateOnly}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"specialists",
+										"availability",
+										"{{dateOnly}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Availability / No Availabilities slots on that date",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Set the specific date as a string",
+											"var dateOnly = '2023-08-06';",
+											"",
+											"// Set the Postman environment variable with the specific date",
+											"pm.environment.set(\"dateOnly\", dateOnly);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/specialists/availability/{{dateOnly}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"specialists",
+										"availability",
+										"{{dateOnly}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Add Availability",
+					"item": [
+						{
+							"name": "Add Availability",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n  {\n    \"startTime\": \"2023-06-09T12:00:00.000Z\"\n  },\n  {\n    \"startTime\": \"2023-06-09T13:00:00.000Z\"\n  },\n  {\n    \"startTime\": \"2023-06-09T14:00:00.000Z\"\n  },\n  {\n    \"startTime\": \"2023-06-09T15:00:00.000Z\"\n  }\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/specialists/add-availability",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"specialists",
+										"add-availability"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Availability / Date & Hour Error",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n  {\n    \"startTime\": \"2023-06-10T15:00:00.013Z\"\n  },\n  {\n    \"startTime\": \"2023-06-10T15:02:00.00Z\"\n  },\n  {\n    \"startTime\": \"2023-06-10T15:00:03.00Z\"\n  }\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/specialists/add-availability",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"specialists",
+										"add-availability"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Availability / Duplicated",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n  {\n    \"startTime\": \"2023-06-08T22:00:00.000Z\"\n  }\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/specialists/add-availability",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"specialists",
+										"add-availability"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Specialists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/specialists/get-all-specialists",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"specialists",
+								"get-all-specialists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specialities",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/specialists/get-specialities",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"specialists",
+								"get-specialities"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tags",
+			"item": [
+				{
+					"name": "Get Tags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tags",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tags"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Update Information",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Joseph\",\n  \"firstLastName\": \"Alcalino\",\n  \"secondLastName\": \"Prideful\",\n  \"email\": \"alcancia@aol.com\",\n  \"gender\": \"Male\",\n  \"phone\": 74113387\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/profile-information",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"profile-information"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Information | Correo duplicado",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Joseph\",\n  \"firstLastName\": \"Alcalino\",\n  \"secondLastName\": \"Prideful\",\n  \"email\": \"davidnahumac@gmail.com\",\n  \"gender\": \"Male\",\n  \"phone\": 74113387\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/profile-information",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"profile-information"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Information | Datos erroneos",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"\",\n  \"firstLastName\": \"Alcalino\",\n  \"secondLastName\": \"Prideful\",\n  \"email\": \"davidnahumagmail.com\",\n  \"gender\": \"Male\",\n  \"phone\": 7411337\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/profile-information",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"profile-information"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Specialists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/get-all-specialists",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"get-all-specialists"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specialist by UserId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/get-specialist/207676918",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"get-specialist",
+								"207676918"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Clients",
+			"item": [
+				{
+					"name": "Set appointment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/clients/add-appointment/207676918?dateTime=2023-06-25T16:00:00.00Z",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients",
+								"add-appointment",
+								"207676918"
+							],
+							"query": [
+								{
+									"key": "dateTime",
+									"value": "2023-06-25T16:00:00.00Z"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Chat Message",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Content\": \"Como puedo tejer un gorro?\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/clients/chat",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients",
+								"chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Chat",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/clients/get-chat",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients",
+								"get-chat"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Get GPT Rules",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/admin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set GPT Rules",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\" : \"ignaciarivas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/update-rules",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"update-rules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Specialist",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Id\" : \"207676919\",\n    \"Name\" : \"Ricardo\",\n    \"FirstLastName\" : \"Urvina\",\n    \"SecondLastName\" : \"Cordova\",\n    \"Email\" : \"ricardo.urvina@alumnos.ucn.cl\",\n    \"Gender\" : \"male\",\n    \"Phone\" : \"36540278\",\n    \"specialityId\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/admin/create-specialist",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"create-specialist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Availability",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/admin/update-user-availability/207676918?isEnabled=true",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"admin",
+								"update-user-availability",
+								"207676918"
+							],
+							"query": [
+								{
+									"key": "isEnabled",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Appointments",
+			"item": [
+				{
+					"name": "Get appointment by client",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/Appointments/get-appointments-client",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Appointments",
+								"get-appointments-client"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get appointment by specialist",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/Appointments/get-appointments-specialist",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Appointments",
+								"get-appointments-specialist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel appointment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/Appointments/cancel-appointment/12",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Appointments",
+								"cancel-appointment",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specialist Appointment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/Appointments/get-appointments-specialist/11790746",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Appointments",
+								"get-appointments-specialist",
+								"11790746"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Statistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/Appointments/get-statistics/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"Appointments",
+								"get-statistics",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
